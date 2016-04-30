@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    username: sam
+    password: change_this
+  tasks:
+   - include: tasks/add_user.yml

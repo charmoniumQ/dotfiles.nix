@@ -1,0 +1,10 @@
+---
+- name: Configure sudo
+  lineinfile: dest=/etc/sudoers state=present regexp="^%wheel" line="%wheel ALL=(ALL) ALL"
+
+- name: Add user
+  user:
+    name: "{{username}}"
+    groups: wheel
+    password: "{{password}}"
+    state: present
