@@ -33,7 +33,7 @@
    - feh
    - firefox
    - dmenu # TODO: find alternative
-   - i3bar # TODO: find alternative
+   # TODO: find alternative for i3bar
    - rxvt-unicode
    - arandr
    - deluge
