@@ -1,3 +1,6 @@
 ---
 - name: Generate GPG key
-  command: gpg2 
+  xbps: name=emacs-x11 state=present
+
+- name: Configure emacs
+  command: emacs --load /tmp/bootstrap_emacs.el --batch
