@@ -102,11 +102,13 @@ bar {
         status_command i3status
 }
 
+new_window 1pixel
+
 exec_always --no-startup-id /home/sam/.fehbg
 
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
-bindsym $mod+d exec gmrun
+bindsym $mod+d exec dmenu_run
 bindsym $mod+g exec firefox
 bindsym $mod+c exec emacs
 

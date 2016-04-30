@@ -1,0 +1,4 @@
+---
+
+- name: Generate GPG key
+  command: gpg2 

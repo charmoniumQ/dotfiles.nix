@@ -37,8 +37,29 @@
    - rxvt-unicode
    - arandr
    - deluge
+   - gksu
    - evince
+   - alsa-utils
    - "{{video_driver}}"
+  become: yes
+  become_user: root
+
+- name: Install development packages
+  xbps: name={{item}} state=present
+  with_items:
+   - gcc
+   - gcc-fortran
+   - make
+   - cmake
+   - automake
+   - autoconf
+   - python
+   - python3
+   - python-pip
+   - python3.4-pip
+   - lapack
+   - nodejs
+   # pypy, pypy3, npm, ruby
   become: yes
   become_user: root
 
@@ -74,16 +95,21 @@
   lineinfile: dest=/etc/shells line={{zsh_path.stdout}} state=present
   become: yes
   become_user: root
-  
 
 - name: Make zsh the login shell
   user: name={{username.stdout}} shell={{zsh_path.stdout}} state=present
 
 - name: Configure git name
-  command: git config --global user.name "John Doe"
+  command: git config --global user.name "Sam G"
 
 - name: Configure git email
-  command: git config --global user.email johndoe@example.com
+  command: git config --global user.email "Samuel.Grayson@utdallas.edu"
 
 - name: Configure git to use emacs
   command: git config --global core.editor emacs
+
+- name: Copy emacs bootstrap
+  copy: src=./files/bootstrap_emacs.el dest=/tmp/bootstrap_emacs.el
+
+- name: Configure emacs
+  command: emacs --load /tmp/bootstrap_emacs.el --batch
