@@ -1,0 +1,54 @@
+---
+- name: Install development packages
+  xbps: name={{item}} state=present
+  with_items:
+   - gcc
+   - gcc-fortran
+   - make
+   - cmake
+   - automake
+   - autoconf
+   - python
+   - python3
+   - python-pip
+   - python3.4-pip
+   - lapack
+   - nodejs
+   # pypy, pypy3, npm, ruby
+  become: yes
+  become_user: root
+
+- name: Configure git name
+  command: git config --global user.name "Sam G"
+
+- name: Configure git email
+  command: git config --global user.email "Samuel.Grayson@utdallas.edu"
+
+- name: Configure git to use emacs
+  command: git config --global core.editor emacs
+
+# Kind of emulate this
+# https://github.com/geerlingguy/ansible-role-dotfiles/blob/master/tasks/main.yml
+
+- name: Clone dotfiles
+  git:
+    repo: "https://charmoniumQ@github.com/charmoniumQ/dotfiles-plusplus.git"
+    dest: "~/dotfiles"
+
+- name: Link dotfiles
+  file:
+    src: "~/dotfiles/{{item}}"
+    dest: "~/{{item}}"
+    state: link
+  with_items:
+    - .emacs
+    - .i3
+    - .Xdefaults
+    - .xinitrc
+    - .zshrc
+
+- name: Copy emacs bootstrap
+  copy: src=./files/bootstrap_emacs.el dest=/tmp/bootstrap_emacs.el
+
+- name: Configure emacs
+  command: emacs --load /tmp/bootstrap_emacs.el --batch

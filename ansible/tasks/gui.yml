@@ -1,0 +1,23 @@
+---
+- name: Install graphical desktop packages
+  xbps: name={{item}} state=present
+  with_items:
+   - xorg
+   - xorg-server
+   - i3
+   - feh
+   - firefox
+   - texinfo # TODO: break this out into a 
+   - emacs-x11
+   - dmenu # TODO: find alternative
+   # TODO: find alternative for i3bar
+   - rxvt-unicode
+   - arandr
+   - deluge
+   - emacs-x11
+   - gksu
+   - evince
+   - alsa-utils
+   - "{{video_driver}}"
+  become: yes
+  become_user: root

@@ -1,6 +1,8 @@
 ---
-- name: Generate GPG key
-  xbps: name=emacs-x11 state=present
+- name: Install emacs
+  xbps: name=emacs-x11,git-all,texinfo state=present
+  become: yes
+  become_user: root
 
 - name: Configure emacs
   command: emacs --load /tmp/bootstrap_emacs.el --batch
