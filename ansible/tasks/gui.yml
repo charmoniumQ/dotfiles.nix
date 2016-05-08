@@ -7,7 +7,7 @@
    - i3
    - feh
    - firefox
-   - texinfo # TODO: break this out into a 
+   - texinfo
    - emacs-x11
    - dmenu # TODO: find alternative
    - i3status # TODO: find alternative for i3status
@@ -19,5 +19,8 @@
    - evince
    - alsa-utils
    - "{{video_driver}}"
+   - xclip
+   - font-inconsolata-otf
+   - adwaita-icon-theme # TODO: find a better alternative
   become: yes
   become_user: root

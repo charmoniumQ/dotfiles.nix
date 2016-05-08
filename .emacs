@@ -1,8 +1,4 @@
-;;; package --- my emacs rc file
-;;; Commentary:
-;;; Code:
-
-;; el-get
+;; emacs-lisp-checkdoc
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (unless (require 'el-get nil 'noerror)
   (require 'package)
@@ -13,8 +9,7 @@
   (package-install 'el-get)
   (require 'el-get))
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(setq
- my:el-get-packages
+(setq my:el-get-packages
  '(
             ;auctex
             auto-complete
@@ -47,14 +42,8 @@
 (el-get 'sync my:el-get-packages)
 
 ;; Server stuff
-;; (if (daemonp)
-;;     (add-hook 'after-make-frame-functions
-;;         (lambda (frame)
-;;             (with-selected-frame frame
-;;                 (load-file "~/.emacsclient"))))
-;;   (load-file "~/.emacsclient"))
-;; (global-unset-key (kbd "C-x C-d"))
-;; (global-set-key (kbd "C-x C-d") 'kill-emacs)
+(global-unset-key (kbd "C-x C-d"))
+(global-set-key (kbd "C-x C-d") 'kill-emacs)
 
 ;; Shortcuts
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
@@ -109,8 +98,8 @@
 (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; Theme
+(add-to-list 'default-frame-alist '(font . "Inconsolata-10"))
 (load-theme 'monokai t)
-(set-default-font "Inconsolata-10")
 ;(nyan-mode t)
 ;(nyan-start-animation)
 (require 'powerline)
@@ -196,6 +185,8 @@
 ;; (add-to-list 'auto-mode-alist '("\\.net\\'" . spice-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.cmd\\'" . spice-mode))
 
+;; Don't ask to follow symlinks
+
 ;; YAML
 (require 'yaml-mode)
 
@@ -268,10 +259,11 @@
 (require 'org)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
-(find-file "/home/sam/box/self/someday.txt")
+;; Default file
+(find-file "~/box/self/someday.txt")
 
-(provide '.emacs)
-;;; .emacs ends here
+(setq vc-follow-symlinks t)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -289,3 +281,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;; Local Variables:
+;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
+;; End:

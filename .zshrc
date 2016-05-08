@@ -22,4 +22,4 @@ PROMPT="$fg[green]sam@n>$reset_color "
 #source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 #source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-[[ $TERM != "screen" ]] && exec tmux
+[[ -z "$TMUX" ]] && exec tmux

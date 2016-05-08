@@ -4,7 +4,6 @@
   with_items:
    - gcc
    - gcc-fortran
-   - font-inconsolata-otf
    - make
    - cmake
    - automake
@@ -33,6 +32,9 @@
 
 # Kind of emulate this
 # https://github.com/geerlingguy/ansible-role-dotfiles/blob/master/tasks/main.yml
+
+- name: TeXLive packages
+  command: tlmgr install dehyph-exptl hyphen-greek lastpage cancel enumitem framed minted ifplatform xstring python
 
 - name: Link dotfiles
   file:
