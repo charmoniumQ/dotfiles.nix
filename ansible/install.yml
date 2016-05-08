@@ -6,5 +6,5 @@
   tasks:
    - include: tasks/base.yml
    - include: tasks/gui.yml
-   - include: tasks/tex.yml
+   #- include: tasks/tex.yml
    - include: tasks/dev.yml

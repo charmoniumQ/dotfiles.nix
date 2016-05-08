@@ -4,16 +4,20 @@
   with_items:
    - gcc
    - gcc-fortran
+   - font-inconsolata-otf
    - make
    - cmake
    - automake
    - autoconf
+   - texinfo
+   - texlive
    - python
    - python3
    - python-pip
    - python3.4-pip
    - lapack
    - nodejs
+   - git-all
    # pypy, pypy3, npm, ruby
   become: yes
   become_user: root
@@ -30,11 +34,6 @@
 # Kind of emulate this
 # https://github.com/geerlingguy/ansible-role-dotfiles/blob/master/tasks/main.yml
 
-- name: Clone dotfiles
-  git:
-    repo: "https://charmoniumQ@github.com/charmoniumQ/dotfiles-plusplus.git"
-    dest: "~/dotfiles"
-
 - name: Link dotfiles
   file:
     src: "~/dotfiles/{{item}}"
@@ -50,5 +49,5 @@
 - name: Copy emacs bootstrap
   copy: src=./files/bootstrap_emacs.el dest=/tmp/bootstrap_emacs.el
 
-- name: Configure emacs
-  command: emacs --load /tmp/bootstrap_emacs.el --batch
+# - name: Configure emacs
+#   command: emacs --load /tmp/bootstrap_emacs.el --batch --no-init-file --no-site-file --no-window-system

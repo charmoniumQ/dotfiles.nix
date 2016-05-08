@@ -2,6 +2,50 @@
 ;;; Commentary:
 ;;; Code:
 
+;; el-get
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+(unless (require 'el-get nil 'noerror)
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/"))
+  (package-refresh-contents)
+  (package-initialize)
+  (package-install 'el-get)
+  (require 'el-get))
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(setq
+ my:el-get-packages
+ '(
+            ;auctex
+            auto-complete
+            auto-complete-auctex
+            editorconfig
+            fill-column-indicator
+            flycheck
+            helm
+            ido-better-flex
+            ido-hacks
+            ido-ubiquitous
+            indent-guide
+            jedi-core
+            markdown-mode
+            monokai-theme
+            popup
+            pos-tip
+            powerline
+            projectile
+            rainbow-delimiters
+            rainbow-mode
+            smartparens
+            smooth-scrolling
+            tabbar
+            web-mode
+            yaml-mode
+            yasnippet
+			el-get
+   ))
+(el-get 'sync my:el-get-packages)
+
 ;; Server stuff
 ;; (if (daemonp)
 ;;     (add-hook 'after-make-frame-functions
@@ -16,13 +60,6 @@
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z C-z") 'suspend-emacs)
-
-;; el-get
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("melpa" . "http://melpa.org/packages/")))
-(require 'el-get)
-(el-get 'sync)
 
 ;; Behavior
 (setq current-language-environment "English")

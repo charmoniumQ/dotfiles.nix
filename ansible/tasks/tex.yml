@@ -1,3 +1,0 @@
----
-- name: Install texlive
-  xbps: name=texlive

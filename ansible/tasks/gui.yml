@@ -10,7 +10,7 @@
    - texinfo # TODO: break this out into a 
    - emacs-x11
    - dmenu # TODO: find alternative
-   # TODO: find alternative for i3bar
+   - i3status # TODO: find alternative for i3status
    - rxvt-unicode
    - arandr
    - deluge
