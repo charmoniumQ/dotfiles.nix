@@ -102,8 +102,9 @@ bar {
         status_command i3status
 }
 
-exec --no-startup-id feh --no-xinerama --bg-fill ~/Documents/background.jpg
-exec --no-startup-id emacs --daemon
+exec --no-startup-id feh --no-xinerama --bg-fill ~/Desktop/background.jpg
+#exec --no-startup-id emacs --daemon
+exec --no-startup-id /home/sam/dotfiles/bin/xbacklight -set 30
 
 for_window [class="^.*"] border pixel 1
 new_window 1pixel
@@ -112,10 +113,10 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec dmenu_run
 bindsym $mod+g exec firefox
-bindsym $mod+c exec emacsclient -c ~/box/self/someday.txt
+bindsym $mod+c exec emacsclient -c ~/box/self/someday.txt -a ""
 
 bindsym XF86AudioMute exec amixer sset Master toggle
 bindsym XF86AudioLowerVolume exec amixer sset Master 5%- unmute
 bindsym XF86AudioRaiseVolume exec amixer sset Master 5%+ unmute
-bindsym XF86MonBrightnessDown exec light -U 5
-bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec /home/sam/dotfiles/bin/xbacklight -dec 5
+bindsym XF86MonBrightnessUp exec /home/sam/dotfiles/bin/xbacklight -inc 5

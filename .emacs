@@ -22,7 +22,7 @@
             ido-hacks
             ido-ubiquitous
             indent-guide
-            jedi-core
+            ;jedi-core
             markdown-mode
             monokai-theme
             popup
@@ -201,8 +201,8 @@
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; python
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
 
 ;; LaTeX
 (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))

@@ -17,6 +17,7 @@
    - lapack
    - nodejs
    - git-all
+   - mariadb-client
    # pypy, pypy3, npm, ruby
   become: yes
   become_user: root

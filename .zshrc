@@ -1,4 +1,4 @@
-[[ `tty` = "/dev/tty1" ]] && exec startx
+[[ `tty` = "/dev/tty1" ]] && startx &> /var/log/xlog
 
 # The following lines were added by compinstall
 
@@ -18,6 +18,8 @@ bindkey -e
 # End of lines configured by zsh-newuser-install
 
 PROMPT="$fg[green]sam@n>$reset_color "
+PATH="/home/sam/dotfiles/bin/:$PATH"
+alias la="ls -ahlt"
 
 #source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 #source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

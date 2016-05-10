@@ -1,7 +1,5 @@
 ---
 - hosts: localhost
   remote_user: sam
-  vars:
-    video_driver: xf86-video-ati # change this for your driver
   tasks:
    - include: tasks/update.yml

@@ -20,6 +20,11 @@
   become: yes
   become_user: root
 
+- name: Add xbps sources
+  copy: src=files/etc/xbps.d/ dest=/etc/xbps.d
+  become: yes
+  become_user: root
+
 - name: Add downloads folder
   file: path="~/Downloads" state=directory
 

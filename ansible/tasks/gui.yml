@@ -17,7 +17,10 @@
    - emacs-x11
    - gksu
    - evince
+   - keepass2
    - alsa-utils
+   - ImageMagick
+   - gimp
    - "{{video_driver}}"
    - xclip
    - font-inconsolata-otf
