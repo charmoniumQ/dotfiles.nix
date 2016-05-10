@@ -1,0 +1,5 @@
+---
+- name: Add xbps sources
+  copy: src=files/etc/xbps.d/ dest=/etc/xbps.d
+  become: yes
+  become_user: root

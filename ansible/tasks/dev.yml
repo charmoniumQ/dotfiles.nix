@@ -23,10 +23,10 @@
   become_user: root
 
 - name: Configure git name
-  command: git config --global user.name "Sam G"
+  command: git config --global user.name "CharmoniumQ"
 
 - name: Configure git email
-  command: git config --global user.email "Samuel.Grayson@utdallas.edu"
+  command: git config --global user.email "sag150430@utdallas.edu"
 
 - name: Configure git to use emacs
   command: git config --global core.editor emacs
