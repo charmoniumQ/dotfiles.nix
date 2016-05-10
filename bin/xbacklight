@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+
+sudo /home/sam/dotfiles/bin/xbacklight2 "$@"
