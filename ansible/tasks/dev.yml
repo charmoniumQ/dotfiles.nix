@@ -3,21 +3,32 @@
   xbps: name={{item}} state=present
   with_items:
    - gcc
-   - gcc-fortran
+   - gcc-fortran # for numpy
+   - gcc-c++
+   - gdb
    - make
    - cmake
    - automake
    - autoconf
    - texinfo
    - texlive
+   - sqlite-devel
    - python
    - python3
    - python-pip
    - python3.4-pip
-   - lapack
+   - lapack # for numpy
    - nodejs
    - git-all
+   - mariadb
    - mariadb-client
+   - zlib-devel # for gem
+   - readline-devel # for gem
+   - libressl-devel # for gem
+   - docker
+   - eclipse
+   - intellij
+   - openjdk
    # pypy, pypy3, npm, ruby
   become: yes
   become_user: root
@@ -35,7 +46,7 @@
 # https://github.com/geerlingguy/ansible-role-dotfiles/blob/master/tasks/main.yml
 
 - name: TeXLive packages
-  command: tlmgr install dehyph-exptl hyphen-greek lastpage cancel enumitem framed minted ifplatform xstring python
+  command: tlmgr install dehyph-exptl hyphen-greek lastpage cancel enumitem framed minted ifplatform xstring python moderncv fontawesome lastpage titlesec
 
 - name: Link dotfiles
   file:
@@ -51,6 +62,31 @@
 
 - name: Copy emacs bootstrap
   copy: src=./files/bootstrap_emacs.el dest=/tmp/bootstrap_emacs.el
+
+# https://github.com/rbenv/rbenv#basic-github-checkout
+- name: Clone rbenv
+  git:
+    repo: https://github.com/rbenv/rbenv.git
+    dest: ~/.rbenv
+
+- name: Buld rbenv
+  shell: src/configure && make -C src
+  args:
+    chdir: ~/.rbenv
+
+- name: Clone ruby build
+  git:
+    repo: https://github.com/rbenv/ruby-build.git
+    dest: ~/.rbenv/plugins/ruby-build
+
+- name: Rbenv install
+  shell: zsh -i -l -c "rbenv install {{ruby_version}}"
+
+- name: Rbenv use
+  shell: zsh -i -l -c "rbenv global {{ruby_version}}"
+
+- name: Install rails
+  shell: zsh -i -l -c "gem install rails"
 
 # - name: Configure emacs
 #   command: emacs --load /tmp/bootstrap_emacs.el --batch --no-init-file --no-site-file --no-window-system

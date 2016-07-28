@@ -7,14 +7,19 @@
    - i3
    - feh
    - firefox
+   - chromium
+   - chromium-pepper-flash
+   - chromium-widevine
    - texinfo
    - emacs-x11
    - dmenu # TODO: find alternative
+   - vlc # TODO: find alternative
    - i3status # TODO: find alternative for i3status
    - rxvt-unicode
    - arandr
    - deluge
    - emacs-x11
+   - libreoffice
    - gksu
    - evince
    - keepass2
@@ -23,7 +28,11 @@
    - gimp
    - "{{video_driver}}"
    - xclip
+   - aspell
+   - aspell-en
    - font-inconsolata-otf
+   - musescore
    - adwaita-icon-theme # TODO: find a better alternative
+   - owncloud
   become: yes
   become_user: root

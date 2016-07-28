@@ -1,5 +1,23 @@
 ---
-- name: Add xbps sources
-  copy: src=files/etc/xbps.d/ dest=/etc/xbps.d
-  become: yes
-  become_user: root
+# - name: Add xbps sources
+#   copy: src=files/etc/xbps.d/ dest=/etc/xbps.d
+#   become: yes
+#   become_user: root
+
+# - name: Clone rbenv
+#   git:
+#     repo: https://github.com/rbenv/rbenv.git
+#     dest: ~/.rbenv
+
+- name: Buld rbenv
+  shell: src/configure && make -C src
+  args:
+    chdir: ~/.rbenv
+
+- name: Clone ruby build
+  git:
+    repo: https://github.com/rbenv/ruby-build.git
+    dest: ~/.rbenv/plugins/ruby-build
+
+- name: 
+  shell: zsh -i -l -c "rbenv install 2.3.1"

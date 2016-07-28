@@ -102,8 +102,10 @@ bar {
         status_command i3status
 }
 
-exec --no-startup-id feh --no-xinerama --bg-fill ~/Desktop/background.jpg
-#exec --no-startup-id emacs --daemon
+exec --no-startup-id feh --no-xinerama --bg-fill ~/dotfiles/background.jpg
+exec --no-startup-id wpa_gui
+exec --no-startiup-id sudo ntpd -qg
+exec --no-startup-id emacs --daemon
 exec --no-startup-id /home/sam/dotfiles/bin/xbacklight -set 30
 
 for_window [class="^.*"] border pixel 1
@@ -120,3 +122,4 @@ bindsym XF86AudioLowerVolume exec amixer sset Master 5%- unmute
 bindsym XF86AudioRaiseVolume exec amixer sset Master 5%+ unmute
 bindsym XF86MonBrightnessDown exec /home/sam/dotfiles/bin/xbacklight -dec 5
 bindsym XF86MonBrightnessUp exec /home/sam/dotfiles/bin/xbacklight -inc 5
+bindsym XF86Tools exec /home/sam/dotfiles/bin/zz

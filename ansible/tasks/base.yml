@@ -1,4 +1,9 @@
 ---
+- name: Add xbps sources
+  copy: src=files/etc/xbps.d/ dest=/etc/xbps.d
+  become: yes
+  become_user: root
+
 - name: Install base packages
   xbps: name={{item}} state=present update_cache=yes
   with_items:
@@ -14,14 +19,15 @@
     - curl
     - git
     - iputils
+    - mtr
+    - netcat
     - zsh
+    - mutt
     - ntfs-3g
     - exfat-utils
-  become: yes
-  become_user: root
-
-- name: Add xbps sources
-  copy: src=files/etc/xbps.d/ dest=/etc/xbps.d
+    - rsync
+    - ncdu
+    - tree
   become: yes
   become_user: root
 
@@ -29,7 +35,17 @@
   file: path="~/Downloads" state=directory
 
 - name: Add documents folder
-  file: path="~/Documents" state=directory
+  file: path="~/Desktop" state=directory
+
+- name: Add mount path for removable media
+  file: path="/mnt/thing" state=directory
+  become: yes
+  become_user: root
+
+- name: Add mount path for windows
+  file: path="/mnt/windows" state=directory
+  become: yes
+  become_user: root
 
 - name: Get the username
   local_action: command whoami

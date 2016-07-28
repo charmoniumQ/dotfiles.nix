@@ -17,9 +17,15 @@ setopt appendhistory autocd extendedglob
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
-PROMPT="$fg[green]sam@n>$reset_color "
-PATH="/home/sam/dotfiles/bin/:$PATH"
+autoload colors
+colors
+
+export PROMPT="%(?.$fg[green].$fg[red]%? )n%#$reset_color "
+export PATH="/$HOME/.rbenv/bin:/home/sam/dotfiles/bin/:$PATH"
+export PAGER=less
 alias la="ls -ahlt"
+
+eval "$(rbenv init -)"
 
 #source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 #source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

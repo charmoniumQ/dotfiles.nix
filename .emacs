@@ -11,7 +11,7 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 (setq my:el-get-packages
  '(
-            ;auctex
+            auctex
             auto-complete
             auto-complete-auctex
             editorconfig
@@ -31,6 +31,7 @@
             projectile
             rainbow-delimiters
             rainbow-mode
+			scss-mode
             smartparens
             smooth-scrolling
             tabbar
@@ -108,12 +109,12 @@
 
 ;; Column marker
 ;(require 'fill-column-indicator)
-;(setq fci-rule-width 1)
-;(setq fci-rule-color "darkgray")
-;(setq-default fill-column 79)
-;(add-hook 'after-change-major-mode-hook 'fci-mode)
-;(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-;(global-fci-mode 1)
+(setq fci-rule-width 1)
+(setq fci-rule-color "darkgray")
+(setq-default fill-column 80)
+(add-hook 'after-change-major-mode-hook 'fci-mode)
+(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+(global-fci-mode 1)
 
 ;; iBuffer (its not like an apple product, I promise)
 (defalias 'list-buffers 'ibuffer)
@@ -213,16 +214,25 @@
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (require 'smartparens-latex)
 
+;; Scheme/lisp
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
+
 ;; Web mode
-;; (require 'web-mode)
-;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-hook 'html-mode-hook
+          (lambda()
+            (setq sgml-basic-offset 4)
+            (setq indent-tabs-mode t)))
+
+
 (require 'rainbow-mode)
 
 ;; zone
