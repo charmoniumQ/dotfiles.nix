@@ -78,6 +78,35 @@
 (require 'projectile)
 (projectile-global-mode)
 
+
+(defun rename-file-and-buffer ()
+  "Rename the current buffer and the corresponding file."
+  (interactive)
+  (let ((filename (buffer-file-name)))
+    (if (not (and filename (file-exists-p filename)))
+	(message "Buffer is not visiting an existing file.")
+      (let ((new-name (read-file-name "New filename: ")))
+	(cond
+	 ((vc-backend filename) (vc-rename-file filename new-name))
+	 (t
+	  (rename-file filename new-name t)
+	  (set-visited-file-name new-name t t)))))))
+
+(global-set-key
+ (kbd "C-c r")
+ (lambda
+   ()
+   (interactive)
+   (let
+	   ((filename (buffer-file-name)))
+	 (if (not (and filename (file-exists-p filename)))
+		 (message "Buffer is nto visiting an existing file.")
+	   (let
+		   ((new-name (read-file-name "New filename: ")))
+		 (rename-file filename new-name t)
+		 (set-visited-file-name new-name t t))))))
+
+
 ;; Smooth scrolling
 (require 'smooth-scrolling)
 (setq smooth-scroll-margin 3)
@@ -145,7 +174,7 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (require 'recentf)
-(setq recentf-max-menu-items 100)
+(setq recentf-max-menu-items 200)
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 (recentf-mode t)
@@ -155,9 +184,9 @@
 
 ;; Syntax checking
 (require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'js-mode-hook
-          (lambda () (flycheck-mode t)))
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
+;; (add-hook 'js-mode-hook
+;;           (lambda () (flycheck-mode t)))
 (setq ispell-program-name "aspell")
 
 ;; Auto-complete
@@ -213,6 +242,33 @@
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 (require 'smartparens-latex)
+;; Only change sectioning colour
+(setq font-latex-fontify-sectioning 'color)
+;; super-/sub-script on baseline
+(setq font-latex-script-display (quote (nil)))
+;; Do not change super-/sub-script font
+(custom-set-faces
+ '(font-latex-subscript-face ((t nil)))
+ '(font-latex-superscript-face ((t nil)))
+ )
+;; Exclude bold/italic from keywords
+(setq font-latex-deactivated-keyword-classes
+    '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
+(defun fix-fonts ()
+  (interactive)
+  (mapc
+   (lambda (face)
+     (set-face-attribute face nil
+                         ;; :family (if (string= system-type "darwin") 
+                         ;;             "Menlo" 
+                         ;;             "Inconsolata")
+                         :width 'normal
+                         :height 1.0
+                         :weight 'normal 
+                         :underline nil
+                         :slant 'normal))
+   (remove 'default (face-list))))
+(fset 'tex-font-lock-suscript 'ignore)
 
 ;; Scheme/lisp
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))

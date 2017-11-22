@@ -114,7 +114,7 @@ new_window 1pixel
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec dmenu_run
-bindsym $mod+g exec firefox
+bindsym $mod+g exec chromium
 bindsym $mod+c exec emacsclient -c ~/box/self/someday.txt -a ""
 
 bindsym XF86AudioMute exec amixer sset Master toggle
@@ -123,3 +123,9 @@ bindsym XF86AudioRaiseVolume exec amixer sset Master 5%+ unmute
 bindsym XF86MonBrightnessDown exec /home/sam/dotfiles/bin/xbacklight -dec 5
 bindsym XF86MonBrightnessUp exec /home/sam/dotfiles/bin/xbacklight -inc 5
 bindsym XF86Tools exec /home/sam/dotfiles/bin/zz
+
+# take a screenshot of a screen region and copy it to a clipboard
+bindsym --release Shift+Print exec "/home/sam/dotfiles/bin/screenshot -s /home/sam/Downloads"
+
+# take a screenshot of a whole window and copy it to a clipboard
+bindsym --release Print exec "/home/sam/dotfiles/bin/screenshot /home/sam/Downloads"
