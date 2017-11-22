@@ -2,6 +2,7 @@
 - name: Install development packages
   xbps: name={{item}} state=present
   with_items:
+   - base-devel
    - gcc
    - gcc-fortran # for numpy
    - gcc-c++
@@ -15,6 +16,8 @@
    - sqlite-devel
    - python
    - python3
+   - python-devel
+   - python3.4-devel
    - python-pip
    - python3.4-pip
    - lapack # for numpy
@@ -46,7 +49,7 @@
 # https://github.com/geerlingguy/ansible-role-dotfiles/blob/master/tasks/main.yml
 
 - name: TeXLive packages
-  command: tlmgr install dehyph-exptl hyphen-greek lastpage cancel enumitem framed minted ifplatform xstring python moderncv fontawesome lastpage titlesec
+  command: tlmgr install dehyph-exptl hyphen-greek lastpage cancel enumitem framed minted ifplatform xstring python moderncv fontawesome lastpage titlesec cancel enumitem framed minted fvextra ifplatform lineno python
 
 - name: Link dotfiles
   file:

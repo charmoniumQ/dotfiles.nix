@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ "$1" = "-f" ]
+then
+	/usr/bin/hostname
+else
+	/usr/bin/hostname $@
+fi
