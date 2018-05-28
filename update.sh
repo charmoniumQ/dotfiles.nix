@@ -1,3 +1,4 @@
-#!/usr/bin/env sh
-
-ANSIBLE_KEEP_REMOTE_FILES=1 ansible-playbook -i "localhost," -c local ansible/update.yml --ask-sudo-pass
+#!/bin/sh
+ansible-playbook ansible/main-playbook.yaml \
+     --user=`whoami` \
+     --extra-vars "{\"dotfiles_root\": \"${PWD}\", \"install_packages\": false}"

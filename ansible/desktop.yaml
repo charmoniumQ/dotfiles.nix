@@ -1,0 +1,31 @@
+---
+- name: "Install desktop packages"
+  become: yes
+  apt:
+    state: present
+    name:
+      - fonts-liberation2
+      - ntfs-3g
+      - rsync
+      - mtr
+      - rxvt-unicode
+      - wmctrl
+#     - mutt
+  when: install_packages
+
+- name: "Set urxvt configuration"
+  file:
+    src: "{{dotfiles_root}}/.Xresources"
+    dest: "{{ansible_user_dir}}/.Xresources"
+    state: link
+
+- name: "Create urxvt extension dir"
+  file:
+    path: "{{ansible_user_dir}}/.urxvt/ext/"
+    state: directory
+
+- name: "Set urxvt extension"
+  file:
+    src: "{{dotfiles_root}}/.urxvt/ext/fullscreen"
+    dest: "{{ansible_user_dir}}/.urxvt/ext/fullscreen"
+    state: link

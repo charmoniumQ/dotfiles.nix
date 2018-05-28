@@ -1,61 +1,35 @@
-;; emacs-lisp-checkdoc
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+;(package-initialize)
+
+
+;; el-get stuff
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 (unless (require 'el-get nil 'noerror)
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/"))
-  (package-refresh-contents)
-  (package-initialize)
-  (package-install 'el-get)
-  (require 'el-get))
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
-(setq my:el-get-packages
- '(
-            auctex
-            auto-complete
-            auto-complete-auctex
-            editorconfig
-            fill-column-indicator
-            flycheck
-            helm
-            ido-better-flex
-            ido-hacks
-            ido-ubiquitous
-            indent-guide
-            ;jedi-core
-            markdown-mode
-            monokai-theme
-            popup
-            pos-tip
-            powerline
-            projectile
-            rainbow-delimiters
-            rainbow-mode
-			scss-mode
-            smartparens
-            smooth-scrolling
-            tabbar
-            web-mode
-            yaml-mode
-            yasnippet
-			el-get
-   ))
-(el-get 'sync my:el-get-packages)
+(el-get 'sync)
 
 ;; Server stuff
 (global-unset-key (kbd "C-x C-d"))
 (global-set-key (kbd "C-x C-d") 'kill-emacs)
 
-;; Shortcuts
+;; Macros
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
+
+;; Suspend
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z C-z") 'suspend-emacs)
 
-;; Behavior
-(setq current-language-environment "English")
+;; UI
 (setq inhibit-startup-screen t)
-(line-number-mode t)
-(column-number-mode t)
 (setq truncate-lines t)
 (setq truncate-partial-width-windows t)
 (scroll-bar-mode -1)
@@ -63,53 +37,58 @@
 (tool-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode t)
-(global-subword-mode t) ; allows navigation of CamelCase words
-(set-language-environment "UTF-8") ;
-;(fringe-mode 4)
+;(fringe-mode 0)
+
+; Mode line
+(line-number-mode t)
+(column-number-mode t)
+;(nyan-mode t)
+;(nyan-start-animation)
+(el-get 'sync 'powerline)
+;(require 'powerline)
+(powerline-default-theme)
+
+;; Transient mark
 (transient-mark-mode t)
 (delete-selection-mode t)
+
+;; Current line
+(global-hl-line-mode t)
+
+;; Don't ask to follow symlinks
+(setq vc-follow-symlinks t)
+
+;; Locale
+(setq current-language-environment "English")
+(set-language-environment "UTF-8")
+(global-subword-mode t) ; allows navigation of CamelCase words
+(auto-compression-mode t)
+
+;; Buffers
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-;(require 'editorconfig)
-(auto-compression-mode t)
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (outline-minor-mode t)))
-(require 'projectile)
-(projectile-global-mode)
-
-
-(defun rename-file-and-buffer ()
-  "Rename the current buffer and the corresponding file."
-  (interactive)
-  (let ((filename (buffer-file-name)))
-    (if (not (and filename (file-exists-p filename)))
-	(message "Buffer is not visiting an existing file.")
-      (let ((new-name (read-file-name "New filename: ")))
-	(cond
-	 ((vc-backend filename) (vc-rename-file filename new-name))
-	 (t
-	  (rename-file filename new-name t)
-	  (set-visited-file-name new-name t t)))))))
-
 (global-set-key
  (kbd "C-c r")
- (lambda
-   ()
+ (lambda ()
+   "Command for renaming the current buffer"
    (interactive)
    (let
-	   ((filename (buffer-file-name)))
-	 (if (not (and filename (file-exists-p filename)))
-		 (message "Buffer is nto visiting an existing file.")
-	   (let
-		   ((new-name (read-file-name "New filename: ")))
-		 (rename-file filename new-name t)
-		 (set-visited-file-name new-name t t))))))
-
+       ((filename (buffer-file-name)))
+     (if (not (and filename (file-exists-p filename)))
+	 (message "Buffer is nto visiting an existing file.")
+       (let
+	   ((new-name (read-file-name "New filename: ")))
+	 (rename-file filename new-name t)
+	 (set-visited-file-name new-name t t))))))
 
 ;; Smooth scrolling
-(require 'smooth-scrolling)
-(setq smooth-scroll-margin 3)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+(setq mouse-wheel-progressive-speed nil)
+(setq mouse-wheel-follow-mouse t)
+(setq scroll-step 3)
+;; (require 'smooth-scrolling)
+;; (setq smooth-scroll-margin 3)
+;; (smooth-scroll-mode t)
 (global-unset-key (kbd "C-M-p"))
 (global-unset-key (kbd "C-M-n"))
 (global-set-key (kbd "C-M-p") 'scroll-down-line)
@@ -118,63 +97,43 @@
 ;; Parens
 (require 'paren)
 (show-paren-mode t)
-(require 'smartparens-config)
+(el-get 'sync 'smartparens)
 (smartparens-global-mode)
-(require 'rainbow-delimiters)
+(el-get 'sync 'rainbow-delimiters)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; Cut and paste
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+;(setq x-select-enable-clipboard t)
+;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; Theme
-(add-to-list 'default-frame-alist '(font . "Inconsolata-10"))
+(add-to-list 'default-frame-alist '(font . "Liberation Mono:pixelsize=14"))
+(el-get 'sync 'monokai-theme)
 (load-theme 'monokai t)
-;(nyan-mode t)
-;(nyan-start-animation)
-(require 'powerline)
-(powerline-default-theme)
-(global-hl-line-mode t)
-
-;; Column marker
-;(require 'fill-column-indicator)
-(setq fci-rule-width 1)
-(setq fci-rule-color "darkgray")
-(setq-default fill-column 80)
-(add-hook 'after-change-major-mode-hook 'fci-mode)
-(define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
-(global-fci-mode 1)
-
-;; iBuffer (its not like an apple product, I promise)
-(defalias 'list-buffers 'ibuffer)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; Tab
 (setq standard-indent 4)
 (setq default-tab-width 4)
 (define-key text-mode-map (kbd "TAB") 'self-insert-command)
-;(require 'indent-guide)
-;(indent-guide-global-mode)
-;(set-face-background 'indent-guide-face "dimgray")
+(el-get 'sync 'indent-guide)
+(indent-guide-global-mode)
+(set-face-background 'indent-guide-face "dimgray")
 
 ;; Backup dir
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq version-control t)
 (setq delete-old-versions t)
 
-;; Convenience
-(require 'ido)
-;(require 'flx-ido)
-(ido-everywhere t)
-(setq ido-enable-prefix nil)
-(setq ido-enable-case nil)
-(setq ido-enable-flex-matching t)
-(ido-mode t)
-(require 'helm-config)
+;; Helm
+(el-get 'sync 'helm)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(helm-mode t)
+
+;; Open recent files
 (require 'recentf)
-(setq recentf-max-menu-items 200)
+(setq recentf-max-menu-items 100)
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 (recentf-mode t)
@@ -183,50 +142,40 @@
 (setq save-place-file "~/.emacs.d/saved-places")
 
 ;; Syntax checking
-(require 'flycheck)
+;;(el-get 'sync 'flycheck)
 ;; (add-hook 'after-init-hook #'global-flycheck-mode)
 ;; (add-hook 'js-mode-hook
 ;;           (lambda () (flycheck-mode t)))
 (setq ispell-program-name "aspell")
 
 ;; Auto-complete
-(require 'popup)
-(eval-after-load 'popup
-  '(progn
-     (define-key popup-menu-keymap (kbd "M-n") 'popup-next)
-     (define-key popup-menu-keymap (kbd "TAB") 'popup-next)
-     (define-key popup-menu-keymap (kbd "<tab>") 'popup-next)
-     (define-key popup-menu-keymap (kbd "<backtab>") 'popup-previous)
-     (define-key popup-menu-keymap (kbd "M-p") 'popup-previous)))
-(require 'pos-tip)
-(require 'auto-complete)
-(define-key ac-mode-map (kbd "M-/") 'ac-fuzzy-complete)
-(global-auto-complete-mode t)
-(add-to-list 'ac-modes 'sql-mode)
-(require 'yasnippet)
+;; (require 'popup)
+;; (eval-after-load 'popup
+;;   '(progn
+;;      (define-key popup-menu-keymap (kbd "M-n") 'popup-next)
+;;      (define-key popup-menu-keymap (kbd "TAB") 'popup-next)
+;;      (define-key popup-menu-keymap (kbd "<tab>") 'popup-next)
+;;      (define-key popup-menu-keymap (kbd "<backtab>") 'popup-previous)
+;;      (define-key popup-menu-keymap (kbd "M-p") 'popup-previous)))
+;; (require 'pos-tip)
+;; (require 'auto-complete)
+;; (define-key ac-mode-map (kbd "M-/") 'ac-fuzzy-complete)
+;; (global-auto-complete-mode t)
+;; (add-to-list 'ac-modes 'sql-mode)
+;; (require 'yasnippet)
 
 ;; Line numbering
 (global-linum-mode t)
-(ac-linum-workaround)
+;(ac-linum-workaround)
 (setq linum-format "%4d")
-
-;; Spice goodies
-;; (require 'spice-mode)
-;; (add-to-list 'auto-mode-alist '("\\.net\\'" . spice-mode))
-;; (add-to-list 'auto-mode-alist '("\\.cmd\\'" . spice-mode))
-
-;; Don't ask to follow symlinks
-
-;; YAML
-(require 'yaml-mode)
 
 ;; TRAMP
 (require 'tramp)
 (setq tramp-default-method "ssh")
 
+;; Mode specific
 ;; Markdown mode
-(autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
+(el-get 'sync 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
@@ -234,120 +183,84 @@
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)
 
-;; LaTeX
-(setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
+;; Scheme/lisp
+(add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
+
+;; ;; Web mode
+;; (require 'web-mode)
+;; (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; (add-hook 'html-mode-hook
+;;           (lambda()
+;;             (setq sgml-basic-offset 4)
+;;             (setq indent-tabs-mode t)))
+
+;; Comint
+(setq comint-prompt-read-only t)
+(defun my-comint-preoutput-turn-buffer-read-only (text)
+  (propertize text 'read-only t))
+(add-hook
+ 'comint-preoutput-filter-functions
+ 'my-comint-preoutput-turn-buffer-read-only)
+
+;; Auctex
+;(require 'auctex/latex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-(add-hook 'LaTeX-mode-hook 'visual-line-mode)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(require 'smartparens-latex)
 ;; Only change sectioning colour
 (setq font-latex-fontify-sectioning 'color)
 ;; super-/sub-script on baseline
 (setq font-latex-script-display (quote (nil)))
 ;; Do not change super-/sub-script font
 (custom-set-faces
- '(font-latex-subscript-face ((t nil)))
- '(font-latex-superscript-face ((t nil)))
- )
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(font-latex-script-char-face ((t nil)))
+ '(font-latex-subscript-face ((t (:height 1.0))))
+ '(font-latex-superscript-face ((t (:height 1.0)))))
 ;; Exclude bold/italic from keywords
 (setq font-latex-deactivated-keyword-classes
     '("italic-command" "bold-command" "italic-declaration" "bold-declaration"))
-(defun fix-fonts ()
-  (interactive)
-  (mapc
-   (lambda (face)
-     (set-face-attribute face nil
-                         ;; :family (if (string= system-type "darwin") 
-                         ;;             "Menlo" 
-                         ;;             "Inconsolata")
-                         :width 'normal
-                         :height 1.0
-                         :weight 'normal 
-                         :underline nil
-                         :slant 'normal))
-   (remove 'default (face-list))))
-(fset 'tex-font-lock-suscript 'ignore)
+(setq TeX-command-extra-options "-shell-escape"
+	  ;;	  (concat "-shell-escape " TeX-command-extra-options)
+	  )
 
-;; Scheme/lisp
-(add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
+(el-get 'sync 'yaml-mode)
 
-;; Web mode
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-hook 'html-mode-hook
-          (lambda()
-            (setq sgml-basic-offset 4)
-            (setq indent-tabs-mode t)))
-
-
-(require 'rainbow-mode)
-
-;; zone
-(defun zone-choose (pgm)
-  "Choose a PGM to run for `zone'."
-  (interactive
-   (list
-	(completing-read
-	 "Program: "
-	 (mapcar 'symbol-name zone-programs))))
-  (let ((zone-programs (list (intern pgm))))
-	(zone)))
-
-(defun zone-pgm-md5 ()
-  "MD5 the buffer, then recursively checksum each hash."
-  (let ((prev-md5 (buffer-substring-no-properties ;; Initialize.
-				   (point-min) (point-max))))
-	;; Whitespace-fill the window.
-	(zone-fill-out-screen (window-width) (window-height))
-	(random t)
-	(goto-char (point-min))
-	(while (not (input-pending-p))
-	  (when (eobp)
-		(goto-char (point-min)))
-	  (while (not (eobp))
-		(delete-region (point) (line-end-position))
-		(let ((next-md5 (md5 prev-md5)))
-		  (insert next-md5)
-		  (setq prev-md5 next-md5))
-		(forward-line 1)
-		(zone-park/sit-for (point-min) 0.1)))))
-
-;; orgmode
+;; Org mode
 (require 'org)
-(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(defun scratch () "open someday.org" (interactive) (find-file "~/box/self/scratch.org"))
+(setq org-deadline-warning-days 0)
+
+;; Large file
+;; https://superuser.com/a/205463/110096
+;; TODO: vlf-mode
+(defun my-find-file-check-make-large-file-read-only-hook ()
+  "If a file is over a given size, make the buffer read only."
+  (when (> (buffer-size) (* 10 1024 1024))
+    (setq buffer-read-only t)
+    (buffer-disable-undo)
+    (fundamental-mode)
+    ; (message "Buffer is set to read-only because it is large.  Undo also disabled.")
+    ))
+
+(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
 
 ;; Default file
-(find-file "~/box/self/someday.txt")
-
-(setq vc-follow-symlinks t)
+;(org-agenda-list)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(TeX-view-program-list
-   (quote
-	(("Evince (mine)"
-	  ("evince --page-index=%(outpage) %o")
-	  ""))))
- '(TeX-view-program-selection (quote ((output-pdf "Evince")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-;; Local Variables:
-;; flycheck-disabled-checkers: (emacs-lisp-checkdoc)
-;; End:
+ '(org-agenda-files (quote ("~/box/self/someday.org"))))

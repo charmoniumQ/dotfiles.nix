@@ -1,0 +1,58 @@
+---
+- name: "Install CLI utility packages"
+  become: yes
+  apt:
+    state: present
+    name:
+      - htop
+      - zsh
+      - tmux
+      - curl
+      - jq
+  when: install_packages
+
+- name: "Get the zsh path"
+  local_action: "command which zsh"
+  register: zsh_path
+  changed_when: False
+
+- name: "Set login shell to zsh"
+  become: yes
+  user:
+    name: "{{ansible_user_id}}"
+    shell: "{{zsh_path.stdout}}"
+
+- name: "Install oh-my-zsh"
+  shell: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
+  when: "'ZSH' not in ansible_env"
+
+- name: "Set zsh configuration"
+  file:
+    src: "{{dotfiles_root}}/.zshrc"
+    dest: "{{ansible_user_dir}}/.zshrc"
+    state: link
+    force: yes
+
+- name: "Set shell-angostic env"
+  file:
+    src: "{{dotfiles_root}}/.profile"
+    dest: "{{ansible_user_dir}}/.profile"
+    force: yes
+    state: link
+
+- name: "Make bin/"
+  file:
+    path: "{{ansible_user_dir}}/bin"
+    state: directory
+
+- name: "Set tmux configuration"
+  file:
+    src: "{{dotfiles_root}}/.tmux.conf"
+    dest: "{{ansible_user_dir}}/.tmux.conf"
+    state: link
+
+# tmux conf
+#	select with mouse
+#   copy, paste
+#   scrollback
+#	scroll with mouse

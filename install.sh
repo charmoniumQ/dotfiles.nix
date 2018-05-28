@@ -1,3 +1,19 @@
-#!/usr/bin/env sh
+#!/bin/sh
+# run as root
 
-ANSIBLE_KEEP_REMOTE_FILES=1 ansible-playbook -i "localhost," -c local ansible/install.yml --ask-sudo-pass "$@"
+# informational variables
+user=sam
+
+# packages
+#apt-get update
+#apt-get install -y sudo ansible
+apt-get autoremove -y
+
+# sudo configuration
+usermod -aG sudo "${user}"
+
+# run main playbook
+sudo -u sam ansible-playbook ansible/main-playbook.yaml \
+     --user=`whoami` \
+     --ask-become-pass \
+     --extra-vars "{\"dotfiles_root\": \"${PWD}\", \"install_packages\": true}"

@@ -1,0 +1,34 @@
+---
+- name: "Install dev packages"
+  become: yes
+  apt:
+    state: present
+    name:
+      - emacs25
+      - ttf-anonymous-pro
+      - git
+
+      # required for emacs el-get
+      - make
+      - install-info
+      - autoconf
+      - texinfo
+  when: install_packages
+
+- name: "Configure emacs"
+  file:
+    src: "{{dotfiles_root}}/.emacs"
+    dest: "{{ansible_user_dir}}/.emacs"
+    state: link
+
+- name: "Add emacsclient script"
+  file:
+    src: "{{dotfiles_root}}/bin/emc"
+    dest: "{{ansible_user_dir}}/bin/emc"
+    state: link    
+
+- name: "Add git config"
+  file:
+    src: "{{dotfiles_root}}/.gitconfig"
+    dest: "{{ansible_user_dir}}/.gitconfig"
+    state: link
