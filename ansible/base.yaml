@@ -4,27 +4,22 @@
   copy:
     src: "../etc/apt/sources.list"
     dest: "/etc/apt/sources.list"
-
-- name: "Detect deb-multimedia key"
-  shell: "apt-cache show deb-multimedia-keyring"
-  register: has_deb_multimedia_key
-  ignore_errors: yes
-  changed_when: False
-  when: install_packages
-
-- name: "Add deb-multimedia key"
-  become: yes
-  shell: "warn=false apt-get update -oAcquire::AllowInsecureRepositories=true && apt-get install deb-multimedia-keyring -oAcquire::AllowInsecureRepositories=true -y"
-  when: install_packages and has_deb_multimedia_key.rc != 0
+  when: become_works
 
 - name: "Update package cache"
   become: yes
   apt:
     update_cache: true
-  when: install_packages
+    upgrade: full
+    autoclean: yes
+    autoremove: yes
+  when: become_works
 
-- name: "Upgrade packages"
+- name: "Install base packages"
   become: yes
   apt:
-    upgrade: full
-  when: install_packages
+    name:
+      - python-pip
+      - python3-pip
+      - curl
+      - wget

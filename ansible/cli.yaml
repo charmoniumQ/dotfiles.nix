@@ -7,24 +7,33 @@
       - htop
       - zsh
       - tmux
-      - curl
       - jq
-  when: install_packages
+      - dtrx
+  when: become_works
 
 - name: "Get the zsh path"
   local_action: "command which zsh"
   register: zsh_path
   changed_when: False
+  when: become_works
 
 - name: "Set login shell to zsh"
   become: yes
   user:
     name: "{{ansible_user_id}}"
     shell: "{{zsh_path.stdout}}"
+  when: become_works
+
+- name: "Check for oh-my-zsh"
+  stat:
+    path: "~/.oh-my-zsh"
+  register: oh_my_zsh
+  changed_when: false
 
 - name: "Install oh-my-zsh"
   shell: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
-  when: "'ZSH' not in ansible_env"
+  changed_when: "'ZSH' not in ansible_env"
+  when: ! oh_my_zsh.stat.exists  
 
 - name: "Set zsh configuration"
   file:
@@ -42,7 +51,7 @@
 
 - name: "Make bin/"
   file:
-    path: "{{ansible_user_dir}}/bin"
+    path: "{{ansible_user_dir}}/.local/mbin"
     state: directory
 
 - name: "Set tmux configuration"
@@ -51,6 +60,17 @@
     dest: "{{ansible_user_dir}}/.tmux.conf"
     state: link
 
+- name: "Install `trash'"
+  get_url:
+    url: "https://gist.githubusercontent.com/charmoniumQ/0c5fe34dbb5b3905440a3b06c4f60634/raw/9b22786debc2ef7c94f541a47ea221241923ac5d/trash.py"
+    dest: "{{ansible_user_dir}}/.local/mbin/trash"
+    mode: 0755
+
+- name: "Install `trash' dependencies"
+  pip:
+    executable: pip3
+    name:
+      - click
 # tmux conf
 #	select with mouse
 #   copy, paste

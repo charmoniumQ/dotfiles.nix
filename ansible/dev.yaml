@@ -2,18 +2,39 @@
 - name: "Install dev packages"
   become: yes
   apt:
-    state: present
     name:
       - emacs25
       - ttf-anonymous-pro
       - git
+      - python3-pip
+      - build-essential
+      - gdb
 
       # required for emacs el-get
       - make
       - install-info
       - autoconf
       - texinfo
-  when: install_packages
+  when: become_works
+
+- name: "Install ripgrep"
+  become: yes
+  apt:
+    deb: https://github.com/BurntSushi/ripgrep/releases/download/0.8.1/ripgrep_0.8.1_amd64.deb
+  when: become_works
+
+- name: "Install pip packages"
+  pip:
+    executable: pip3
+    name:
+      - matplotlib
+      - numpy
+      - scipy
+      - jupyter
+      - ipython
+      - pandas
+      - tqdm
+    extra_args: "--user"
 
 - name: "Configure emacs"
   file:
@@ -23,9 +44,15 @@
 
 - name: "Add emacsclient script"
   file:
-    src: "{{dotfiles_root}}/bin/emc"
-    dest: "{{ansible_user_dir}}/bin/emc"
-    state: link    
+    src: "{{dotfiles_root}}/.local/mbin/emc"
+    dest: "{{ansible_user_dir}}/.local/mbin/emc"
+    state: link
+
+- name: "Add emacsclient pager script"
+  file:
+    src: "{{dotfiles_root}}/.local/mbin/emc-pager"
+    dest: "{{ansible_user_dir}}/.local/mbin/emc-pager"
+    state: link
 
 - name: "Add git config"
   file:

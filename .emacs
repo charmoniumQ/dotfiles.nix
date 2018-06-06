@@ -38,6 +38,14 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (blink-cursor-mode t)
 ;(fringe-mode 0)
+;; https://www.emacswiki.org/emacs/AlarmBell
+(setq ring-bell-function
+      (lambda ()
+        (let ((orig-fg (face-background 'mode-line)))
+          (set-face-background 'mode-line "#901010")
+          (run-with-idle-timer 0.3 nil
+                               (lambda (fg) (set-face-background 'mode-line fg))
+                               orig-fg))))
 
 ; Mode line
 (line-number-mode t)
@@ -254,6 +262,12 @@
     ))
 
 (add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
 
 ;; Default file
 ;(org-agenda-list)

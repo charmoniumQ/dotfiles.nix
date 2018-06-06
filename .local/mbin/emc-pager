@@ -1,0 +1,6 @@
+#!/bin/sh
+t=$(tempfile -s .emacs-pager) || exit 1
+cat - >> "$t"
+echo 'reading into emacs...'
+emc "$t"
+rm -f -- "$t"

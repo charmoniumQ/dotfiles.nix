@@ -1,4 +1,3 @@
 #!/bin/sh
 ansible-playbook ansible/main-playbook.yaml \
-     --user=`whoami` \
-     --extra-vars "{\"dotfiles_root\": \"${PWD}\", \"install_packages\": false}"
+     --extra-vars "{\"dotfiles_root\": \"${PWD}\", \"become_works\": false}"

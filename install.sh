@@ -5,9 +5,11 @@
 user=sam
 
 # packages
-#apt-get update
-#apt-get install -y sudo ansible
-apt-get autoremove -y
+if ! which sudo > /dev/null
+then
+	apt-get update
+	apt-get install -y sudo ansible
+fi
 
 # sudo configuration
 usermod -aG sudo "${user}"
@@ -16,4 +18,4 @@ usermod -aG sudo "${user}"
 sudo -u sam ansible-playbook ansible/main-playbook.yaml \
      --user=`whoami` \
      --ask-become-pass \
-     --extra-vars "{\"dotfiles_root\": \"${PWD}\", \"install_packages\": true}"
+     --extra-vars "{\"dotfiles_root\": \"${PWD}\", \"become_works\": true}"

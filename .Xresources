@@ -13,7 +13,7 @@ urxvt.keysym.F11:       perl:fullscreen:switch
 ! Composite transparency
 ! https://ctkarch.org/documentation/tutorials/tuto.php?page=urxvt-transpa.xml
 urxvt*depth: 32
-urxvt*background: rgba:1A00/1800/1700/c000
+urxvt*background: rgba:1A00/1800/1700/cc00
 !urxvt*foreground: white
 
 ! https://gist.github.com/yevgenko/1167205

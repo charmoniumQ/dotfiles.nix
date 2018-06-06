@@ -1,17 +1,41 @@
 ---
+- name: "Add deb-multimedia repo"
+  become: yes
+  copy:
+    src: "../etc/apt/sources.list.d/deb-multimedia.list"
+    dest: "/etc/apt/sources.list.d/deb-multimedia.list"
+  when: become_works
+  register: has_deb_multimedia_repo
+
+- name: "Add deb-multimedia key"
+  become: yes
+  command: "warn=false apt-get update -oAcquire::AllowInsecureRepositories=true && apt-get install deb-multimedia-keyring -oAcquire::AllowInsecureRepositories=true -y"
+  when: become_works and has_deb_multimedia_repo.changed
+
 - name: "Install desktop packages"
   become: yes
   apt:
-    state: present
     name:
       - fonts-liberation2
       - ntfs-3g
       - rsync
       - mtr
       - rxvt-unicode
+      - xclip
       - wmctrl
-#     - mutt
-  when: install_packages
+      - gthumb
+      - mtr
+      - ruby-notify
+    # - mutt
+    # - musescore
+    # - gnucash
+  when: become_works
+
+- name: "Install pip desktop packages"
+  pip:
+    executable: pip2
+    name:
+      - pinggraph
 
 - name: "Set urxvt configuration"
   file:
