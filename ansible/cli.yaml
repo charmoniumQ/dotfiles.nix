@@ -9,70 +9,39 @@
       - tmux
       - jq
       - dtrx
-  when: become_works
-
-- name: "Get the zsh path"
-  local_action: "command which zsh"
-  register: zsh_path
-  changed_when: False
-  when: become_works
-
-- name: "Set login shell to zsh"
-  become: yes
-  user:
-    name: "{{ansible_user_id}}"
-    shell: "{{zsh_path.stdout}}"
-  when: become_works
-
-- name: "Check for oh-my-zsh"
-  stat:
-    path: "~/.oh-my-zsh"
-  register: oh_my_zsh
-  changed_when: false
+  when: install_packages
 
 - name: "Install oh-my-zsh"
-  shell: "sh -c \"$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)\""
-  changed_when: "'ZSH' not in ansible_env"
-  when: ! oh_my_zsh.stat.exists  
+  shell: "curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh"
+  when: '"ZSH" not in ansible_env'
 
-- name: "Set zsh configuration"
+- name: "Set dot-files configuration"
   file:
-    src: "{{dotfiles_root}}/.zshrc"
-    dest: "{{ansible_user_dir}}/.zshrc"
+    src: "{{dotfiles_src}}/{{item}}"
+    dest: "{{dotfiles_dest}}/{{item}}"
     state: link
     force: yes
+  loop:
+    - ".zshrc"
+    - ".tmux.conf"
+    - ".profile"
 
-- name: "Set shell-angostic env"
+- name: "Make mbin/"
   file:
-    src: "{{dotfiles_root}}/.profile"
-    dest: "{{ansible_user_dir}}/.profile"
-    force: yes
-    state: link
-
-- name: "Make bin/"
-  file:
-    path: "{{ansible_user_dir}}/.local/mbin"
+    path: "{{dotfiles_dest}}/.local/mbin"
     state: directory
 
-- name: "Set tmux configuration"
+- name: "Add scripts"
   file:
-    src: "{{dotfiles_root}}/.tmux.conf"
-    dest: "{{ansible_user_dir}}/.tmux.conf"
+    src: "{{dotfiles_src}}/.local/mbin/{{item}}"
+    dest: "{{dotfiles_dest}}/.local/mbin/{{item}}"
     state: link
+  loop:
+    - "quote"
+    - "ipy"
 
 - name: "Install `trash'"
   get_url:
-    url: "https://gist.githubusercontent.com/charmoniumQ/0c5fe34dbb5b3905440a3b06c4f60634/raw/9b22786debc2ef7c94f541a47ea221241923ac5d/trash.py"
-    dest: "{{ansible_user_dir}}/.local/mbin/trash"
+    url: "https://gist.githubusercontent.com/charmoniumQ/0c5fe34dbb5b3905440a3b06c4f60634/raw/870c20b253c07dd590acfc0bc664d2a735dff5a0/trash.py"
+    dest: "{{dotfiles_dest}}/.local/mbin/trash"
     mode: 0755
-
-- name: "Install `trash' dependencies"
-  pip:
-    executable: pip3
-    name:
-      - click
-# tmux conf
-#	select with mouse
-#   copy, paste
-#   scrollback
-#	scroll with mouse

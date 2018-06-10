@@ -4,7 +4,6 @@
   copy:
     src: "../etc/apt/sources.list"
     dest: "/etc/apt/sources.list"
-  when: become_works
 
 - name: "Update package cache"
   become: yes
@@ -13,7 +12,7 @@
     upgrade: full
     autoclean: yes
     autoremove: yes
-  when: become_works
+  when: install_packages
 
 - name: "Install base packages"
   become: yes
@@ -21,5 +20,11 @@
     name:
       - python-pip
       - python3-pip
+      - apt-transport-https
+      - ca-certificates
       - curl
+      - gnupg2
+      - software-properties-common
       - wget
+      - aptitude
+  when: install_packages

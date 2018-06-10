@@ -1,4 +1,25 @@
 ---
+- name: "Add dev repos"
+  become: yes
+  copy:
+    src: "../etc/apt/sources.list.d/{{item}}"
+    dest: "/etc/apt/sources.list.d/{{item}}"
+  loop:
+    - "google-cloud-sdk.list"
+    - "docker.list"
+
+- name: "Add dev apt keys"
+  become: yes
+  apt_key:
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    url: https://download.docker.com/linux/debian/gpg
+
+- name: "Apt update"
+  become: yes
+  apt:
+    update_cache: yes
+  when: install_packages
+
 - name: "Install dev packages"
   become: yes
   apt:
@@ -9,19 +30,20 @@
       - python3-pip
       - build-essential
       - gdb
+      - docker-ce
 
       # required for emacs el-get
       - make
       - install-info
       - autoconf
       - texinfo
-  when: become_works
+  when: install_packages
 
-- name: "Install ripgrep"
+- name: "Install dev .deb-packages"
   become: yes
   apt:
     deb: https://github.com/BurntSushi/ripgrep/releases/download/0.8.1/ripgrep_0.8.1_amd64.deb
-  when: become_works
+  when: install_packages
 
 - name: "Install pip packages"
   pip:
@@ -34,28 +56,29 @@
       - ipython
       - pandas
       - tqdm
-    extra_args: "--user"
+  when: install_packages
 
-- name: "Configure emacs"
+- name: "Configure dev dotfiles"
   file:
-    src: "{{dotfiles_root}}/.emacs"
-    dest: "{{ansible_user_dir}}/.emacs"
+    src: "{{dotfiles_src}}/{{item}}"
+    dest: "{{dotfiles_dest}}/{{item}}"
     state: link
+  loop:
+    - ".emacs"
+    - ".gitconfig"
 
-- name: "Add emacsclient script"
+- name: "Add dev scripts"
   file:
-    src: "{{dotfiles_root}}/.local/mbin/emc"
-    dest: "{{ansible_user_dir}}/.local/mbin/emc"
+    src: "{{dotfiles_src}}/.local/mbin/{{item}}"
+    dest: "{{dotfiles_dest}}/.local/mbin/{{item}}"
     state: link
+  loop:
+    - "emc"
+    - "emc-pager"
 
-- name: "Add emacsclient pager script"
-  file:
-    src: "{{dotfiles_root}}/.local/mbin/emc-pager"
-    dest: "{{ansible_user_dir}}/.local/mbin/emc-pager"
-    state: link
-
-- name: "Add git config"
-  file:
-    src: "{{dotfiles_root}}/.gitconfig"
-    dest: "{{ansible_user_dir}}/.gitconfig"
-    state: link
+- name: "Add user to docker group"
+  user:
+    name: "{{ansible_user_id}}"
+    append: yes
+    groups: docker
+  become: yes

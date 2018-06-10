@@ -5,3 +5,8 @@
    - include: cli.yaml
    - include: desktop.yaml
    - include: dev.yaml
+   - include: tex.yaml
+  vars:
+    dotfiles_dest: "{{ansible_user_dir}}"
+    dotfiles_src: "{{ansible_env.PWD}}/.."
+    install_packages: no

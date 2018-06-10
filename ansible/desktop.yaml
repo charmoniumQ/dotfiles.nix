@@ -1,16 +1,27 @@
 ---
-- name: "Add deb-multimedia repo"
+- name: "Add desktop repos"
   become: yes
   copy:
-    src: "../etc/apt/sources.list.d/deb-multimedia.list"
-    dest: "/etc/apt/sources.list.d/deb-multimedia.list"
-  when: become_works
-  register: has_deb_multimedia_repo
+    src: "../etc/apt/sources.list.d/{{item}}"
+    dest: "/etc/apt/sources.list.d/{{item}}"
+  loop:
+    - "deb-multimedia.list"
+    - "matrix-riot-im.list"
 
-- name: "Add deb-multimedia key"
+- name: "Install desktop .deb-packages"
   become: yes
-  command: "warn=false apt-get update -oAcquire::AllowInsecureRepositories=true && apt-get install deb-multimedia-keyring -oAcquire::AllowInsecureRepositories=true -y"
-  when: become_works and has_deb_multimedia_repo.changed
+  apt:
+    deb: "{{item}}"
+  loop:
+    - "https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb"
+    - "https://discordapp.com/api/download?platform=linux&format=deb"
+  when: install_packages
+
+- name: "Apt update"
+  become: yes
+  apt:
+    update_cache: yes
+  when: install_packages
 
 - name: "Install desktop packages"
   become: yes
@@ -26,30 +37,17 @@
       - gthumb
       - mtr
       - ruby-notify
+      - riot-web
     # - mutt
     # - musescore
     # - gnucash
-  when: become_works
+  when: install_packages
 
-- name: "Install pip desktop packages"
-  pip:
-    executable: pip2
-    name:
-      - pinggraph
-
-- name: "Set urxvt configuration"
+- name: "Set dot-files"
   file:
-    src: "{{dotfiles_root}}/.Xresources"
-    dest: "{{ansible_user_dir}}/.Xresources"
+    src: "{{dotfiles_src}}/{{item}}"
+    dest: "{{dotfiles_dest}}/{{item}}"
     state: link
-
-- name: "Create urxvt extension dir"
-  file:
-    path: "{{ansible_user_dir}}/.urxvt/ext/"
-    state: directory
-
-- name: "Set urxvt extension"
-  file:
-    src: "{{dotfiles_root}}/.urxvt/ext/fullscreen"
-    dest: "{{ansible_user_dir}}/.urxvt/ext/fullscreen"
-    state: link
+  loop:
+    - ".Xresources"
+    - ".urxvt/ext/fullscreen"

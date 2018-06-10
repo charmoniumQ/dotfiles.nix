@@ -1,0 +1,31 @@
+---
+- name: "Install texlive"
+  become: yes
+  apt:
+    name:
+      - texlive-base
+      - texlive-latex-base
+      - xzdec
+  when: install_packages
+
+- name: "Initiate tlmgr"
+  command: "tlmgr init-usertree"
+  args:
+    creates: "{{dotfiles_dest}}/texmf"
+
+- name: "Update tlmgr"
+  command: "tlmgr update --self"
+  when: install_packages
+
+- name: "Install TeX packages"
+  command: "tlmgr install beamer geometry lastpage moderncv fancyhdr hyperref etoolbox etoolbox xcolor setspace mathtools amsmath minted python cancel enumitem babel physics pgf ms translator"
+  when: install_packages
+
+- name: "Install Pygments"
+  pip:
+    name: Pygments
+  when: install_packages
+
+- name: "Update TeX packages"
+  command: "tlmgr update --all"
+  when: install_packages

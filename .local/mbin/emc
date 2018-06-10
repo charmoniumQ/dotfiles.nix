@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ -t 1 ]
+if [ -t 0 ] && [ -z "${gui}" ]
 then
-	emacsclient -nw -a '' "$@"
+	emacsclient -nw -a '' "${@}"
 else
-	emacsclient -c -a '' "$@"
+	emacsclient -c -a '' "${@}"
 fi

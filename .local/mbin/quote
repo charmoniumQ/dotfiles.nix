@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+import sys
+import shlex
+
+print('  '.join(map(shlex.quote, sys.argv[1:])))

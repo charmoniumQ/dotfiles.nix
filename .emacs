@@ -218,7 +218,7 @@
  'my-comint-preoutput-turn-buffer-read-only)
 
 ;; Auctex
-;(require 'auctex/latex)
+(el-get 'sync 'auctex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
