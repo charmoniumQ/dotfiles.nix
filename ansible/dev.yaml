@@ -7,6 +7,7 @@
   loop:
     - "google-cloud-sdk.list"
     - "docker.list"
+  register: add_repos
 
 - name: "Add dev apt keys"
   become: yes
@@ -18,7 +19,7 @@
   become: yes
   apt:
     update_cache: yes
-  when: install_packages
+  when: install_packages and (add_repos['results'] | map(attribute='changed') is any)
 
 - name: "Install dev packages"
   become: yes
@@ -45,10 +46,9 @@
     deb: https://github.com/BurntSushi/ripgrep/releases/download/0.8.1/ripgrep_0.8.1_amd64.deb
   when: install_packages
 
-- name: "Install pip packages"
-  pip:
-    executable: pip3
-    name:
+- name: "Set required pip packages"
+  set_fact:
+    required_pip_packages:
       - matplotlib
       - numpy
       - scipy
@@ -56,7 +56,18 @@
       - ipython
       - pandas
       - tqdm
+
+- name: "New pip packages"
+  debug:
+    msg: "{{required_pip_packages | difference(installed_pip_packages)}}"
+
+- name: "Install pip packages"
+  pip:
+    executable: pip3
+    name: "{{item}}"
+  with_items: "{{required_pip_packages | difference(installed_pip_packages)}}"
   when: install_packages
+  changed_when: "{{required_pip_packages | difference(installed_pip_packages)}}"
 
 - name: "Configure dev dotfiles"
   file:

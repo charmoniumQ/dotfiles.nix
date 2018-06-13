@@ -17,14 +17,58 @@
   command: "tlmgr update --self"
   when: install_packages
 
+- name: "Set required tex packages"
+  set_fact:
+    required_tex_packages:
+      - beamer
+      - geometry
+      - lastpage
+      - moderncv
+      - fancyhdr
+      - hyperref
+      - etoolbox
+      - etoolbox
+      - xcolor
+      - setspace
+      - mathtools
+      - amsmath
+      - minted
+      - python
+      - cancel
+      - enumitem
+      - babel
+      - physics
+      - pgf
+      - ms
+      - translator
+      - ec
+      - l3packages
+      - l3kernel
+      - microtype
+
+- name: "List tex packages"
+  command: "tlmgr list --only-installed"
+  register: raw_installed_tex_packages
+  changed_when: False
+
+- name: "Parse list of tex packages"
+  set_fact:
+    installed_tex_packages: "{{ installed_tex_packages|default([]) + [item[2:item.find(':')]] }}"
+  with_items: "{{raw_installed_tex_packages.stdout_lines[1:]}}"
+
+- name: "New tex packages"
+  debug:
+    msg: "{{ required_tex_packages | difference(installed_tex_packages)}}"
+
 - name: "Install TeX packages"
-  command: "tlmgr install beamer geometry lastpage moderncv fancyhdr hyperref etoolbox etoolbox xcolor setspace mathtools amsmath minted python cancel enumitem babel physics pgf ms translator"
+  command: "tlmgr install {{ required_tex_packages | difference(installed_tex_packages) | join(' ') }}"
   when: install_packages
+  changed_when: "required_tex_packages | difference(installed_tex_packages)"
 
 - name: "Install Pygments"
   pip:
     name: Pygments
-  when: install_packages
+  when: install_packages and 'Pygments' not in installed_pip_packages
 
 - name: "Update TeX packages"
   command: "tlmgr update --all"

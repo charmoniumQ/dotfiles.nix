@@ -7,6 +7,8 @@
   loop:
     - "deb-multimedia.list"
     - "matrix-riot-im.list"
+    - "google.list"
+  register: add_repos
 
 - name: "Install desktop .deb-packages"
   become: yes
@@ -14,14 +16,25 @@
     deb: "{{item}}"
   loop:
     - "https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb"
-    - "https://discordapp.com/api/download?platform=linux&format=deb"
-  when: install_packages
+    # - "https://discordapp.com/api/download?platform=linux&format=deb"
+  when: install_packages and False
+
+- name: "Add apt key"
+  become: yes
+  apt_key:
+    url: "{{item.url}}"
+    id: "{{item.id}}"
+  loop:
+    - url: "https://dl.google.com/linux/linux_signing_key.pub"
+      id: "4CCA1EAF950CEE4AB83976DCA040830F7FAC5991"
+    - url: "https://dl.google.com/linux/linux_signing_key.pub"
+      id: "EB4C1BFD4F042F6DDDCCEC917721F63BD38B4796"
 
 - name: "Apt update"
   become: yes
   apt:
     update_cache: yes
-  when: install_packages
+  when: install_packages and (add_repos['results'] | map(attribute='changed') is any)
 
 - name: "Install desktop packages"
   become: yes
@@ -38,6 +51,7 @@
       - mtr
       - ruby-notify
       - riot-web
+      - google-chrome-beta
     # - mutt
     # - musescore
     # - gnucash
@@ -49,5 +63,5 @@
     dest: "{{dotfiles_dest}}/{{item}}"
     state: link
   loop:
-    - ".Xresources"
+    - ".Xdefaults"
     - ".urxvt/ext/fullscreen"
