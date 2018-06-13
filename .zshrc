@@ -50,7 +50,7 @@ precmd () {
 		start=$(tail -n 1 "${time_cmd_file}")
 		end=$(date +%s)
 		elapsed=$(expr "${end}" - "${start}")
-		if [ "${elapsed}" -gt 40 ]
+		if [ "${elapsed}" -gt 240 ]
 		then
 			echo -n '\a'
 			notify-send "Command complete" "${cmd}"
@@ -60,4 +60,4 @@ precmd () {
 
 # If not running interactively, do not do anything
 [[ $- != *i* ]] && return
-[[ $TERM != "dumb" ]] &&[[ $TERM != "screen" ]] && [[ -z "$TMUX" ]] && exec tmux
+[[ $TERM != "dumb" ]] && [[ $TERM != "screen" ]] && [[ -z "$TMUX" ]] && exec tmux
