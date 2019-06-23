@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# [ -t 0 ] is false inside pipelines
+# if [ -z "${gui}" ]
 if [ -t 0 ] && [ -z "${gui}" ]
 then
 	emacsclient -nw -a '' "${@}"

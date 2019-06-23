@@ -1,23 +1,40 @@
 ---
-# - name: "Delete apt sources"
-#   # this is necessary because if adding a source,
-#   # we should return APT to a working state before continuing
+# - name: "Delete apt directories"
 #   become: yes
 #   file:
 #     state: absent
-#     path: "/etc/apt/sources.list.d/"
+#     path: "/etc/apt/{{item}}.d/"
+#   loop:
+#     - sources.list
+#     - preferences.d
 
-- name: "Start apt sources"
+- name: "Start apt directories"
   become: yes
   file:
     state: directory
-    path: "/etc/apt/sources.list.d/"
+    path: "/etc/apt/{{item}}.d/"
+  loop:
+    - sources.list
+    - preferences.d
 
-- name: "Add apt sources"
+- name: "Add sources list"
   become: yes
   copy:
-    src: "../etc/apt/sources.list"
-    dest: "/etc/apt/sources.list"
+    src: "../etc/apt/sources.list.d/{{item}}.list"
+    dest: "/etc/apt/sources.list.d/{{item}}.list"
+  loop:
+    - testing
+    - unstable
+
+- name: "Add testing pinning"
+  become: yes
+  copy:
+    src: "../etc/apt/preferences.d/{{item}}.pref"
+    dest: "/etc/apt/preferences.d/{{item}}.pref"
+  loop:
+    - security
+    - testing
+    - unstable
 
 - name: "Update package cache"
   become: yes
@@ -32,8 +49,6 @@
   become: yes
   apt:
     name:
-      - python-pip
-      - python3-pip
       - apt-transport-https
       - ca-certificates
       - curl
@@ -42,6 +57,11 @@
       - wget
       - aptitude
   when: install_packages
+
+- name: "Install pip"
+  command: "python3 -m pip install --upgrade pip"
+  args:
+    creates: "/home/sam/.local/bin/pip3"
 
 - name: "List pip packages"
   command: "pip3 list --format=columns"

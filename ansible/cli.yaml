@@ -8,6 +8,8 @@
       - zsh
       - tmux
       - jq
+      - pcregrep
+      - ncdu
       - dtrx
   when: install_packages
 
@@ -26,22 +28,35 @@
     - ".tmux.conf"
     - ".profile"
 
-- name: "Make mbin/"
+- name: "Make scripts/"
   file:
-    path: "{{dotfiles_dest}}/.local/mbin"
+    path: "{{dotfiles_dest}}/.local/scripts"
     state: directory
 
 - name: "Add scripts"
   file:
-    src: "{{dotfiles_src}}/.local/mbin/{{item}}"
-    dest: "{{dotfiles_dest}}/.local/mbin/{{item}}"
+    src: "{{dotfiles_src}}/.local/scripts/{{item}}"
+    dest: "{{dotfiles_dest}}/.local/scripts/{{item}}"
     state: link
   loop:
     - "quote"
     - "ipy"
 
-- name: "Install `trash'"
-  get_url:
-    url: "https://gist.githubusercontent.com/charmoniumQ/0c5fe34dbb5b3905440a3b06c4f60634/raw/870c20b253c07dd590acfc0bc664d2a735dff5a0/trash.py"
-    dest: "{{dotfiles_dest}}/.local/mbin/trash"
-    mode: 0755
+- name: "Set required pip packages"
+  set_fact:
+    required_pip_packages:
+      - trash-cli
+      - ntfy[telegram]
+
+- name: "New pip packages"
+  debug:
+    msg: "{{required_pip_packages | difference(installed_pip_packages)}}"
+
+- name: "Install pip packages"
+  pip:
+    executable: pip3
+    name: "{{item}}"
+    extra_args: "--user"
+  with_items: "{{required_pip_packages | difference(installed_pip_packages)}}"
+  when: install_packages
+  changed_when: "{{required_pip_packages | difference(installed_pip_packages)}}"

@@ -1,3 +1,8 @@
 [user]
 	email = sam@samgrayson.me
 	name = Samuel Grayson
+	signingkey = 0x27C6B277411E28CD
+[push]
+	default = current
+[commit]
+	gpgsign = true

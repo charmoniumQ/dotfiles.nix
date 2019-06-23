@@ -7,7 +7,7 @@
   loop:
     - "deb-multimedia.list"
     - "matrix-riot-im.list"
-    - "google.list"
+    - "google-chrome-beta.list"
   register: add_repos
 
 - name: "Install desktop .deb-packages"
@@ -16,8 +16,12 @@
     deb: "{{item}}"
   loop:
     - "https://www.deb-multimedia.org/pool/main/d/deb-multimedia-keyring/deb-multimedia-keyring_2016.8.1_all.deb"
+    - "https://prerelease.keybase.io/keybase_amd64.deb"
+    - "https://github.com/aluxian/Messenger-for-Desktop/releases/download/v2.0.9/messengerfordesktop-2.0.9-linux-amd64.deb"
+    # echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+    # https://updates.messengerfordesktop.com/download/linux/latest/beta\?arch\=amd64\&pkg\=deb
     # - "https://discordapp.com/api/download?platform=linux&format=deb"
-  when: install_packages and False
+  when: install_packages
 
 - name: "Add apt key"
   become: yes
@@ -29,6 +33,14 @@
       id: "4CCA1EAF950CEE4AB83976DCA040830F7FAC5991"
     - url: "https://dl.google.com/linux/linux_signing_key.pub"
       id: "EB4C1BFD4F042F6DDDCCEC917721F63BD38B4796"
+    - url: "https://updates.signal.org/desktop/apt/keys.asc"
+      id: "DBA36B5181D0C816F630E889D980A17457F6FB06"
+
+- name: "Add pin firefox"
+  become: yes
+  copy:
+    src: "../etc/apt/preferences.d/firefox"
+    dest: "/etc/apt/preferences.d/firefox"
 
 - name: "Apt update"
   become: yes
@@ -52,6 +64,8 @@
       - ruby-notify
       - riot-web
       - google-chrome-beta
+      - mpv
+      - firefox
     # - mutt
     # - musescore
     # - gnucash

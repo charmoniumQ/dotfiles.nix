@@ -7,13 +7,25 @@
   loop:
     - "google-cloud-sdk.list"
     - "docker.list"
+    - "yarn.list"
   register: add_repos
+
+- name: "Add pin firefox"
+  become: yes
+  copy:
+    src: "../etc/apt/preferences.d/gprolog"
+    dest: "/etc/apt/preferences.d/gprolog"
 
 - name: "Add dev apt keys"
   become: yes
   apt_key:
     id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
     url: https://download.docker.com/linux/debian/gpg
+
+- name: "add dev apt keys"
+  become: yes
+  apt_key:
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
 
 - name: "Apt update"
   become: yes
@@ -25,13 +37,20 @@
   become: yes
   apt:
     name:
+      - jq
       - emacs25
       - ttf-anonymous-pro
       - git
-      - python3-pip
+      - gitg
       - build-essential
       - gdb
       - docker-ce
+      - ghc
+      - pypy
+      - ruby
+      - yarn
+      - httpie
+      # curl https://sh.rustup.rs -sSf | sh
 
       # required for emacs el-get
       - make
@@ -49,13 +68,17 @@
 - name: "Set required pip packages"
   set_fact:
     required_pip_packages:
-      - matplotlib
+      - ipython
+      - tqdm
+      - requests
+      - PyYAML
       - numpy
       - scipy
-      - jupyter
-      - ipython
+      - matplotlib
+      - PyQt5
       - pandas
-      - tqdm
+      - jupyter
+      - yq
 
 - name: "New pip packages"
   debug:
@@ -65,6 +88,7 @@
   pip:
     executable: pip3
     name: "{{item}}"
+    extra_args: "--user"
   with_items: "{{required_pip_packages | difference(installed_pip_packages)}}"
   when: install_packages
   changed_when: "{{required_pip_packages | difference(installed_pip_packages)}}"
@@ -80,8 +104,8 @@
 
 - name: "Add dev scripts"
   file:
-    src: "{{dotfiles_src}}/.local/mbin/{{item}}"
-    dest: "{{dotfiles_dest}}/.local/mbin/{{item}}"
+    src: "{{dotfiles_src}}/.local/scripts/{{item}}"
+    dest: "{{dotfiles_dest}}/.local/scripts/{{item}}"
     state: link
   loop:
     - "emc"
@@ -93,3 +117,13 @@
     append: yes
     groups: docker
   become: yes
+
+- name: "Download BFG repo cleaner"
+  get_url:
+    url: "http://repo1.maven.org/maven2/com/madgag/bfg/1.13.0/bfg-1.13.0.jar"
+    dest: "{{dotfiles_dest}}/.local/bin/bfg.jar"
+    mode: "0755"
+
+# TODO: use cpanm to install App::cloc and possibly Parallel::ForkManager
+# TODO: use cabal to install pandoc (cabal update)
+# TODO: install pip as user? or not?

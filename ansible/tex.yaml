@@ -6,6 +6,7 @@
       - texlive-base
       - texlive-latex-base
       - xzdec
+      - biber
   when: install_packages
 
 - name: "Initiate tlmgr"
@@ -45,6 +46,8 @@
       - l3packages
       - l3kernel
       - microtype
+      - biblatex
+      - logreq
 
 - name: "List tex packages"
   command: "tlmgr list --only-installed"
@@ -67,7 +70,9 @@
 
 - name: "Install Pygments"
   pip:
+    executable: pip3
     name: Pygments
+    extra_args: "--user"
   when: install_packages and 'Pygments' not in installed_pip_packages
 
 - name: "Update TeX packages"

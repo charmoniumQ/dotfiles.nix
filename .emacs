@@ -56,6 +56,8 @@
 ;(require 'powerline)
 (powerline-default-theme)
 
+(require 'dockerfile-mode)
+
 ;; Transient mark
 (transient-mark-mode t)
 (delete-selection-mode t)
@@ -75,19 +77,18 @@
 ;; Buffers
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-(global-set-key
- (kbd "C-c r")
- (lambda ()
-   "Command for renaming the current buffer"
-   (interactive)
-   (let
-       ((filename (buffer-file-name)))
-     (if (not (and filename (file-exists-p filename)))
-	 (message "Buffer is nto visiting an existing file.")
-       (let
-	   ((new-name (read-file-name "New filename: ")))
-	 (rename-file filename new-name t)
-	 (set-visited-file-name new-name t t))))))
+(defun my-rename-file ()
+  ; rename-buffer already taken by uniquify pakcage
+  "Renames the current file"
+  (interactive)
+  (let ((filename (buffer-file-name)))
+ 	(if (not (and filename (file-exists-p filename)))
+ 		(message "Buffer is nto visiting an existing file.")
+ 	  (let ((new-name (read-file-name "New filename: ")))
+ 		(rename-file filename new-name t)
+ 		(set-visited-file-name new-name t t)))))
+(global-set-key (kbd "C-c r") 'my-rename-file)
+(global-unset-key (kbd "C-c r"))
 
 ;; Smooth scrolling
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
@@ -123,9 +124,10 @@
 (setq standard-indent 4)
 (setq default-tab-width 4)
 (define-key text-mode-map (kbd "TAB") 'self-insert-command)
-(el-get 'sync 'indent-guide)
-(indent-guide-global-mode)
-(set-face-background 'indent-guide-face "dimgray")
+;; (el-get 'sync 'indent-guide)
+(indent-guide-global-mode -1)
+;; (indent-guide-global-mode)
+;; (set-face-background 'indent-guide-face "dimgray")
 
 ;; Backup dir
 (setq backup-directory-alist `(("." . "~/.saves")))
@@ -173,9 +175,9 @@
 ;; (require 'yasnippet)
 
 ;; Line numbering
-(global-linum-mode t)
+;; (global-linum-mode t)
 ;(ac-linum-workaround)
-(setq linum-format "%4d")
+;; (setq linum-format "%4d")
 
 ;; TRAMP
 (require 'tramp)
@@ -190,6 +192,11 @@
 ;; python
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)
+
+;; Language server
+(require 'lsp)
+(add-hook 'python-mode-hook #'lsp)
+(add-hook 'rust-mode-hook #'lsp)
 
 ;; Scheme/lisp
 (add-to-list 'auto-mode-alist '("\\.rkt\\'" . scheme-mode))
@@ -241,12 +248,16 @@
 (setq TeX-command-extra-options "-shell-escape"
 	  ;;	  (concat "-shell-escape " TeX-command-extra-options)
 	  )
+(setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
 
 (el-get 'sync 'yaml-mode)
 
 ;; Org mode
 (require 'org)
-(defun scratch () "open someday.org" (interactive) (find-file "~/box/self/scratch.org"))
+(defun scratch ()
+  "open someday.org"
+  (interactive)
+  (find-file "~/box/self/scratch.org"))
 (setq org-deadline-warning-days 0)
 
 ;; Large file
@@ -258,9 +269,8 @@
     (setq buffer-read-only t)
     (buffer-disable-undo)
     (fundamental-mode)
-    ; (message "Buffer is set to read-only because it is large.  Undo also disabled.")
+    (message "Buffer is set to read-only because it is large.  Undo also disabled.")
     ))
-
 (add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
 
 (require 'ansi-color)
@@ -268,6 +278,12 @@
   (interactive)
   (let ((inhibit-read-only t))
     (ansi-color-apply-on-region (point-min) (point-max))))
+
+(defun kill-ring-clear ()
+  "Deletes the contents of the kill-ring"
+   (interactive)
+  (setq kill-ring nil)
+  (garbage-collect))
 
 ;; Default file
 ;(org-agenda-list)
@@ -278,4 +294,13 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
+ '(exec-path
+   (quote
+    ("/home/sam/.cargo/bin" "/home/sam/.yarn/bin" "/home/sam/perl5/bin" "/home/sam/.cabal/bin" "/home/sam/.local/venv/bin" "/home/sam/.local/scripts" "/home/sam/.local/bin" "/usr/local/bin" "/usr/bin" "/bin" "/usr/games" "/usr/lib/emacs/26.1/x86_64-linux-gnu")))
+ '(lsp-prefer-flymake nil)
+ '(lsp-pyls-plugins-pycodestyle-enabled nil)
  '(org-agenda-files (quote ("~/box/self/someday.org"))))
+
+; TODO:
+; Use language-server
+; Learn helm better

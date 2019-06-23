@@ -1,0 +1,5 @@
+Configuration notes specific to kant
+
+sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=debian
+computrace
+device guard

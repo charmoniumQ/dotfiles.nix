@@ -10,10 +10,16 @@ urxvt*font: xft:Liberation Mono:pixelsize=14
 urxvt.perl-ext-common:  fullscreen
 urxvt.keysym.F11:       perl:fullscreen:switch
 
+! disable "picture insert mode"
+! https://www.reddit.com/r/urxvt/comments/35x03n/if_youve_been_vexed_by_urxvts_picture_insert_mode/
+urxvt.iso14755: true
+urxvt.iso14755_52: false
+
+
 ! Composite transparency
 ! https://ctkarch.org/documentation/tutorials/tuto.php?page=urxvt-transpa.xml
 urxvt*depth: 32
-urxvt*background: rgba:1A00/1800/1700/cc00
+urxvt*background: rgba:1A00/1800/1700/bb00
 !urxvt*foreground: white
 
 ! https://gist.github.com/yevgenko/1167205
@@ -66,7 +72,7 @@ urxvt*background: rgba:1A00/1800/1700/cc00
 
 !!  Zenburn
 !urxvt.background: [85] #1A1817
-urxvt.foreground: #B5927D
+urxvt.foreground: #c0c0e0
 
 !black
 *color0:     #000000

@@ -8,7 +8,6 @@ fi
 
 if [ -n "${v}${verbose}" ]
 then
-	# run as "p=1 ./update.sh" or "packages=1 ./update.sh" to install packages (time-consuming)
 	extra_args="${extra_args} -vvv"
 fi
 

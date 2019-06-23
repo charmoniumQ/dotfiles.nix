@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+
+import click
+import pickle
+
+@click.command()
+@click.argument('pickled_file', type=click.File('rb'))
+@click.option('-e', '--expr', default='', help='Expression to evaluate, in terms of `x`, the loaded object.')
+@click.option('-i', '--interactive', is_flag=True, help='Run an IPython shell for further investigation.')
+def main(pickled_file, expr, interactive):
+    x = pickle.load(pickled_file)
+    if interactive:
+        print('x = pickle.load(pickled_file)')
+        import IPython
+        IPython.embed()
+    else:
+        if expr:
+            print(eval(expr, {'x': x}))
+        else:
+            print(x)
+
+
+if __name__ == '__main__':
+    main()
+    sys.exit(0)
