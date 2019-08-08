@@ -47,7 +47,7 @@
       - docker-ce
       - ghc
       - pypy
-      - ruby
+      # - ruby # TODO: user ruby version manager instead
       - yarn
       - httpie
       # curl https://sh.rustup.rs -sSf | sh

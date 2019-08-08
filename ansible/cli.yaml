@@ -11,6 +11,8 @@
       - pcregrep
       - ncdu
       - dtrx
+      - fzf
+      - fd-find
   when: install_packages
 
 - name: "Install oh-my-zsh"

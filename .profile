@@ -28,9 +28,17 @@ export C_INCLUDE_PATH=$HOME/.local/include:${C_INCLUDE_PATH}
 # XDG conf
 export XDG_RUNTIME_DIR=/tmp/runtime-sam
 
+# Ruby conf
+export RBENV_VERSION=2.6.3
+export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH"
+
 # Go conf
 export GOPATH="${HOME}/go"
 export PATH="${GOPATH}/bin:${PATH}"
+
+# fzf conf
+export FZF_DEFAULT_COMMAND='fd --type f'
+#export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 
 # aliases
 alias l='ls -ahlt'
