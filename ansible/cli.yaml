@@ -1,4 +1,8 @@
 ---
+# tmux fingers?
+# ~/.local/scripts
+# cargo install dutree fd-find rg loc
+
 - name: "Install CLI utility packages"
   become: yes
   apt:
@@ -13,6 +17,11 @@
       - dtrx
       - fzf
       - fd-find
+      - exa
+      - glances
+      - lnav
+      - icdiff
+      - tig
   when: install_packages
 
 - name: "Install oh-my-zsh"
@@ -62,3 +71,5 @@
   with_items: "{{required_pip_packages | difference(installed_pip_packages)}}"
   when: install_packages
   changed_when: "{{required_pip_packages | difference(installed_pip_packages)}}"
+
+# TODO: use cabal to install pandoc (cabal update)

@@ -48,6 +48,8 @@
       - microtype
       - biblatex
       - logreq
+      - natbib
+      - acmart
 
 - name: "List tex packages"
   command: "tlmgr list --only-installed"

@@ -22,8 +22,10 @@ export NODE_PATH=/home/sam/.config/yarn/global/node_modules
 export PATH="$HOME/.yarn/bin:${PATH}"
 
 # ld/cc/cpp conf
-export LD_LIBRARY_PATH=$HOME/.local/lib/libcriterion.so:$HOME/.local/lib:${LD_LIBRARY_PATH}
-export C_INCLUDE_PATH=$HOME/.local/include:${C_INCLUDE_PATH}
+# export LD_LIBRARY_PATH=$HOME/.local/lib/libcriterion.so:$HOME/.local/lib:${LD_LIBRARY_PATH}
+# export C_INCLUDE_PATH=$HOME/.local/include:${C_INCLUDE_PATH}
+export CXX=clang++
+export CC=clang
 
 # XDG conf
 export XDG_RUNTIME_DIR=/tmp/runtime-sam
@@ -40,31 +42,39 @@ export PATH="${GOPATH}/bin:${PATH}"
 export FZF_DEFAULT_COMMAND='fd --type f'
 #export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 
-# aliases
-alias l='ls -ahlt'
-
 # SSH agent
-# https://stackoverflow.com/a/18915067/1078199
-SSH_ENV="$HOME/.ssh/environment"
-
-function start_agent {
-    echo "Initialising new SSH agent..."
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-}
-
-# Source SSH settings, if applicable
-
-if [ -f "${SSH_ENV}" ]; then
-    . "${SSH_ENV}" > /dev/null
-    #ps ${SSH_AGENT_PID} doesn't work under cywgin
-    ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
-        start_agent;
-    }
-else
-    start_agent;
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval `ssh-agent`
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+
+# if [ -n "$DESKTOP_SESSION" ];then
+#    #eval $(gnome-keyring-daemon --start)
+#    export SSH_AUTH_SOCK
+# fi
+
+# # https://stackoverflow.com/a/18915067/1078199
+# SSH_ENV="$HOME/.ssh/environment"
+
+# function start_agent {
+#     echo "Initialising new SSH agent..."
+#     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+#     chmod 600 "${SSH_ENV}"
+#     . "${SSH_ENV}" > /dev/null
+# }
+
+# # Source SSH settings, if applicable
+
+# if [ -f "${SSH_ENV}" ]; then
+#     . "${SSH_ENV}" > /dev/null
+#     #ps ${SSH_AGENT_PID} doesn't work under cywgin
+#     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+#         start_agent;
+#     }
+# else
+#     start_agent;
+# fi
 
 # editor
 if which emc > /dev/null

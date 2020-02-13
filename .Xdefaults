@@ -19,7 +19,7 @@ urxvt.iso14755_52: false
 ! Composite transparency
 ! https://ctkarch.org/documentation/tutorials/tuto.php?page=urxvt-transpa.xml
 urxvt*depth: 32
-urxvt*background: rgba:1A00/1800/1700/bb00
+urxvt*background: rgba:1B00/1800/1700/bb00
 !urxvt*foreground: white
 
 ! https://gist.github.com/yevgenko/1167205

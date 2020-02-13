@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# for tramp mode
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+
 # [ -t 0 ] is false inside pipelines
 # if [ -z "${gui}" ]
 if [ -t 0 ] && [ -z "${gui}" ]

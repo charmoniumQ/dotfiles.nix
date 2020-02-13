@@ -124,6 +124,4 @@
     dest: "{{dotfiles_dest}}/.local/bin/bfg.jar"
     mode: "0755"
 
-# TODO: use cpanm to install App::cloc and possibly Parallel::ForkManager
-# TODO: use cabal to install pandoc (cabal update)
 # TODO: install pip as user? or not?

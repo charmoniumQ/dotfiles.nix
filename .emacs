@@ -46,7 +46,8 @@
           (run-with-idle-timer 0.3 nil
                                (lambda (fg) (set-face-background 'mode-line fg))
                                orig-fg))))
-
+; transparency
+(set-frame-parameter nil 'alpha '(85 . 80))
 ; Mode line
 (line-number-mode t)
 (column-number-mode t)
@@ -294,13 +295,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
+ '(tab-width 4)
  '(exec-path
    (quote
     ("/home/sam/.cargo/bin" "/home/sam/.yarn/bin" "/home/sam/perl5/bin" "/home/sam/.cabal/bin" "/home/sam/.local/venv/bin" "/home/sam/.local/scripts" "/home/sam/.local/bin" "/usr/local/bin" "/usr/bin" "/bin" "/usr/games" "/usr/lib/emacs/26.1/x86_64-linux-gnu")))
  '(lsp-prefer-flymake nil)
  '(lsp-pyls-plugins-pycodestyle-enabled nil)
  '(org-agenda-files (quote ("~/box/self/someday.org"))))
-
-; TODO:
-; Use language-server
-; Learn helm better

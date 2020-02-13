@@ -5,4 +5,10 @@
 [push]
 	default = current
 [commit]
-	gpgsign = true
+	gpgsign = false
+[credential]
+	helper = cache --timeout=36000
+[http]
+	cookiefile = /home/sam/.gitcookies
+[core]
+	excludesfile = .r-mount

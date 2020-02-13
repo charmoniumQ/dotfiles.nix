@@ -16,8 +16,10 @@ COMPLETION_WAITING_DOTS="true"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
 plugins=(
-  git
+    fzf
+    git
 )
+export FZF_BASE=$HOME/.config/zsh/fzf
 export ZSH=$HOME/.oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 
@@ -64,6 +66,11 @@ bindkey -e
 # 		fi
 # 	fi
 # }
+
+disable r
+
+# aliases
+alias l='exa -alrs modified'
 
 # start tmux
 [[ $TERM != "dumb" ]] && [[ $TERM != "screen" ]] && [[ -z "$TMUX" ]] && exec tmux
