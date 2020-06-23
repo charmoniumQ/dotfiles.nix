@@ -1,14 +1,9 @@
 [user]
 	email = sam@samgrayson.me
 	name = Samuel Grayson
-	signingkey = 0x27C6B277411E28CD
+
 [push]
 	default = current
-[commit]
-	gpgsign = false
+
 [credential]
 	helper = cache --timeout=36000
-[http]
-	cookiefile = /home/sam/.gitcookies
-[core]
-	excludesfile = .r-mount

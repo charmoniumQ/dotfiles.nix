@@ -1,14 +1,81 @@
-cat <<EOF | sudo tee /etc/apt/sources.list
+echo "# Modifications here will not be kept" | sudo tee /etc/apt/sources.list
+
+cat <<EOF | sudo tee /etc/apt/sources.list.d/ubuntu.list
 deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
 deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
 deb http://archive.canonical.com/ubuntu focal partner
 EOF
-echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-wget -O- https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-sudo apt update -y
-sudo apt purge -y thunderbird libreoffice
-wget https://zoom.us/client/latest/zoom_amd64.deb
-sudo apt install kitty keepassxc curl fonts-firacode gdebi google-cloud-sdk ./zoom_amd64.deb
-sudo apt autoremove
+
+wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
+
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
+wget -qO- https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+wget -qO- https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+sudo apt update && sudo apt install -y \
+	firefox \
+	adobe-flashplugin browser-plugin-freshplayer-pepperflash \
+	google-chrome-beta \
+	build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+	thunderbird \
+	zsh \
+	emacs \
+	git \
+	htop \
+	golang-go
+	docker-ce docker-ce-cli containerd.io \
+;
+
+sudo snap install --classic \
+	slack \
+;
+
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+latest=$(pyenv install -l | tr -d ' ' | grep -v dev | egrep '^  [[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$' | tail -n 1)
+pyenv install "${latest}"
+
+# wget -qO- https://bootstrap.pypa.io/get-pip.py | python
+
+pip3 install \
+	poetry \
+	python-language-server \
+	trash-cli \
+;
+
+wget -qO- https://sh.rustup.rs -sSf | sh
+
+git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh
+
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.oh-my-zsh/custom/plugins/fzf
+# ~/.oh-my-zsh/custom/plugins/fzf/install
+# TODO: don't run this script
+
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+git clone https://github.com/nvm-sh/nvm.git "${HOME}/.nvm"
+cat <<EOF | sh
+cd "${HOME}/.nvm"
+git checkout `git describe --abbrev=0 --tags --match "v[0-9]*" $(git rev-list --tags --max-count=1)`
+EOF
+
+nvm install node
+
+npm install -g yarn
+
+go get \
+	github.com/direnv/direnv \
+	github.com/junegunn/fzf
+;
+
+chsh -s $(which zsh) $(USER)
+
+cargo install \
+	exa \
+	ripgrep \
+	fd-find \
+;

@@ -3,18 +3,21 @@
 # If not running interactively, do not do anything
 [[ $- != *i* ]] && return
 
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="/home/sam/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -60,14 +63,22 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-HIST_STAMPS="yyyy-mm-dd"
-plugins=(
-    fzf
-    git
-)
-export FZF_BASE=$HOME/.config/zsh/fzf
-export ZSH=$HOME/.oh-my-zsh
+HIST_STAMPS="mm/dd/yyyy"
 
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+	fzf
+	git
+	zsh-syntax-highlighting
+	zsh-autosuggestions
+)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -91,58 +102,8 @@ source $ZSH/oh-my-zsh.sh
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# Alias ohmyzsh="mate ~/.oh-my-zsh"
-
-zstyle ':completion:*' expand prefix suffix
-zstyle ':completion:*' file-sort modification
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' completer _complete _files
-
-zstyle :compinstall filename '~/.zshrc'
-autoload -Uz compinit
-compinit
-
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -e
-
-# # time commands
-# time_cmd_file="$HOME/.local/cmd_time/${$}.time"
-# time_cmd_dir="$(dirname ${time_cmd_file}\")"
-# if [ ! -d "${time_cmd_dir}" ]
-# then
-# 	mkdir -p "${time_cmd_dir}"
-# fi
-
-# preexec() {
-# 	echo "${2}" > "${time_cmd_file}"
-# 	date +%s >>  "${time_cmd_file}"
-# }
-
-# precmd () {
-# 	if [ -e "${time_cmd_file}" ]
-# 	then
-# 		cmd=$(head -n +1 "${time_cmd_file}")
-# 		start=$(tail -n 1 "${time_cmd_file}")
-# 		rm "${time_cmd_file}"
-# 		end=$(date +%s)
-# 		elapsed=$(expr "${end}" - "${start}")
-# 		if [ "${elapsed}" -gt 240 ]
-# 		then
-# 			echo -n '\a'
-# 			ntfy -t "Command complete" send "${cmd}"
-# 		fi
-# 	fi
-# }
-
 disable r
-
-# aliases
 alias l='exa -alrs modified'
 
 # start tmux
-[[ $TERM != "dumb" ]] && [[ $TERM != "screen" ]] && [[ -z "$TMUX" ]] && exec tmux
+# [[ $TERM != "dumb" ]] && [[ $TERM != "screen" ]] && [[ -z "$TMUX" ]] && exec tmux
