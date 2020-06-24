@@ -29,6 +29,7 @@ wget -qO- https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 # 	thunderbird \
 # 	zsh \
 # 	emacs \
+#	meld \
 # 	git \
 # 	htop \
 # 	golang-go \
@@ -65,6 +66,12 @@ pip3 install --upgrade \
 	poetry \
 	python-language-server \
 	trash-cli \
+	ipython \
+	jupyter \
+	numpy \
+	scipy \
+	matplotlib \
+	pandas \
 ;
 
 git_clone_if_not_exists https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
@@ -99,6 +106,9 @@ git_clone_if_not_exists https://github.com/TheLocehiliosan/yadm.git ${HOME}/.yad
 rm -f ${HOME}/.local/bin/yadm
 mkdir -p ${HOME}/.local/bin
 ln -s ${HOME}/.yadm-project/yadm ${HOME}/.local/bin/yadm
+
+mkdir -p ~/.config/tmux
+git_clone_if_not_exists https://github.com/tmux-plugins/tpm ~/.config/tmux/tpm
 
 mkdir -p ${HOME}/.local
 wget -qO ${HOME}/.local/background.jpg https://upload.wikimedia.org/wikipedia/commons/a/a8/Nighthawks_by_Edward_Hopper_1942.jpg

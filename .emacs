@@ -51,10 +51,10 @@
 ; Mode line
 (line-number-mode t)
 (column-number-mode t)
-;(nyan-mode t)
-;(nyan-start-animation)
+(el-get 'sync 'nyan-mode)
+(nyan-mode t)
+(nyan-start-animation)
 (el-get 'sync 'powerline)
-;(require 'powerline)
 (powerline-default-theme)
 
 (el-get 'sync 'dockerfile-mode)
@@ -125,9 +125,8 @@
 (setq standard-indent 4)
 (setq default-tab-width 4)
 (define-key text-mode-map (kbd "TAB") 'self-insert-command)
-;; (el-get 'sync 'indent-guide)
-;;(indent-guide-global-mode -1)
-;; (indent-guide-global-mode)
+(el-get 'sync 'indent-guide)
+(indent-guide-global-mode)
 ;; (set-face-background 'indent-guide-face "dimgray")
 
 ;; Backup dir
@@ -196,7 +195,6 @@
 
 ;; Language server
 (el-get 'sync 'lsp-mode)
-(require 'lsp)
 (add-hook 'python-mode-hook #'lsp)
 (add-hook 'rust-mode-hook #'lsp)
 
@@ -289,6 +287,21 @@
 
 ;; Default file
 ;(org-agenda-list)
+
+;; Pager
+;; See https://www.emacswiki.org/emacs/EmacsPipe
+(defun ansi-colorize ()
+  "Ansi colorize"
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max)))
+(defun start-pager (tmp)
+  "Starts a pager"
+  (let ((b (generate-new-buffer "*stdin*")))
+	(switch-to-buffer b)
+	(insert-file-contents tmp)
+	(delete-file tmp)
+	(ansi-colorize)
+	(read-only-mode t)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
