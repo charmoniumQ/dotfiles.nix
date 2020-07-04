@@ -30,9 +30,6 @@ if command -v pyenv 1>/dev/null 2>&1; then
 	eval "$(pyenv init -)"
 fi
 
-# Direnv
-eval "$(direnv hook zsh)"
-
 # haskell conf
 export PATH="${HOME}/.cabal/bin:${PATH}"
 
@@ -68,6 +65,9 @@ export PATH="${HOME}/.rbenv/bin:${HOME}/.rbenv/shims:$PATH"
 # Go conf
 export GOPATH="${HOME}/go"
 export PATH="${GOPATH}/bin:${PATH}"
+
+# Direnv
+eval "$(direnv hook zsh)"
 
 # fzf conf
 export FZF_DEFAULT_COMMAND='fd --type f'

@@ -34,6 +34,7 @@ wget -qO- https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 # 	htop \
 # 	golang-go \
 # 	docker-ce docker-ce-cli containerd.io \
+# 	texinfo \
 # ;
 
 # sudo snap install --classic \
@@ -64,7 +65,7 @@ pyenv global "${latest}"
 pip3 install --upgrade \
 	pip \
 	poetry \
-	python-language-server \
+	'python-language-server[all]' \
 	trash-cli \
 	ipython \
 	jupyter \
@@ -75,8 +76,7 @@ pip3 install --upgrade \
 ;
 
 git_clone_if_not_exists https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
-
-git_clone_if_not_exists https://github.com/junegunn/fzf.git ${HOME}/.oh-my-zsh/custom/plugins/fzf  --depth 1
+git_clone_if_not_exists https://github.com/junegunn/fzf.git ${HOME}/.oh-my-zsh/custom/plugins/fzf --depth 1
 git_clone_if_not_exists https://github.com/zsh-users/zsh-autosuggestions ${HOME}/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git_clone_if_not_exists https://github.com/zsh-users/zsh-syntax-highlighting ${HOME}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
