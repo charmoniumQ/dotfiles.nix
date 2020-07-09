@@ -73,6 +73,7 @@ pip3 install --upgrade \
 	scipy \
 	matplotlib \
 	pandas \
+	passwdgen \
 ;
 
 git_clone_if_not_exists https://github.com/ohmyzsh/ohmyzsh.git ${HOME}/.oh-my-zsh
@@ -101,6 +102,8 @@ cargo install \
 	ripgrep \
 	fd-find \
 ;
+
+curl -sSL https://get.rvm.io | bash
 
 git_clone_if_not_exists https://github.com/TheLocehiliosan/yadm.git ${HOME}/.yadm-project
 rm -f ${HOME}/.local/bin/yadm

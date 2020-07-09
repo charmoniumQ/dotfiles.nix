@@ -90,3 +90,13 @@ export PATH="${CARGO_PATH}/bin:$PATH"
 # GPG conf
 # export GPG_TTY=$(tty)
 # export GPG_KEY='BD4496A020346A68C4F7AA4F27C6B277411E28CD'
+
+# Ruby
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+# Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+# C/C++
+export CXX=clang++
+export CC=clang++
