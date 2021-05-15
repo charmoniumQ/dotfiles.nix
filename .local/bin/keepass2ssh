@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+from pathlib import Path
+import xml.etree.ElementTree as ET
+import os
+import subprocess
+
+if "KEEPASSDB" not in os.environ:
+   raise RuntimeError("Please set $KEEPASSDB")
+
+ssh_pubkey_dir = Path.home() / ".ssh"
+
+xml_text = subprocess.run(
+   ["keepassxc-cli", "export", os.environ["KEEPASSDB"]],
+   check=True,
+   stdout=subprocess.PIPE,
+   text=True,
+).stdout
+
+xml = ET.fromstring(xml_text)
+
+for root in xml.findall("Root"):
+   for group in root.findall("Group"):
+      for group2 in group.findall("Group"):
+         for entry in group2.findall("Entry"):
+            entry_attrs = {
+               string.find("Key").text: string.find("Value").text
+               for string in entry.findall("String")
+            }
+            if "ssh_private_key" in entry_attrs:
+               name = entry_attrs["Title"]
+               ssh_private_key = entry_attrs["ssh_private_key"].strip() + "\n"
+               ssh_public_key = entry_attrs["ssh_public_key"].strip() + "\n"
+               subprocess.run(
+                  ["ssh-add", "-"],
+                  check=True,
+                  input=ssh_private_key,
+                  text=True,
+                  env={**os.environ, "SSH_ASKPASS_REQUIRE": "never"},
+               )
+               (ssh_pubkey_dir / name).with_suffix(".pub").write_text(ssh_public_key)

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+args=(-a '')
+if [ -z "${1}" ]; then
+	file="$(mktemp /tmp/emacsstdin-XXX)"
+	cat >"${file}"
+	args+=(--eval '(start-pager "'${file}'")')
+	# args+=("${file}")
+else
+	args+=("${1}")
+fi
+emacsclient "${args[@]}"

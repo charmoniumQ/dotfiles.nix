@@ -1,0 +1,122 @@
+#!/usr/bin/env ruby
+
+# For configured directories, this script syncs them with the remote,
+# runs a command, and then downloads the result.
+#
+## Motivation ##
+#
+# I am working on a project whose files are stored remotely. I would
+# like to use my extensively curated and configured tools (zsh, emacs,
+# tmux, ripgrep), but I need to run some commands on the remote. I
+# have some options
+#
+# 1. Install tools and customizations on the remote. Although I do
+#    have a portable dot-files setup, this won't work for
+#    me. Unfortunately, I don't have root on the remote, so I can't
+#    install some of my tools; some configurations depend on binaries
+#    I can't install as well.
+#
+# 2. Mount the remote files locally with SSHFS, edit locally, and SSH
+#    to run remote commands. Unfortunately I use ripgrep often enough
+#    that the latency in doing this is annoying.
+#
+# 3. Keep the files synchronized with git, edit locally, and SSH to
+#    run remote commands. I want to maintain multiple projects, some
+#    of which are tracked in git and some is just scratch-work. Nested
+#    git-modules is a pain. What if the project uses a VCS that isn't
+#    git? I would either maintain a script for both VCSs, or a
+#    maintain two VCSs for one project.
+#
+# 4. Keep files synchronized with rsync, edit locally, and SSH to run
+#    remote commands. I have my tools, and the fs is fast. This script
+#    automates that.
+#
+## Usage ##
+# 
+# 1. Make an local mirror of the remote directory.
+# 2. Add a file called .r-mount with the following contents:
+#
+#        remote.host.name.com:path/to/dir/on/remote
+#        --verbose --other-rsync-args-here --i-already-have-the-important-ones
+#
+# 3. Edit files locally
+# 4. Run a remote command prefixed with `r`. Eg.
+#
+#        $ r gcc sources.c
+#
+#    This script uploads the local changes, runs the command remotely,
+#    and downloads the results.
+#
+## Miscellany ##
+#
+# - ZSH defines a builtin `r`, so run `disable r` before attempting to
+#   run this script.
+
+require 'pathname'
+require 'shellwords'
+
+# extend the existing Pathname class
+class Pathname
+
+  # returns a list of [self, parents, grandparents, great-grandparents, ...]
+  def parents
+    dir = self
+    parents = [dir]
+    until dir.root? do
+      dir = dir.parent
+      parents << dir
+    end
+    parents
+  end
+
+end
+
+# rsyncs source to destination
+# extra_opts are passed through to rsync
+# see rsync documentation for exact behavior
+def rsync(source, destination, *extra_opts)
+  unless system "rsync", source, destination, *extra_opts
+    raise RuntimeError, "command failed"
+  end
+end
+
+def main
+
+  # detect mount point
+  mount_point = Pathname.pwd.realpath.parents.find {|dir| (dir / '.r-mount').exist? }
+  if mount_point.nil?
+    raise RuntimeError,
+          "no .r-mount found in parent of working directory. See head of this script for documentation."
+  end    
+
+  # get options
+  lines = (mount_point / '.r-mount').readlines
+  host, remote_dir = lines[0].strip.split ':'
+  extra_opts = %w[--archive --compress --update --delete --human-readable --cvs-exclude] \
+               + lines[1].strip.split(' ')
+
+  # rsync up changes
+  unless ARGV[0] == "download"
+    rsync "#{mount_point}/", "#{host}:#{remote_dir}/", *extra_opts
+  end
+
+  # run command in cwd
+  unless ARGV[0] == "upload" or ARGV[0] == "download"
+    wd = Pathname.pwd.relative_path_from mount_point
+    cmd = Shellwords.join(ARGV)
+    system "ssh", "-t", host, " . .bash_profile && cd #{remote_dir}/#{wd} && #{cmd}"
+    # unless system "ssh", "-t", host, " . .bash_profile && cd #{remote_dir}/#{wd} && #{cmd}"
+    #   raise RuntimeError, "command failed"
+    # end
+  end
+
+  # rsync down changes
+  unless ARGV[0] == "upload"
+    rsync "#{host}:#{remote_dir}/", "#{mount_point}/", *extra_opts
+  end
+
+end
+
+if __FILE__ == $0
+  main
+end

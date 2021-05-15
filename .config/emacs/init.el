@@ -1,20 +1,16 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-;(package-initialize)
+(setq user-emacs-directory "~/.config/emacs/")
 
+; TODO: handle space-filled files
 
-;; el-get stuff
-(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+;; el-get
+(add-to-list 'load-path (concat user-emacs-directory "el-get/el-get"))
 (unless (require 'el-get nil 'noerror)
   (with-current-buffer
       (url-retrieve-synchronously
        "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
     (goto-char (point-max))
     (eval-print-last-sexp)))
-
-(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+    
 (el-get 'sync)
 
 ;; Server stuff
@@ -25,6 +21,7 @@
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
 
 ;; Suspend
+; I often accidentally type C-z out of habit
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z C-z") 'suspend-emacs)
 
@@ -56,15 +53,13 @@
 (nyan-start-animation)
 (el-get 'sync 'powerline)
 (powerline-default-theme)
-
+; Highligt current line
+(global-hl-line-mode t)
 (el-get 'sync 'dockerfile-mode)
 
 ;; Transient mark
 (transient-mark-mode t)
 (delete-selection-mode t)
-
-;; Current line
-(global-hl-line-mode t)
 
 ;; Don't ask to follow symlinks
 (setq vc-follow-symlinks t)
@@ -130,8 +125,10 @@
 ;; (set-face-background 'indent-guide-face "dimgray")
 
 ;; Backup dir
-(setq backup-directory-alist `(("." . "~/.saves")))
+(setq backup-directory-alist `(("." . ,(concat user-emacs-directory "saves"))))
 (setq version-control t)
+(setq make-backup-files t)
+(setq vc-make-backup-files t)
 (setq delete-old-versions t)
 
 ;; Helm
@@ -144,12 +141,12 @@
 ;; Open recent files
 (require 'recentf)
 (setq recentf-max-menu-items 100)
-(setq recentf-save-file (concat user-emacs-directory ".recentf"))
+(setq recentf-save-file (concat user-emacs-directory "recentf"))
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 (recentf-mode t)
 (require 'saveplace)
 (setq-default save-place t)
-(setq save-place-file "~/.emacs.d/saved-places")
+(setq save-place-file (concat user-emacs-directory "saved-places"))
 
 ;; Syntax checking
 ;;(el-get 'sync 'flycheck)
@@ -251,6 +248,8 @@
 ;; (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
 
 (el-get 'sync 'yaml-mode)
+
+(el-get 'nix-mode)
 
 ;; Org mode
 (require 'org)

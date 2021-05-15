@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+import re
+import sys
+
+import click
+
+@click.command()
+@click.argument("find", type=str)
+@click.argument("replace", type=str)
+@click.option("--dry-run", default=False, is_flag=True)
+@click.option("--print-src", default=False, is_flag=True)
+@click.option("--print-dst", default=False, is_flag=True)
+def main(find: str, replace: str, dry_run: bool, print_src: bool, print_dst: bool) -> None:
+    find_b = re.compile(find.encode())
+    replace_b = replace.encode()
+    for file_line in sys.stdin:
+        file = file_line.strip()
+        line_buffer = []
+        with open(file, "rb") as f:
+            for line in f:
+                if find_b.search(line):
+                    new_line = find_b.sub(replace_b, line)
+                    line_buffer.append((line, new_line))
+                else:
+                    line_buffer.append(line)
+
+        if print_src or print_dst:
+            for line_replacement in line_buffer:
+                if type(line_replacement) == tuple:
+                    if print_dst:
+                        print(line_replacement[0].strip().decode())
+                    if print_src or print_dst:
+                        print(line_replacement[1].strip().decode())
+
+        if not dry_run:
+            with open(file, "wb") as f:
+                for line_replacement in line_buffer:
+                    if type(line_replacement) == tuple:
+                        f.write(line_replacement[1])
+                    else:
+                        f.write(line_replacement)
+
+main()
