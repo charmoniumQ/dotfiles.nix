@@ -18,6 +18,7 @@
       envExtra = lib.concatStringsSep "\n" [
         "source \${HOME}/.nix-profile/etc/profile.d/nix.sh"
         "export KEEPASSDB=\${HOME}/box/Database.kdbx"
+        "export PATH=\"\${HOME}/.local/bin:\${PATH}\""
       ];
       sessionVariables = {
         DISABLE_UNTRACKED_FILES_DIRTY = "true";
