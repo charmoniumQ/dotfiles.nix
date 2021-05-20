@@ -159,6 +159,8 @@
       pkgs.python39
       pkgs.ruby_2_7
       pkgs.gnupg
+      pkgs.bat
+      pkgs.ipython
       #pkgs.nodePackages.npm
       # IPython, numpy, pandas, tqdm, scipy, matplotlib, PyQt5, requests, PyYAML, jupyter-notebook
 

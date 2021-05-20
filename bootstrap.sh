@@ -32,3 +32,33 @@ if [ "${SHELL}" != "${zsh}" ]; then
 		echo "Could not make zsh default shell"
 	fi
 fi
+
+
+if ! docker run hello-world > /dev/null; then
+	if ! which curl > /dev/null; then
+		sudo apt-get install \
+			 apt-transport-https \
+			 ca-certificates \
+			 curl \
+			 gnupg \
+			 lsb-release
+	fi
+
+	if [ ! -f /usr/share/keyrings/docker-archive-keyring.gpg ]; then
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+	fi
+
+	if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
+		echo \
+			"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+			| sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+		sudo apt-get update
+	fi
+
+	sudo apt-get install docker-ce docker-ce-cli containerd.io
+fi
+
+if ! groups $(whoami) | grep docker; then
+	sudo groupadd docker
+	sudo usermod -aG docker $(whoami)
+fi
