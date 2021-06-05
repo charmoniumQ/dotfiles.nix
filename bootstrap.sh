@@ -3,18 +3,22 @@
 set -e -x
 wd="$(dirname ${0})"
 
-if [ ! -d "${HOME}/.nix-profile" ]; then
+if ! which nix; then
 	tmp=$(mktemp)
 	curl -L https://nixos.org/nix/install > "${tmp}"
 	sh "${tmp}" --daemon
+	source /etc/profile.d/nix.sh
+	nix-env -i hello
 fi
 
-if ! which nix > /dev/null; then
-	source ${HOME}/.nix-profile/etc/profile.d/nix.sh
-fi
+source /etc/profile.d/nix.sh
+# source ${HOME}/.nix-profile/etc/profile.d/nix.sh
 
 if ! which home-manager > /dev/null; then
-	nix-env -i home-manager
+	nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
+	nix-channel --update
+	export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
+	nix-shell '<home-manager>' -A install
 fi
 
 home-manager -f "${wd}/home.nix" switch
@@ -27,7 +31,7 @@ fi
 
 if [ "${SHELL}" != "${zsh}" ]; then
 	if which chsh > /dev/null; then
-		chsh -s "${zsh}"
+		sudo chsh -s "${zsh}"
 	else
 		echo "Could not make zsh default shell"
 	fi
@@ -56,9 +60,9 @@ if ! docker run hello-world > /dev/null; then
 	fi
 
 	sudo apt-get install docker-ce docker-ce-cli containerd.io
-fi
 
-if ! groups $(whoami) | grep docker; then
-	sudo groupadd docker
-	sudo usermod -aG docker $(whoami)
+	if ! groups $(whoami) | grep docker; then
+		sudo groupadd docker
+		sudo usermod -aG docker $(whoami)
+	fi
 fi
