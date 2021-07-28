@@ -16,8 +16,9 @@
       autocd = true;
       dotDir = ".config/zsh";
       envExtra = lib.concatStringsSep "\n" [
-        "source \${HOME}/.nix-profile/etc/profile.d/nix.sh"
-        "export KEEPASSDB=\${HOME}/box/Database.kdbx"
+        #"source \${HOME}/.nix-profile/etc/profile.d/nix.sh"
+        "source /etc/profile.d/nix.sh"
+        "export KEEPASSDB=\${HOME}/Desktop/Database.kdbx"
         "export PATH=\"\${HOME}/.local/bin:\${PATH}\""
         "export PROMPT=\"$(if [[ -n \${POETRY_ACTIVE} ]]; then echo 'poetry '; else fi)\${PROMPT}\""
       ];
@@ -125,8 +126,8 @@
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
-    username = "sam";
-    homeDirectory = "/home/sam";
+    username = "grayson5";
+    homeDirectory = "/home/grayson5";
     
     # TODO: Separate user/username from the rest
     packages = [
