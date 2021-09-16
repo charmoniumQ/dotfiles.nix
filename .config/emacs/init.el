@@ -302,6 +302,12 @@
 	(ansi-colorize)
 	(read-only-mode t)))
 
+(el-get 'sync 'markdown-mode)
+(require 'markdown-mode)
+
+(el-get 'sync 'yaml-mode)
+(require 'yaml-mode)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

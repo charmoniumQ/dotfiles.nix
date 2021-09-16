@@ -19,6 +19,7 @@
         "source \${HOME}/.nix-profile/etc/profile.d/nix.sh"
         "export KEEPASSDB=\${HOME}/box/Database.kdbx"
         "export PATH=\"\${HOME}/.local/bin:\${PATH}\""
+        "export PROMPT=\"$(if [[ -n \${POETRY_ACTIVE} ]]; then echo 'poetry '; else fi)\${PROMPT}\""
       ];
       sessionVariables = {
         DISABLE_UNTRACKED_FILES_DIRTY = "true";
@@ -138,6 +139,8 @@
       pkgs.zsh
       pkgs.exa
       pkgs.fzf
+      pkgs.bpytop
+      pkgs.htop
       pkgs.glances
       pkgs.lnav
       pkgs.dtrx
@@ -146,6 +149,7 @@
       pkgs.docker
       pkgs.google-cloud-sdk
       pkgs.rclone
+      pkgs.moreutils
       # Keepassxc has a CLI and a GUI
       pkgs.keepassxc
       pkgs.jq
@@ -160,9 +164,10 @@
       pkgs.ruby_2_7
       pkgs.gnupg
       pkgs.bat
-      pkgs.ipython
+      # pkgs.ipython
       #pkgs.nodePackages.npm
       # IPython, numpy, pandas, tqdm, scipy, matplotlib, PyQt5, requests, PyYAML, jupyter-notebook
+      pkgs.magic-wormhole
 
       # GUI
       pkgs.meld
@@ -177,6 +182,9 @@
       pkgs.mtr
       pkgs.pwgen
       pkgs.xkcdpass
+
+      pkgs.mpv
+      pkgs.mplayer
     ];
 
     file = {
