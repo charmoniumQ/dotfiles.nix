@@ -8,7 +8,9 @@
     };
     direnv = {
       enable = true;
-      enableNixDirenvIntegration = true;
+      nix-direnv = {
+        enable = true;
+      };
     };
     zsh = {
       enable = true;
@@ -149,6 +151,7 @@
       pkgs.docker
       pkgs.google-cloud-sdk
       pkgs.rclone
+      pkgs.mosh
       pkgs.moreutils
       # Keepassxc has a CLI and a GUI
       pkgs.keepassxc
