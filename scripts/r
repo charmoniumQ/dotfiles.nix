@@ -104,7 +104,7 @@ def main
   unless ARGV[0] == "upload" or ARGV[0] == "download"
     wd = Pathname.pwd.relative_path_from mount_point
     cmd = Shellwords.join(ARGV)
-    system "ssh", "-t", host, " . .bash_profile && cd #{remote_dir}/#{wd} && #{cmd}"
+    system "ssh", "-t", host, " . .bash_profile && env -C #{remote_dir}/#{wd} #{cmd}"
     # unless system "ssh", "-t", host, " . .bash_profile && cd #{remote_dir}/#{wd} && #{cmd}"
     #   raise RuntimeError, "command failed"
     # end

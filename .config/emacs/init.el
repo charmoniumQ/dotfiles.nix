@@ -20,12 +20,19 @@
 ;; Macros
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
 
-;; Suspend
 ; I often accidentally type C-z out of habit
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z C-z") 'suspend-emacs)
 
+; Regex
+(require 're-builder)
+; reb-re-syntax 'string eliminates the need for "double-scaping" your regex
+; https://masteringemacs.com/article/re-builder-interactive-regexp-builder
+(setq reb-re-syntax 'string)
+
 ;; UI
+; S-<Left>, S-<Right>, S-<Up>, S-<Down> for window navigation
+(windmove-default-keybindings)
 (setq inhibit-startup-screen t)
 (setq truncate-lines t)
 (setq truncate-partial-width-windows t)
@@ -56,6 +63,12 @@
 ; Highligt current line
 (global-hl-line-mode t)
 (el-get 'sync 'dockerfile-mode)
+
+(use-package perspective
+  :bind
+  ("C-x C-b" . persp-list-buffers)   ; or use a nicer switcher, see below
+  :config
+  (persp-mode))
 
 ;; Transient mark
 (transient-mark-mode t)
@@ -179,6 +192,16 @@
 ;; TRAMP
 (require 'tramp)
 (setq tramp-default-method "ssh")
+; https://emacs.stackexchange.com/a/17579
+(setq projectile-mode-line "Projectile")
+; https://emacs.stackexchange.com/a/37855
+(setq remote-file-name-inhibit-cache nil)
+(setq vc-ignore-dir-regexp
+      (format "%s\\|%s"
+                    vc-ignore-dir-regexp
+                    tramp-file-name-regexp))
+(setq tramp-verbose 1)
+
 
 ;; Mode specific
 ;; Markdown mode
@@ -302,6 +325,9 @@
 	(ansi-colorize)
 	(read-only-mode t)))
 
+;; Terminal
+(add-hook 'term-mode-hook (lambda () (indent-guide-mode 0)))
+
 (el-get 'sync 'markdown-mode)
 (require 'markdown-mode)
 
@@ -315,9 +341,5 @@
  ;; If there is more than one, they won't work right.
  '(c-basic-offset 4)
  '(tab-width 4)
- '(exec-path
-   (quote
-    ("/home/sam/.cargo/bin" "/home/sam/.yarn/bin" "/home/sam/perl5/bin" "/home/sam/.cabal/bin" "/home/sam/.local/venv/bin" "/home/sam/.local/scripts" "/home/sam/.local/bin" "/usr/local/bin" "/usr/bin" "/bin" "/usr/games" "/usr/lib/emacs/26.1/x86_64-linux-gnu")))
  '(lsp-prefer-flymake nil)
- '(lsp-pyls-plugins-pycodestyle-enabled nil)
- '(org-agenda-files (quote ("~/box/self/someday.org"))))
+ '(lsp-pyls-plugins-pycodestyle-enabled nil))

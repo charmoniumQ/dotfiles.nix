@@ -22,6 +22,7 @@
         "export KEEPASSDB=\${HOME}/box/Database.kdbx"
         "export PATH=\"\${HOME}/.local/bin:\${PATH}\""
         "export PROMPT=\"$(if [[ -n \${POETRY_ACTIVE} ]]; then echo 'poetry '; else fi)\${PROMPT}\""
+        "disable r"
       ];
       sessionVariables = {
         DISABLE_UNTRACKED_FILES_DIRTY = "true";
@@ -76,6 +77,11 @@
       enable = true;
       userEmail = "sam@samgrayson.me";
       userName = "Samuel Grayson";
+      extraConfig = {
+        init = {
+          defaultBranch = true;
+        };
+      };
     };
     tmux = {
       enable = true;
@@ -83,9 +89,10 @@
       clock24 = true;
       keyMode = "emacs";
       extraConfig = lib.concatStringsSep "\n" [
+        "set -g copy-command 'xsel -b'"
         "set -g mouse on"
-        "unbind R"
-        "bind R source-file ~/.config/tmux/tmux.conf"
+        "unbind r"
+        "bind r source-file ~/.config/tmux/tmux.conf"
       ];
       plugins = [
         pkgs.tmuxPlugins.extrakto
@@ -132,12 +139,22 @@
     
     # TODO: Separate user/username from the rest
     packages = [
+      (pkgs.stdenv.mkDerivation {
+        name = "scripts";
+        src = ./scripts;
+        installPhase = ''
+          chmod +x *
+          mkdir -p $out/bin
+          cp * $out/bin/
+        '';
+      })
 
       # CLI
       pkgs.tmux
       pkgs.emacs
       pkgs.git
       pkgs.gnumake # needed for Emacs
+      pkgs.texinfo # needed for Emacs
       pkgs.zsh
       pkgs.exa
       pkgs.fzf
@@ -153,6 +170,7 @@
       pkgs.rclone
       pkgs.mosh
       pkgs.moreutils
+      pkgs.wgetpaste
       # Keepassxc has a CLI and a GUI
       pkgs.keepassxc
       pkgs.jq
@@ -163,13 +181,26 @@
       pkgs.bfg-repo-cleaner
       pkgs.ripgrep
       pkgs.xsel
-      pkgs.python39
+      (pkgs.python39.withPackages (ps: with ps; [
+        click
+        typer
+        tqdm
+        numpy
+        scipy
+        pandas
+        matplotlib
+        ipython
+        requests
+        lxml
+        pyyaml
+        pyqt5
+      ]))
       pkgs.ruby_2_7
       pkgs.gnupg
       pkgs.bat
-      # pkgs.ipython
-      #pkgs.nodePackages.npm
-      # IPython, numpy, pandas, tqdm, scipy, matplotlib, PyQt5, requests, PyYAML, jupyter-notebook
+      pkgs.pipenv
+      pkgs.poetry
+      pkgs.nodePackages.npm
       pkgs.magic-wormhole
 
       # GUI
@@ -194,18 +225,6 @@
       ".config/emacs/init.el" = {
         source = ./.config/emacs/init.el;
       };
-      ".local/bin/quote" = {
-        source = ./.local/bin/quote;
-      };
-      ".local/bin/r" = {
-        source = ./.local/bin/r;
-      };
-      ".local/bin/emc" = {
-        source = ./.local/bin/emc;
-      };
-      ".local/bin/keepass2ssh" = {
-        source = ./.local/bin/keepass2ssh;
-      };
     };
     
     # This value determines the Home Manager release that your
@@ -223,6 +242,7 @@
       "org/gnome/desktop/background" = {
         draw-background = true;
         picture-options = "zoom";
+        # TODO: download image
         picture-uri = "https://upload.wikimedia.org/wikipedia/commons/a/a8/Nighthawks_by_Edward_Hopper_1942.jpg";
         show-desktop-icons = false;
       };
