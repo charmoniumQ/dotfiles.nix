@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-
 {
   programs = {
     home-manager = {
@@ -8,22 +7,44 @@
     };
     direnv = {
       enable = true;
+      enableZshIntegration = true;
       nix-direnv = {
         enable = true;
       };
+    };
+    emacs = {
+      enable = true;
+      # (load "~/box/dotfiles.nix/.config/emacs/init.el")
+      extraPackages = epkgs: [
+        epkgs.use-package
+        epkgs.nyan-mode
+        epkgs.powerline
+        epkgs.perspective
+        epkgs.dockerfile-mode
+        epkgs.smartparens
+        epkgs.rainbow-delimiters
+        epkgs.monokai-theme
+        epkgs.indent-guide
+        epkgs.helm
+        epkgs.magit
+        epkgs.markdown-mode
+        epkgs.lsp-mode
+        epkgs.nix-mode
+        epkgs.yaml-mode
+        epkgs.vterm
+        (epkgs.trivialBuild {
+          pname = "config";
+          src = ./.config/emacs;
+        })
+      ];
     };
     zsh = {
       enable = true;
       enableCompletion = true;
       autocd = true;
       dotDir = ".config/zsh";
-      envExtra = lib.concatStringsSep "\n" [
-        "source \${HOME}/.nix-profile/etc/profile.d/nix.sh"
-        "export KEEPASSDB=\${HOME}/box/Database.kdbx"
-        "export PATH=\"\${HOME}/.local/bin:\${PATH}\""
-        "export PROMPT=\"$(if [[ -n \${POETRY_ACTIVE} ]]; then echo 'poetry '; else fi)\${PROMPT}\""
-        "disable r"
-      ];
+      envExtra = (builtins.readFile ./.config/zsh/.zshenv);
+      initExtra = (builtins.readFile ./.config/zsh/.zshrc);
       sessionVariables = {
         DISABLE_UNTRACKED_FILES_DIRTY = "true";
         COMPLETION_WAITING_DOTS = "true";
@@ -88,27 +109,12 @@
       prefix = "C-h";
       clock24 = true;
       keyMode = "emacs";
-      extraConfig = lib.concatStringsSep "\n" [
-        "set -g copy-command 'xsel -b'"
-        "set -g mouse on"
-        "unbind r"
-        "bind r source-file ~/.config/tmux/tmux.conf"
-      ];
+      extraConfig = (builtins.readFile ./.config/tmux/tmux.conf);
       plugins = [
         pkgs.tmuxPlugins.extrakto
         {
           plugin = pkgs.tmuxPlugins.dracula;
-          extraConfig = lib.concatStringsSep "\n" [
-            "set -g @dracula-show-battery true"
-            "set -g @dracula-show-network true"
-            "set -g @dracula-show-weather false"
-            "set -g @dracula-show-fahrenheit true"
-            "set -g @dracula-show-powerline true"
-            "set -g @dracula-military-time true"
-            "set -g @dracula-show-left-icon session"
-            "set -g @dracula-border-contrast true"
-            "set -g @dracula-cpu-percent true"
-          ];
+          extraConfig = (builtins.readFile ./.config/tmux/dracula-tmux.conf);
         }
       ];
     };
@@ -131,13 +137,23 @@
     };
   };
 
+  services = {
+    emacs = {
+      enable = true;
+      client = {
+        enable = true;
+      };
+      defaultEditor = true;
+    };
+  };
+
   home = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
     username = "sam";
     homeDirectory = "/home/sam";
-    
     # TODO: Separate user/username from the rest
+
     packages = [
       (pkgs.stdenv.mkDerivation {
         name = "scripts";
@@ -151,21 +167,17 @@
 
       # CLI
       pkgs.tmux
-      pkgs.emacs
       pkgs.git
-      pkgs.gnumake # needed for Emacs
-      pkgs.texinfo # needed for Emacs
       pkgs.zsh
       pkgs.exa
       pkgs.fzf
       pkgs.bpytop
       pkgs.htop
       pkgs.glances
-      pkgs.lnav
+      pkgs.direnv
       pkgs.dtrx
       pkgs.ncdu
       pkgs.trash-cli
-      pkgs.docker
       pkgs.google-cloud-sdk
       pkgs.rclone
       pkgs.mosh
@@ -181,6 +193,7 @@
       pkgs.bfg-repo-cleaner
       pkgs.ripgrep
       pkgs.xsel
+      pkgs.pandoc
       (pkgs.python39.withPackages (ps: with ps; [
         click
         typer
@@ -194,6 +207,9 @@
         lxml
         pyyaml
         pyqt5
+        pipx
+        rich
+        pip
       ]))
       pkgs.ruby_2_7
       pkgs.gnupg
@@ -202,8 +218,6 @@
       pkgs.poetry
       pkgs.nodePackages.npm
       pkgs.magic-wormhole
-
-      # GUI
       pkgs.meld
       pkgs.gitg
 
@@ -220,12 +234,6 @@
       pkgs.mpv
       pkgs.mplayer
     ];
-
-    file = {
-      ".config/emacs/init.el" = {
-        source = ./.config/emacs/init.el;
-      };
-    };
     
     # This value determines the Home Manager release that your
     # configuration is compatible with. This helps avoid breakage

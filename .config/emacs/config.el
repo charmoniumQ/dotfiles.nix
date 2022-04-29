@@ -1,21 +1,10 @@
-(setq user-emacs-directory "~/.config/emacs/")
+; TODO: see https://tecosaur.github.io/emacs-config/config.html#pretty-code-blocks
+; TOOD: https://github.com/acowley/my-emacs/blob/main/emacs.nix
 
-; TODO: handle space-filled files
-
-;; el-get
-(add-to-list 'load-path (concat user-emacs-directory "el-get/el-get"))
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-    
-(el-get 'sync)
-
-;; Server stuff
-(global-unset-key (kbd "C-x C-d"))
-(global-set-key (kbd "C-x C-d") 'kill-emacs)
+										;(require 'config)
+(defun config ()
+  (when (require 'use-package nil 'noerror)
+   (eval '(progn
 
 ;; Macros
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
@@ -55,14 +44,15 @@
 ; Mode line
 (line-number-mode t)
 (column-number-mode t)
-(el-get 'sync 'nyan-mode)
-(nyan-mode t)
-(nyan-start-animation)
-(el-get 'sync 'powerline)
-(powerline-default-theme)
 ; Highligt current line
 (global-hl-line-mode t)
-(el-get 'sync 'dockerfile-mode)
+(use-package nyan-mode
+  :config
+  (nyan-mode t)
+  (nyan-start-animation))
+(use-package powerline
+  :config
+  (powerline-default-theme))
 
 (use-package perspective
   :bind
@@ -115,26 +105,30 @@
 ;; Parens
 (require 'paren)
 (show-paren-mode t)
-(el-get 'sync 'smartparens)
-(smartparens-global-mode)
-(el-get 'sync 'rainbow-delimiters)
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(use-package smartparens
+  :config
+  (smartparens-global-mode))
+(use-package rainbow-delimiters
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 ;; Cut and paste
 ;(setq x-select-enable-clipboard t)
 ;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; Theme
-(add-to-list 'default-frame-alist '(font . "Liberation Mono:pixelsize=14"))
-(el-get 'sync 'monokai-theme)
-(load-theme 'monokai t)
+;(add-to-list 'default-frame-alist '(font . "Liberation Mono:pixelsize=14"))
+(use-package monokai-theme
+  :config
+  (load-theme 'monokai t))
 
 ;; Tab
 (setq standard-indent 4)
 (setq default-tab-width 4)
 (define-key text-mode-map (kbd "TAB") 'self-insert-command)
-(el-get 'sync 'indent-guide)
-(indent-guide-global-mode)
+(use-package indent-guide
+  :config
+  (indent-guide-global-mode))
 ;; (set-face-background 'indent-guide-face "dimgray")
 
 ;; Backup dir
@@ -145,11 +139,13 @@
 (setq delete-old-versions t)
 
 ;; Helm
-(el-get 'sync 'helm)
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(helm-mode t)
+(use-package helm
+  :config
+  (helm-mode t)
+  :bind
+  ("C-x C-f". 'helm-find-files)
+  ("M-x" . 'helm-M-x)
+  ("M-y" . 'helm-show-kill-ring))
 
 ;; Open recent files
 (require 'recentf)
@@ -191,7 +187,7 @@
 
 ;; TRAMP
 (require 'tramp)
-(setq tramp-default-method "ssh")
+(setq tramp-default-method "sshx")
 ; https://emacs.stackexchange.com/a/17579
 (setq projectile-mode-line "Projectile")
 ; https://emacs.stackexchange.com/a/37855
@@ -205,7 +201,6 @@
 
 ;; Mode specific
 ;; Markdown mode
-(el-get 'sync 'markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
@@ -214,7 +209,6 @@
 ;; (setq jedi:complete-on-dot t)
 
 ;; Language server
-(el-get 'sync 'lsp-mode)
 (add-hook 'python-mode-hook #'lsp)
 (add-hook 'rust-mode-hook #'lsp)
 
@@ -236,13 +230,13 @@
 ;;             (setq sgml-basic-offset 4)
 ;;             (setq indent-tabs-mode t)))
 
-;; Comint
-(setq comint-prompt-read-only t)
-(defun my-comint-preoutput-turn-buffer-read-only (text)
-  (propertize text 'read-only t))
-(add-hook
- 'comint-preoutput-filter-functions
- 'my-comint-preoutput-turn-buffer-read-only)
+;; ;; Comint
+;; (setq comint-prompt-read-only t)
+;; (defun my-comint-preoutput-turn-buffer-read-only (text)
+;;   (propertize text 'read-only t))
+;; (add-hook
+;;  'comint-preoutput-filter-functions
+;;  'my-comint-preoutput-turn-buffer-read-only)
 
 ;; ;; Auctex
 ;; (el-get 'sync 'auctex)
@@ -270,9 +264,6 @@
 ;; 	  )
 ;; (setq LaTeX-command-style '(("" "%(PDF)%(latex) -shell-escape %S%(PDFout)")))
 
-(el-get 'sync 'yaml-mode)
-
-(el-get 'nix-mode)
 
 ;; Org mode
 (require 'org)
@@ -287,7 +278,7 @@
 ;; TODO: vlf-mode
 (defun my-find-file-check-make-large-file-read-only-hook ()
   "If a file is over a given size, make the buffer read only."
-  (when (> (buffer-size) (* 10 1024 1024))
+  (when (> (buffer-size) (* 1 1024 1024))
     (setq buffer-read-only t)
     (buffer-disable-undo)
     (fundamental-mode)
@@ -326,13 +317,10 @@
 	(read-only-mode t)))
 
 ;; Terminal
-(add-hook 'term-mode-hook (lambda () (indent-guide-mode 0)))
-
-(el-get 'sync 'markdown-mode)
-(require 'markdown-mode)
-
-(el-get 'sync 'yaml-mode)
-(require 'yaml-mode)
+(add-hook 'term-mode-hook
+  (lambda ()
+    (indent-guide-mode 0)
+    (toggle-truncate-lines 1)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -343,3 +331,7 @@
  '(tab-width 4)
  '(lsp-prefer-flymake nil)
  '(lsp-pyls-plugins-pycodestyle-enabled nil))
+
+))))
+(config)
+(provide 'config)
