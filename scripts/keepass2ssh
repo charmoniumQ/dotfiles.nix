@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 
 from pathlib import Path
+import random
 import xml.etree.ElementTree as ET
 import os
 import subprocess
+import shlex
 
 if "KEEPASSDB" not in os.environ:
    raise RuntimeError("Please set $KEEPASSDB")
@@ -19,6 +21,8 @@ xml_text = subprocess.run(
 
 xml = ET.fromstring(xml_text)
 
+env_vars = {}
+
 for root in xml.findall("Root"):
    for group in root.findall("Group"):
       for group2 in group.findall("Group"):
@@ -27,6 +31,14 @@ for root in xml.findall("Root"):
                string.find("Key").text: string.find("Value").text
                for string in entry.findall("String")
             }
+            if "env_vars" in entry_attrs:
+               for line in entry_attrs["env_vars"].split("\n"):
+                  line = line.strip()
+                  if line:
+                     key, val = line.split("=")
+                     env_vars[key] = val
+                     print(f"Installed env var {key}")
+
             if "ssh_private_key" in entry_attrs:
                name = entry_attrs["Title"]
                ssh_private_key = entry_attrs["ssh_private_key"].strip() + "\n"
@@ -34,8 +46,21 @@ for root in xml.findall("Root"):
                subprocess.run(
                   ["ssh-add", "-"],
                   check=True,
+                  capture_output=True,
                   input=ssh_private_key,
                   text=True,
                   env={**os.environ, "SSH_ASKPASS_REQUIRE": "never"},
                )
+               print(f"Installed ssh-key {name}")
                (ssh_pubkey_dir / name).with_suffix(".pub").write_text(ssh_public_key)
+
+file = Path(f"/tmp/{random.randint(0, 10000)}.sh")
+file.write_text("\n".join([
+   *[
+      f"export {key}={shlex.quote(val)}"
+      for key, val in env_vars.items()
+   ],
+   f"rm -rf {file!s}",
+   "",
+]))
+print(f"Run the following to install env vars:\n    . {file!s}")
