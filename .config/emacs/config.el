@@ -13,6 +13,13 @@
 (global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-z C-z") 'suspend-emacs)
 
+; Vterm
+(use-package vterm
+  :config
+  (unbind-key "C-c C-t")
+  :bind
+  ("C-c C-j" . vterm-copy-mode))
+
 ; Regex
 (require 're-builder)
 ; reb-re-syntax 'string eliminates the need for "double-scaping" your regex
@@ -41,6 +48,8 @@
                                orig-fg))))
 ; transparency
 (set-frame-parameter nil 'alpha '(85 . 80))
+; TODO: set alpha on all new frames.
+
 ; Mode line
 (line-number-mode t)
 (column-number-mode t)

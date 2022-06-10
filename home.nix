@@ -1,5 +1,10 @@
 { config, pkgs, lib, ... }:
 {
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+  };
   programs = {
     home-manager = {
       # Let Home Manager install and manage itself.
@@ -14,7 +19,6 @@
     };
     emacs = {
       enable = true;
-      # (load "~/box/dotfiles.nix/.config/emacs/init.el")
       extraPackages = epkgs: [
         epkgs.use-package
         epkgs.nyan-mode
@@ -31,6 +35,7 @@
         epkgs.lsp-mode
         epkgs.nix-mode
         epkgs.yaml-mode
+        epkgs.multi-vterm
         epkgs.vterm
         (epkgs.trivialBuild {
           pname = "config";
@@ -216,6 +221,7 @@
       pkgs.bat
       pkgs.pipenv
       pkgs.poetry
+      pkgs.nodejs
       pkgs.nodePackages.npm
       pkgs.magic-wormhole
       pkgs.meld
@@ -233,6 +239,7 @@
 
       pkgs.mpv
       pkgs.mplayer
+      pkgs.vmware-horizon-client
     ];
     
     # This value determines the Home Manager release that your
