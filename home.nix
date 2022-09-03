@@ -37,6 +37,11 @@
         epkgs.yaml-mode
         epkgs.multi-vterm
         epkgs.vterm
+        epkgs.lua-mode
+        epkgs.clojure-mode
+        epkgs.cider
+        epkgs.paredit
+        epkgs.parinfer-rust-mode
         (epkgs.trivialBuild {
           pname = "config";
           src = ./.config/emacs;
@@ -158,6 +163,9 @@
     username = "sam";
     homeDirectory = "/home/sam";
     # TODO: Separate user/username from the rest
+    sessionPath = [
+      "$HOME/.local/bin"
+    ];
 
     packages = [
       (pkgs.stdenv.mkDerivation {
@@ -226,6 +234,9 @@
       pkgs.magic-wormhole
       pkgs.meld
       pkgs.gitg
+      pkgs.nix-du
+      pkgs.graphviz
+      pkgs.xdot
 
       # requires OpenGL, which Nix is bad at supporting.
       # I install this through the system package manager instead.

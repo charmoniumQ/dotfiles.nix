@@ -331,6 +331,10 @@
     (indent-guide-mode 0)
     (toggle-truncate-lines 1)))
 
+;-)
+(require 'zone)
+(zone-when-idle 120)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
