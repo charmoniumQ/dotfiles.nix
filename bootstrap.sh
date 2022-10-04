@@ -62,3 +62,5 @@ if ! groups $(whoami) | grep docker; then
 	sudo groupadd docker
 	sudo usermod -aG docker $(whoami)
 fi
+
+# snap install zoom spotify discord slack fractal telegram beeper firefox google-chrome
