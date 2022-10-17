@@ -23,6 +23,6 @@ epkgs: [
   epkgs.parinfer-rust-mode
   (epkgs.trivialBuild {
     pname = "config";
-    src = ./emacs-config.el;
+    src = ./config.el;
   })
 ]

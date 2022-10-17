@@ -30,6 +30,7 @@ pkgs: gui: [
   pkgs.ruby_2_7
   pkgs.gnupg
   pkgs.bat
+  pkgs.tree
   pkgs.pipenv
   pkgs.poetry
   pkgs.nodejs
@@ -40,6 +41,7 @@ pkgs: gui: [
   pkgs.mtr
   pkgs.pwgen
   pkgs.xkcdpass
+  pkgs.nix-index
   (pkgs.python39.withPackages (ps: with ps; [
     click
     typer
@@ -58,14 +60,14 @@ pkgs: gui: [
   ]))
   (pkgs.stdenv.mkDerivation {
     name = "scripts";
-    src = ./scripts;
+    src = ./../scripts;
     installPhase = ''
       chmod +x *
       mkdir -p $out/bin
       cp * $out/bin/
     '';
   })
-] + (if gui then [
+] ++ (if gui then [
   # Only packages which do not require GPU acceleration
   pkgs.gitg
   pkgs.meld

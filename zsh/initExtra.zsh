@@ -12,13 +12,11 @@ if [[ "$INSIDE_EMACS" = 'vterm' ]] \
 fi
 
 # Spack
-if [ -d $XDG_DATA_HOME/spack ]; then
-  SPACK_USER_CONFIG_PATH=$XDG_DATA_HOME/spack-data
-  SPACK_USER_CACHE_PATH=$XDG_CACHE_HOME/spack
+if [ -f $XDG_DATA_HOME/spack/share/spack/setup-env.sh ]; then
   source $XDG_DATA_HOME/spack/share/spack/setup-env.sh
 fi
 
 # Spaceship theme
 if [ -f ~/.config/zsh/plugins/spaceship-prompt/spaceship.zsh-theme ]; then
-	. ~/.config/zsh/plugins/spaceship-prompt/spaceship.zsh-theme
+  . ~/.config/zsh/plugins/spaceship-prompt/spaceship.zsh-theme
 fi

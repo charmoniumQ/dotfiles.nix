@@ -18,9 +18,13 @@
     };
     emacs = {
       enable = true;
-      extraPackages = import ./emacs-packages.nix;
+      extraPackages =
+        if (import ./user.nix).installPackages
+          then (import ./emacs/packages.nix)
+          else (epkgs: [])
+	;
     };
-    zsh = import ./zsh.nix pkgs config;
+    zsh = import ./zsh/zsh.nix pkgs config;
     git = {
       enable = true;
       userEmail = (import ./user.nix).email;
@@ -47,7 +51,11 @@
   home = {
     username = (import ./user.nix).unixName;
     homeDirectory = (import ./user.nix).homeDirectory;
-    packages = import ./packages.nix pkgs (import ./user.nix).gui;
+    packages =
+      if (import ./user.nix).installPackages
+        then ((import ./nix/packages.nix) pkgs (import ./user.nix).gui)
+        else []
+      ;
     stateVersion = "22.11";
     sessionVariables = {
       #PS1 = "\$PREPEND_TO_PS1$PS1";
@@ -77,7 +85,13 @@
       _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=${config.xdg.configHome}/java";
       CONDARC = "${config.xdg.configHome}/conda/condarc";
       KEEPASSDB = "$HOME/box/Database.kdbx";
+      SPACK_USER_CONFIG_PATH="${config.xdg.dataHome}/spack-data";
+      SPACK_USER_CACHE_PATH="${config.xdg.cacheHome}/spack";
     };
   };
-  dconf = import ./dconf.nix;
+  dconf =
+    if (import ./user.nix).gui
+      then import ./nix/dconf.nix
+      else {}
+    ;
 }
