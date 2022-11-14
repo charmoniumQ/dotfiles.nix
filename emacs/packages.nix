@@ -21,6 +21,7 @@ epkgs: [
   epkgs.cider
   epkgs.paredit
   epkgs.parinfer-rust-mode
+  epkgs.rust-mode
   (epkgs.trivialBuild {
     pname = "config";
     src = ./config.el;

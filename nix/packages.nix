@@ -12,6 +12,9 @@ pkgs: gui: [
   pkgs.trash-cli
   pkgs.google-cloud-sdk
   pkgs.rclone
+  pkgs.figlet
+  pkgs.cowsay
+  pkgs.neofetch
   pkgs.asciinema
   pkgs.mosh
   pkgs.moreutils
@@ -57,6 +60,8 @@ pkgs: gui: [
     pipx
     rich
     pip
+    mypy
+    jupyter
   ]))
   (pkgs.stdenv.mkDerivation {
     name = "scripts";

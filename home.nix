@@ -22,7 +22,7 @@
         if (import ./user.nix).installPackages
           then (import ./emacs/packages.nix)
           else (epkgs: [])
-	;
+      ;
     };
     zsh = import ./zsh/zsh.nix pkgs config;
     git = {

@@ -46,9 +46,14 @@
           (run-with-idle-timer 0.3 nil
                                (lambda (fg) (set-face-background 'mode-line fg))
                                orig-fg))))
+
 ; transparency
+(add-to-list
+ 'after-make-frame-functions
+ (lambda
+   (frame)
+   (set-frame-parameter frame 'alpha '(85 . 80))))
 (set-frame-parameter nil 'alpha '(85 . 80))
-; TODO: set alpha on all new frames.
 
 ; Mode line
 (line-number-mode t)
