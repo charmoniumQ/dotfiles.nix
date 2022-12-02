@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# https://superuser.com/questions/103612/emacs-as-a-pager
+file="$(mktemp /tmp/emacsstdin-XXXXX)"
+emacsclient --eval "(find-file-read-only \"${file}\")"
+trap "echo rm ; rm ${file}; exit" SIGINT
+cat >"${file}"
+rm "${file}"

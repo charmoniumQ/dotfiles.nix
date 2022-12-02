@@ -62,6 +62,7 @@ pkgs: gui: [
     pip
     mypy
     jupyter
+    virtualenv
   ]))
   (pkgs.stdenv.mkDerivation {
     name = "scripts";

@@ -7,7 +7,7 @@ epkgs: [
   epkgs.smartparens
   epkgs.rainbow-delimiters
   epkgs.monokai-theme
-  epkgs.indent-guide
+  epkgs.highlight-indent-guides
   epkgs.helm
   epkgs.magit
   epkgs.markdown-mode

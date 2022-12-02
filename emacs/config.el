@@ -1,11 +1,8 @@
 ; TODO: see https://tecosaur.github.io/emacs-config/config.html#pretty-code-blocks
 ; TOOD: https://github.com/acowley/my-emacs/blob/main/emacs.nix
 
-										;(require 'config)
-(defun config ()
-  (when (require 'use-package nil 'noerror)
-   (eval '(progn
-
+(when (require 'use-package nil 'noerror) (eval '(progn
+	; I think this is (eval '(...)) needed to delay the evaluation of use-package macros
 ;; Macros
 (global-set-key (kbd "C-<f1>") 'apply-macro-to-region-lines)
 
@@ -50,8 +47,7 @@
 ; transparency
 (add-to-list
  'after-make-frame-functions
- (lambda
-   (frame)
+ (lambda (frame)
    (set-frame-parameter frame 'alpha '(85 . 80))))
 (set-frame-parameter nil 'alpha '(85 . 80))
 
@@ -59,7 +55,7 @@
 (line-number-mode t)
 (column-number-mode t)
 ; Highligt current line
-(global-hl-line-mode t)
+;(global-hl-line-mode t)
 (use-package nyan-mode
   :config
   (nyan-mode t)
@@ -96,7 +92,7 @@
   (interactive)
   (let ((filename (buffer-file-name)))
  	(if (not (and filename (file-exists-p filename)))
- 		(message "Buffer is nto visiting an existing file.")
+ 		(message "Buffer is not visiting an existing file.")
  	  (let ((new-name (read-file-name "New filename: ")))
  		(rename-file filename new-name t)
  		(set-visited-file-name new-name t t)))))
@@ -140,9 +136,16 @@
 (setq standard-indent 4)
 (setq default-tab-width 4)
 (define-key text-mode-map (kbd "TAB") 'self-insert-command)
-(use-package indent-guide
+; I think this indent-guide causes this bug:
+; https://emacs.stackexchange.com/questions/74756/how-to-debug-emacsclient
+;; (use-package indent-guide
+;;   :config
+;;   (indent-guide-global-mode -1))
+(use-package highlight-indent-guides
   :config
-  (indent-guide-global-mode))
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (setq highlight-indent-guides-method 'character))
+
 ;; (set-face-background 'indent-guide-face "dimgray")
 
 ;; Backup dir
@@ -333,12 +336,11 @@
 ;; Terminal
 (add-hook 'term-mode-hook
   (lambda ()
-    (indent-guide-mode 0)
     (toggle-truncate-lines 1)))
 
 ;-)
-(require 'zone)
-(zone-when-idle 120)
+;; (require 'zone)
+;; (zone-when-idle 120)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -350,6 +352,5 @@
  '(lsp-prefer-flymake nil)
  '(lsp-pyls-plugins-pycodestyle-enabled nil))
 
-))))
-(config)
+)))
 (provide 'config)

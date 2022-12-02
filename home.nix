@@ -23,6 +23,7 @@
           then (import ./emacs/packages.nix)
           else (epkgs: [])
       ;
+      #extraConfig = builtins.replaceStrings ["\n"] [" "] (builtins.readFile ./emacs/config.el);
     };
     zsh = import ./zsh/zsh.nix pkgs config;
     git = {
@@ -55,7 +56,9 @@
       if (import ./user.nix).installPackages
         then ((import ./nix/packages.nix) pkgs (import ./user.nix).gui)
         else []
-      ;
+    ;
+    # For pipx and friends
+    sessionPath = ["$HOME/.local/bin"];
     stateVersion = "22.11";
     sessionVariables = {
       #PS1 = "\$PREPEND_TO_PS1$PS1";
