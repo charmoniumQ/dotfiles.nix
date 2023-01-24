@@ -59,7 +59,7 @@ pkgs: gui: [
     pyyaml
     pipx
     rich
-    pip
+    # pip # Nix's pip can't actually do much since it's talking to an impermanent store
     mypy
     jupyter
     virtualenv

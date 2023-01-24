@@ -39,6 +39,17 @@
         enable = true;
       };
     };
+    starship = {
+      enable = true;
+      settings = {
+        gcloud = {
+          disabled = true;
+        };
+        package = {
+          disabled = true;
+        };
+      };
+    };
   };
   services = {
     emacs = {
