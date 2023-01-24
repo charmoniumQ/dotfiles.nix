@@ -221,6 +221,11 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+;; Terraform and HCL
+(use-package hcl-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tf\\'" . hcl-mode)))
+
 ;; python
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)

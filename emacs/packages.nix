@@ -22,6 +22,7 @@ epkgs: [
   epkgs.paredit
   epkgs.parinfer-rust-mode
   epkgs.rust-mode
+  epkgs.hcl-mode
   (epkgs.trivialBuild {
     pname = "config";
     src = ./config.el;
