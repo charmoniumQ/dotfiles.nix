@@ -24,8 +24,8 @@
 (setq reb-re-syntax 'string)
 
 ;; UI
-; S-<Left>, S-<Right>, S-<Up>, S-<Down> for window navigation
-(windmove-default-keybindings)
+;(windmove-default-keybindings C-m)
+; windmove conflicts with Org or window manager
 (setq inhibit-startup-screen t)
 (setq truncate-lines t)
 (setq truncate-partial-width-windows t)
@@ -127,7 +127,14 @@
 ;(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
 ;; Theme
-;(add-to-list 'default-frame-alist '(font . "Liberation Mono:pixelsize=14"))
+;https://www.emacswiki.org/emacs/SetFonts#h5o-2
+(setq font "Fira Code-10")
+;(add-to-list 'default-frame-alist '(font . font ))
+;(set-face-attribute 'default t :font font )
+(set-face-attribute 'default nil :font font )
+;(set-frame-font font nil t)
+(use-package fira-code-mode
+  :config (global-fira-code-mode))
 (use-package monokai-theme
   :config
   (load-theme 'monokai t))

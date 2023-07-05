@@ -1,7 +1,9 @@
 pkgs: config: {
   enable = true;
   enableCompletion = true;
-  enableSyntaxHighlighting = true;
+  syntaxHighlighting = {
+    enable = true;
+  };
   enableAutosuggestions = true;
   #historySubstringSearch = {
   #  enable = true;

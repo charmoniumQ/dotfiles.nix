@@ -60,12 +60,17 @@
       defaultEditor = true;
     };
   };
+  fonts = {
+    fontconfig = {
+      enable = true;
+    };
+  };
   home = {
     username = (import ./user.nix).unixName;
     homeDirectory = (import ./user.nix).homeDirectory;
     packages =
       if (import ./user.nix).installPackages
-        then ((import ./nix/packages.nix) pkgs (import ./user.nix).gui)
+        then ((import ./packages.nix) pkgs (import ./user.nix).gui)
         else []
     ;
     # For pipx and friends
@@ -105,7 +110,24 @@
   };
   dconf =
     if (import ./user.nix).gui
-      then import ./nix/dconf.nix
+      then import ./dconf.nix
       else {}
-    ;
+  ;
+  xdg = {
+    desktopEntries = {
+      emacs = {
+        name = "Emacs (Nix HM)";
+        genericName = "Text Editor";
+        exec = "${pkgs.emacs}/bin/emacsclient %U";
+        terminal = false;
+        categories = [ "Utility" "TextEditor" ];
+        mimeType = [ "text/plain" ];
+        icon = "${pkgs.emacs}/share/icons/hicolor/scalable/apps/emacs.svg";
+      };
+    };
+  };
 }
+
+  /*
+nix-channel --update; nix-env -iA nixpkgs.nix nixpkgs.cacert home-manager; systemctl daemon-reload; systemctl restart nix-daemon
+*/

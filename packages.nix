@@ -1,13 +1,15 @@
 pkgs: gui: [
+  pkgs.stdenv.cc.cc.lib
+  pkgs.comma
   pkgs.tmux
   pkgs.git
   pkgs.zsh
   pkgs.exa
-  pkgs.bpytop
   pkgs.htop
+  pkgs.btop
   pkgs.glances
   pkgs.direnv
-  pkgs.dtrx
+  #pkgs.dtrx
   pkgs.ncdu
   pkgs.trash-cli
   pkgs.google-cloud-sdk
@@ -30,7 +32,7 @@ pkgs: gui: [
   pkgs.bfg-repo-cleaner
   pkgs.ripgrep
   pkgs.pandoc
-  pkgs.ruby_2_7
+  pkgs.ruby
   pkgs.gnupg
   pkgs.bat
   pkgs.tree
@@ -45,7 +47,7 @@ pkgs: gui: [
   pkgs.pwgen
   pkgs.xkcdpass
   pkgs.nix-index
-  (pkgs.python39.withPackages (ps: with ps; [
+  (pkgs.python311.withPackages (ps: with ps; [
     click
     typer
     tqdm
@@ -57,16 +59,16 @@ pkgs: gui: [
     requests
     lxml
     pyyaml
-    pipx
-    rich
+    #pipx
+    #rich
     # pip # Nix's pip can't actually do much since it's talking to an impermanent store
-    mypy
-    jupyter
+    #mypy
+    #jupyter
     virtualenv
   ]))
   (pkgs.stdenv.mkDerivation {
     name = "scripts";
-    src = ./../scripts;
+    src = ./scripts;
     installPhase = ''
       chmod +x *
       mkdir -p $out/bin
@@ -78,4 +80,6 @@ pkgs: gui: [
   pkgs.gitg
   pkgs.meld
   pkgs.xdot
+  pkgs.fira-code
+  pkgs.fira-code-symbols
 ] else [])

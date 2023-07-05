@@ -29,3 +29,8 @@ fi
 if [ -f $XDG_DATA_HOME/spack/share/spack/setup-env.sh ]; then
   source $XDG_DATA_HOME/spack/share/spack/setup-env.sh
 fi
+
+# Rust
+if [[ -f $XDG_DATA_HOME/cargo/env ]]; then
+  . $XDG_DATA_HOME/cargo/env
+fi
