@@ -27,7 +27,7 @@ def main(find: str, replace: str, dry_run: bool, print_src: bool, print_dst: boo
 
         if print_src or print_dst:
             for line_replacement in line_buffer:
-                if type(line_replacement) == tuple:
+                if isinstance(line_replacement, tuple):
                     if print_dst:
                         print(line_replacement[0].strip().decode())
                     if print_src or print_dst:
@@ -36,7 +36,7 @@ def main(find: str, replace: str, dry_run: bool, print_src: bool, print_dst: boo
         if not dry_run:
             with open(file, "wb") as f:
                 for line_replacement in line_buffer:
-                    if type(line_replacement) == tuple:
+                if isinstance(line_replacement, tuple):
                         f.write(line_replacement[1])
                     else:
                         f.write(line_replacement)

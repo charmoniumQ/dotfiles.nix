@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+import subprocess
+import sys
+import itertools
+import random as random_module
+import typing
+import typer
+import json
+import pathlib
+from collections.abc import Mapping, Iterable
+
+
+_T = typing.TypeVar("_T")
+_V = typing.TypeVar("_V")
+
+def powerset(iterable: Iterable[_T]):
+    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    # See https://docs.python.org/3/library/itertools.html#itertools-recipes
+    s = list(iterable)
+    return itertools.chain.from_iterable(
+        itertools.combinations(s, r)
+        for r in range(len(s) + 1)
+    )
+
+
+def filter_values(dct: Mapping[_T, _V], filter: typing.Callable[[_V], bool]) -> Mapping[_T, _V]:
+    return {
+        key: value
+        for key, value in dct.items()
+        if filter(value)
+    }
+
+
+def format_env_diff(old_env: Mapping[str, str], new_env: Mapping[str, str]) -> str:
+    result = []
+    for key in old_env.keys() | new_env.keys():
+        if key not in new_env:
+            result.append(f"-{key}")
+        elif key not in old_env:
+            result.append(f"+{key}")
+        elif old_env[key] != new_env[key]:
+            result.append(f"~{key}")
+    return " ".join(result)
+
+
+def main(
+        bad_env_json: typer.FileText,
+        good_env_json: typer.FileText,
+        cmd: list[str],
+        seed: int = 0,
+        exhaustively_search: int = 16
+) -> None:
+    """Find the smallest set of environment variables to change in
+    bad_env_json which causes cmd to succeed, given that it already
+    succeeds in good_env_json.
+
+    """
+
+    rng = random_module.Random(seed)
+    bad_env: Mapping[str, str] = json.loads(bad_env_json.read())
+    good_env: Mapping[str, str] = json.loads(good_env_json.read())
+
+    def modify_bad_env(candidate_keys: set[str]) -> Mapping[str, str]:
+        return filter_values({
+            **bad_env,
+            **{
+                key: good_env.get(key, None)
+                for key in candidate_keys
+            }
+        }, lambda value: value is not None)
+
+    def success(candidate_env: Mapping[str, str]) -> bool:
+        proc = subprocess.run(
+            cmd,
+            env=candidate_env,
+            check=False,
+            capture_output=True,
+        )
+        print(proc.stdout.decode() + proc.stderr.decode())
+        return proc.returncode == 0
+
+    if success(bad_env):
+        raise RuntimeError("Assumption violated; cmd should fail with bad_env")
+
+    if not success(good_env):
+        raise RuntimeError("Assumption violated; cmd should succeed with good_env")
+
+    while True:
+        differing_keys = sorted(list({
+            key
+            for key in bad_env.keys() | good_env.keys()
+            if key not in bad_env or key not in good_env or bad_env[key] != good_env[key]
+        }))
+        if len(differing_keys) > exhaustively_search:
+            # Do random sampling (less complete) because powerset is too big
+            offset = 2
+            print(f"Sampling candidate changes of size={len(differing_keys) // 2}+/-{offset}", file=sys.stderr)
+            candidates = list(
+                rng.sample(differing_keys, len(differing_keys) // 2 + int(round(rng.random() * 2 * offset - offset)))
+                for _ in range(2**exhaustively_search)
+            )
+        else:
+            # Exhaustively search the powerset (more complete)
+            # We randomly shuffle powerset, so we aren't trying all of the "change one env var" candidates before trying all of the "change two env var" candidates.
+            print(f"Considering candidate changes of 0<=size<{len(differing_keys)}", file=sys.stderr)
+            candidates = list(powerset(differing_keys))
+            rng.shuffle(candidates)
+        for i, candidate in enumerate(candidates):
+            candidate_env = modify_bad_env(candidate)
+            successful = success(candidate_env)
+            print(
+                f"candidate {i+1: >5}/{len(candidates): >5}",
+                "good" if successful else "bad ",
+                format_env_diff(bad_env, candidate_env),
+                file=sys.stderr,
+            )
+            if successful:
+                good_env = candidate_env
+                break
+        else:
+            break
+
+    print("Smallest known good env:", format_env_diff(bad_env, good_env), file=sys.stderr)
+    print(json.dumps(good_env))
+
+
+typer.run(main)

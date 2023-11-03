@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+import sys, json, pathlib, os
+
+env = json.loads(pathlib.Path(sys.argv[1]).read_text())
+os.execvpe(sys.argv[2], sys.argv[2:], env)

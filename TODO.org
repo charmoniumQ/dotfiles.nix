@@ -1,0 +1,31 @@
+# Short-term
+
+- [ ] Make vterm work in Emacs
+- [x] Use Keepassxc to store SSH-keys and GPG-keys
+- [ ] Switch Keepassxc -> Vaultwarden/Bitwarden
+- [ ] emacsclient XDG directory
+- [x] Make .local/bin scripts
+  - [x] Add to $PATH
+  - [x] Install deps
+- [x] Split into modules
+- [x] Install scc
+- [x] Switch off of oh-my-zsh
+- [x] Install spaceship theme
+- [ ] Have multiple vterms in one Emacs
+- [ ] exa -> lsd
+- [ ] Switch to nerdfonts
+- [ ] Switch to flake
+- [ ] zsh -> Xonsh
+- [ ] ncdu -> gdu
+- [ ] Get fzf
+- [ ] Doom Emacs
+- [ ] Make shell tell Emacs cwd
+
+# Long-term
+
+- [x] Switch .config/emacs/init.el package manager from el-get to ~straight.el~ Nixpkgs.
+- [ ] package rclonesync-v2
+- [ ] Use fira-code in Emacs
+- [ ] Add a step to bootstrap-post.sh that configures the connection.
+
+https://www.reddit.com/r/emacs/comments/8hbp8e/what_window_manager_and_terminal_emulator_do_you/
