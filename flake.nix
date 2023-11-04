@@ -45,6 +45,7 @@
             ./lib/home-manager.nix
             ./lib/nixConf.nix
             ./lib/xdg-ninja.nix
+            ./lib/xonsh.nix
             ./lib/zsh.nix
           ];
         };

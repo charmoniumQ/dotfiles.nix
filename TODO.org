@@ -1,31 +1,25 @@
-# Short-term
-
 - [ ] Make vterm work in Emacs
-- [x] Use Keepassxc to store SSH-keys and GPG-keys
+  - [ ] Have multiple vterms in one Emacs
+  - [ ] Test htop with F10
+- [X] Use Keepassxc to store SSH-keys and GPG-keys
 - [ ] Switch Keepassxc -> Vaultwarden/Bitwarden
-- [ ] emacsclient XDG directory
-- [x] Make .local/bin scripts
-  - [x] Add to $PATH
-  - [x] Install deps
-- [x] Split into modules
-- [x] Install scc
-- [x] Switch off of oh-my-zsh
-- [x] Install spaceship theme
-- [ ] Have multiple vterms in one Emacs
-- [ ] exa -> lsd
-- [ ] Switch to nerdfonts
-- [ ] Switch to flake
+- [ ] Show home-manager desktop files in Gnome (emacsclient)
+  -  https://www.google.com/search?hl=en&q=home%20manager%20xdg%20desktop%20entries
+- [X] Make .local/bin scripts
+  - [X] Add to $PATH
+  - [X] Install deps
+- [X] Split into modules
+- [X] Install scc
+- [X] Switch off of oh-my-zsh
+- [X] Install spaceship theme
+- [X] exa -> lsd
+- [X] Switch to nerdfonts
+- [X] Switch to flake
 - [ ] zsh -> Xonsh
-- [ ] ncdu -> gdu
+- [X] ncdu -> gdu
 - [ ] Get fzf
-- [ ] Doom Emacs
+- [X] Doom Emacs
 - [ ] Make shell tell Emacs cwd
+- [X] Switch .config/emacs/init.el package manager from el-get to ~straight.el~ Nixpkgs.
 
-# Long-term
-
-- [x] Switch .config/emacs/init.el package manager from el-get to ~straight.el~ Nixpkgs.
-- [ ] package rclonesync-v2
-- [ ] Use fira-code in Emacs
-- [ ] Add a step to bootstrap-post.sh that configures the connection.
-
-https://www.reddit.com/r/emacs/comments/8hbp8e/what_window_manager_and_terminal_emulator_do_you/
+[[https://www.reddit.com/r/emacs/comments/8hbp8e/what_window_manager_and_terminal_emulator_do_you/]]

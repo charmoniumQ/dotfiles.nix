@@ -46,6 +46,7 @@
       ls = "lsd";
       cp = "fcp";
       tree = "lsd --human-readable --long --timesort --tree";
+      rs = "rsync  --archive --verbose --progress --partial --human-readable";
 
       # Shortcuts
       pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";

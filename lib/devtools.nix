@@ -1,35 +1,4 @@
 { pkgs, config, ... }:
-let
-  python = pkgs.python311;
-  pythonPkgs = with python.pkgs; [
-    click
-    typer
-    tqdm
-    numpy
-    scipy
-    pandas
-    matplotlib
-    ipython
-    requests
-    lxml
-    pyyaml
-    mypy
-    jupyter
-    virtualenv
-
-    # xonsh deps
-    ply
-    pygments
-    prompt-toolkit
-    setproctitle
-
-    # Package managers:
-    #pip # use virtualenv instead
-    pipx
-
-    (python.pkgs.toPythonModule pkgs.xonsh)
-  ];
-in
 {
   home = {
     packages = with pkgs; [
@@ -58,12 +27,6 @@ in
       meld
       xdot
       starship
-      # ((xonsh.override ({
-      #   python3Packages = python.pkgs;
-      # })).overrideAttrs (self: super: {
-      #   propagatedBuildInputs = super.propagatedBuildInputs ++ pythonPkgs;
-      # }))
-      (python.withPackages (ps: pythonPkgs))
     ];
     shellAliases = {
       ipy = "ipython";
@@ -71,6 +34,9 @@ in
     };
     # For pipx and friends
     sessionPath = ["$HOME/.local/bin"];
+    sessionVariables = {
+      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
+    };
   };
   programs = {
     direnv = {
