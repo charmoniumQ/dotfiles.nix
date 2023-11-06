@@ -13,7 +13,6 @@
       "org/gnome/desktop/background" = {
         draw-background = true;
         picture-options = "zoom";
-        # TODO: download image
         picture-uri = pkgs.stdenv.fetchurl {
           url = "https://upload.wikimedia.org/wikipedia/commons/a/a8/Nighthawks_by_Edward_Hopper_1942.jpg";
           hash = "";

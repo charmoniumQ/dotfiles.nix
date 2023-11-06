@@ -3,8 +3,10 @@
 
 ;;; Code:
 
-; https://github.com/doomemacs/doomemacs/blob/master/docs/modules.org
+(require 'doom-modules)
 
+; https://github.com/doomemacs/doomemacs/blob/master/docs/modules.org
+; https://docs.doomemacs.org/latest/#/modules
 (doom!
  :checkers
  (syntax +childframe)
@@ -23,7 +25,6 @@
  ;;(format +onsave)
  parinfer
  word-wrap
- ; TODO: figure out how truncate lines works
 
  :emacs
  dired
@@ -33,34 +34,32 @@
  vc
 
  :lang
- ;; (cc +lsp)
- ;; (clojure +lsp)
+ (cc +lsp)
+ (clojure +lsp)
  emacs-lisp
- ;; (ess +lsp)
- ;; (haskell +dante)
+ (ess +lsp)
+ (haskell +dante)
  (json +lsp)
- ;; (java +lsp)
- ;; (javascript +lsp)
- ;; (latex +latexmk +cdlatex +fold +lsp)
+ (java +lsp)
+ (javascript +lsp)
+ (latex +latexmk +cdlatex +fold +lsp)
  (markdown +grip)
  nix
  (org +brain +dragndrop +pretty)
- ;plantuml
+ plantuml
  (python +lsp +poetry)
- ;(rust +lsp)
+ (rust +lsp)
  (sh +lsp)
  (yaml +lsp)
- ; TODO: uncomment langs
 
  :os
  tty
 
  :term
- term
+ vterm
  ; TODO switch to vterm
 
  :tools
- ansible
  debugger
  direnv
  (docker +lsp)
@@ -70,9 +69,9 @@
  gist
  (lsp +peek)
  (magit +forge)
+ ; TODO: learn how to use magit +forge https://magit.vc/manual/forge.html#Getting-Started
  make
  pdf
- terraform
 
  :ui
  :dired
@@ -87,13 +86,13 @@
  hl-todo
  indent-guides
  ;(ligatures +extra)
- ;TODO: Get ligatures to work
  modeline
  ;TODO: do other UI improvements
  ;nav-flash
  ;neotree
  ophints
  (popup +all +defaults)
+ switch-select
  ;tabs
  ;treemacs
  ;unicode

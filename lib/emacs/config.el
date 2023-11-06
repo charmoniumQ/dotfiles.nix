@@ -1,17 +1,26 @@
 ;;; config.el --- Summary:
 ;;; Commentary:
 
-; UI
+;;; Code:
+
+(require 'doom-modules)
+(require 'doom-ui)
+(require 'doom-keybinds)
+
+; Fonts
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
+
+; Line nums
 (setq display-line-numbers-type t)
-(setq confirm-kill-emacs nil)
+
 ; TODO: theme with catpuccin
+
 ; Start fullscreen
 (add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
-; Mark functionality
+; Delete mark when I type over it
 (delete-selection-mode t)
 
 ; Rename file
@@ -32,18 +41,19 @@
             (set-buffer-modified-p nil)
             (message "File '%s' successfully renamed to '%s'"
                      name (file-name-nondirectory new-name)))))))
-(global-set-key (kbd "C-c r") 'my-rename-file)
-(global-unset-key (kbd "C-c r"))
+(map! "C-c r" #'rename-current-buffer-file)
+
+; Ace-window
+(map! "C-x o" #'ace-window)
+
+; Open recent files
+(map! "C-x C-r" #'helm-recentf)
 
 ; Scroll
-; TODO: this
-;; (global-unset-key (kbd "C-M-p"))
-;; (global-unset-key (kbd "C-M-n"))
-;; (global-set-key (kbd "C-M-p") 'scroll-down-line)
-;; (global-set-key (kbd "C-M-n") 'scroll-up-line)
+(map! "M-p" #'scroll-down-line)
+(map! "M-n" #'scroll-up-line)
 
 ; Parens
-; TODO: parens
 (use-package!
  rainbow-delimiters
  :config
@@ -69,27 +79,20 @@
 (setq org-startup-folded t)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 14)
-;; TODO: this
-;; (use-package!
-;;  org-edna
+(use-package!
+ org-edna
+ :config
+ (org-edna-mode))
 
-;;  :config
-;;  (org-edna-mode))
+; Shortcut for terminal
+(map! "C-x C-t" (lambda () (interactive) (ansi-term "xonsh")))
+(setq vterm-shell "xonsh")
 
 ;; Large file
-;; https://superuser.com/a/205463/110096
-;; TODO: vlf-mode
-(defun my-find-file-check-make-large-file-read-only-hook ()
-  "If a file is over a given size, make the buffer read only."
-  (when (> (buffer-size) (* 1 1024 1024))
-    (setq buffer-read-only t)
-    (buffer-disable-undo)
-    (fundamental-mode)
-    (message "Buffer is set to read-only because it is large.  Undo also disabled.")))
-(add-hook 'find-file-hook 'my-find-file-check-make-large-file-read-only-hook)
+(require 'vlf-setup)
 
 ; ANSI colors and pager
-; TODO: this
+; TODO: ANSI pager
 (use-package!
  ansi-color
  :config
@@ -111,9 +114,66 @@
 	   (ansi-colorize)
 	   (read-only-mode t))))
 
-; TODO: rebind recentf to C-x C-f
 ; TODO: figure out why lsd colors aren't working in ansi-term
-; TODO: Switch ansi-term to vterm
+
+(defun hash-values (table)
+  "List of all values in TABLE."
+  (setq values '())
+  (maphash
+   (lambda (key value) (setq values (cons value values)))
+   table)
+  values)
+
+(defun hash-keys (table)
+  "List of all keys in TABLE."
+  (setq keys '())
+  (maphash
+   (lambda (key value) (setq keys (cons key keys)))
+   table)
+  keys)
+
+(defun get-nix-flake-targets ()
+  "Get flake targets (apps, devShells, packages)."
+  (let* ((flake-show-text (shell-command-to-string "nix flake show --json"))
+         (flake-show (json-parse-string (car (last (split-string flake-show-text "\n") 2))))
+         (arch (string-trim (shell-command-to-string "nix-instantiate --eval --expr 'builtins.currentSystem'") "\"" "\"\n"))
+         (flake-show-table (make-hash-table :test 'equal))
+         (_ (mapcar
+             (lambda (nix-target-type)
+               (let* ((nix-targets (gethash arch (gethash nix-target-type flake-show))))
+                 (if nix-targets
+                     (puthash nix-target-type (hash-keys nix-targets) flake-show-table))))
+             (hash-keys flake-show))))
+    flake-show-table))
+
+(defun helm-compile-nix-target ()
+  "Select a Nix flake target to compile."
+  (interactive)
+  (let* ((flake-targets (get-nix-flake-targets))
+         (nix-args (list "--show-trace" "--print-build-logs"))
+         (candidates
+          (append
+           (mapcar (lambda (app     ) (cons (format "%s (app)"      app     ) `("nix" "run"     ,@nix-args ,(format ".#%s" app     )))) (gethash "apps"      flake-targets))
+           (mapcar (lambda (devShell) (cons (format "%s (devShell)" devShell) `("nix" "develop" ,@nix-args ,(format ".#%s" devShell)))) (gethash "devShells" flake-targets))
+           (mapcar (lambda (package ) (cons (format "%s (package)"  package ) `("nix" "build"   ,@nix-args ,(format ".#%s" package )))) (gethash "packages"  flake-targets))
+           (mapcar (lambda (check   ) (cons (format "%s (check)"    package ) `("nix" "check"   ,@nix-args ,(format ".#%s" check   )))) (gethash "checks"    flake-targets))))
+         (command
+          (helm
+           :sources
+           (helm-build-sync-source "helm-nix-targets"
+             :candidates
+             candidates)
+           :buffer
+           "*helm nix targets*")))
+    (progn
+      (setq compile-command (combine-and-quote-strings command))
+      (compile))))
+
+; Increase size of ace-window
+(custom-set-faces!
+  '(aw-leading-char-face
+    :foreground "white" :background "red"
+    :weight bold :height 2.5 :box (:line-width 10 :color "red")))
 
 (provide 'config)
 ;;; config.el ends here
