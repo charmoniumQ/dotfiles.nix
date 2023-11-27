@@ -35,7 +35,10 @@
     in {
       homeConfigurations = {
         sam = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = { inherit nix-doom-emacs; };
+          extraSpecialArgs = {
+            inherit nix-doom-emacs;
+            nproc = 4;
+          };
           inherit pkgs;
           modules = [
             ./user-specific-config.nix
@@ -61,11 +64,20 @@
               switch-package = pkgs.writeShellScriptBin "script" ''
                 ${home-manager.packages.${system}.home-manager}/bin/home-manager \
                   --print-build-logs \
+                  --keep-going \
                   --show-trace \
+                  --flake . \
                   switch
               '';
             in "${switch-package}/bin/script";
             type = "app";
+          };
+        };
+      };
+      devShells = {
+        "${system}" = {
+          default = pkgs.mkShell {
+            packages = [ home-manager.packages.${system}.default ];
           };
         };
       };

@@ -27,7 +27,7 @@
       pwgen
       xkcdpass
       nix-index
-      xclip
+      mosh
       (pkgs.stdenv.mkDerivation {
         name = "scripts";
         src = ./scripts;

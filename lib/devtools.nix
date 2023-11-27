@@ -34,9 +34,6 @@
     };
     # For pipx and friends
     sessionPath = ["$HOME/.local/bin"];
-    sessionVariables = {
-      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
-    };
   };
   programs = {
     direnv = {

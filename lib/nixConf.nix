@@ -1,13 +1,25 @@
-{ pkgs, ... }: {
+{ pkgs, nproc, ... }: {
   nix = {
     package = pkgs.nixUnstable;
     settings = {
-      trusted-substituters = [
+      cores = nproc / 2;
+      max-jobs = nproc / 2;
+      use-xdg-base-directories = true;
+      warn-dirty = false;
+      extra-substituters = [
         "https://nix-community.cachix.org"
         "https://cache.nixos.org/"
+        "https://ai.cachix.org"
       ];
-      trusted-public-keys = [
+      extra-trusted-substituters = [
+        "https://nix-community.cachix.org"
+        "https://cache.nixos.org/"
+        "https://ai.cachix.org"
+      ];
+      extra-trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "ai.cachix.org-1:N9dzRK+alWwoKXQlnn0H6aUx0lU/mspIoz8hMvGvbbc="
       ];
       experimental-features = [ "nix-command" "flakes" ];
     };

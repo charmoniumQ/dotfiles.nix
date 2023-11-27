@@ -18,6 +18,13 @@ let
     jupyter
     virtualenv
 
+    # Language server
+    python-lsp-server
+    jedi
+    pylsp-mypy
+    python-lsp-black
+    python-lsp-ruff
+
     # xonsh deps
     ply
     pygments
@@ -139,10 +146,7 @@ in {
     file = {
       xonsh = {
         text = ''
-          if __xonsh__.env.get('XONTRIB_RC_AWESOME_SHELL_TYPE_CHECK', True) and $SHELL_TYPE not in ['prompt_toolkit', 'none', 'best']:
-              printx("{YELLOW}xontrib-rc-awesome: We recommend to use prompt_toolkit shell by installing `xonsh[full]` package.{RESET}")
-
-          # The SQLite history backend saves command immediately 
+          # The SQLite history backend saves command immediately
           # unlike JSON backend that save the commands at the end of the session.
           $XONSH_HISTORY_BACKEND = 'sqlite'
 
@@ -155,20 +159,32 @@ in {
           # Easy way to go back cd-ing
           @aliases.register("...")
           @aliases.register("....")
-          def _supercomma():
+          def _dotdotdot():
               cd @("../" * (len($__ALIAS_NAME) - 1))
 
-          xontrib load \
-            prompt_starship \
-            jedi \
-            zoxide \
-            fzf-widgets \
-            pipeliner \
-            readable-traceback \
+          from xonsh.xontribs import xontribs_load as _xontribs_load
+          _xontribs_load(["prompt_starship", "jedi", "zoxide", "fzf-widgets", "pipeliner", "readable-traceback"])
 
+          gray = "#a0a4b0"
+          custom_style = {
+              "BLUE": "#88c0d0",
+              "BOLD_BLUE": "bold #88c0d0",
+              "BLACK": "#000000",
+              "INTENSE_BLACK": "#000000",
+              "GREEN": "#8fbcbb",
+              "BOLD_GREEN": "bold #8fbcbb",
+              "Token.Comment": gray,
+              "Token.PTK.Aborting": gray,
+              "Token.Comment.Multiline": gray,
+              "Token.Literal.String.Doc": gray,
+              "Token.Comment.PreprocFile": gray,
+              "Token.PTK.AutoSuggestion": gray,
+          }
+          from xonsh.tools import register_custom_style as _register_custom_style
+          # _register_custom_style("my-nord", custom_style, base="nord")
+          # $XONSH_COLOR_STYLE="my-nord"
 
-          import json, yaml, requests
-
+          import json
           aliasFile = p"$HOME/.config/xonsh/aliases.json"
           if aliasFile.exists():
               for alias, expansion in json.loads(aliasFile.read_text()).items():
@@ -186,6 +202,7 @@ in {
       (pkgs.xonsh.override {
         extraPackages = pypkgs: (pythonPkgs pypkgs);
       })
+      pkgs.ruff
     ];
   };
   programs = {

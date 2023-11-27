@@ -45,7 +45,7 @@
  (latex +latexmk +cdlatex +fold +lsp)
  (markdown +grip)
  nix
- (org +brain +dragndrop +pretty)
+ (org +dragndrop +pretty)
  plantuml
  (python +lsp +poetry)
  (rust +lsp)
@@ -57,7 +57,6 @@
 
  :term
  vterm
- ; TODO switch to vterm
 
  :tools
  debugger
@@ -73,7 +72,6 @@
  make
  pdf
 
- :ui
  :dired
  (dired +ranger +icons)
  (ibuffer +icons)
@@ -85,19 +83,18 @@
  doom-dashboard
  hl-todo
  indent-guides
- ;(ligatures +extra)
+ (ligatures +extra)
  modeline
- ;TODO: do other UI improvements
- ;nav-flash
+ nav-flash
  ;neotree
  ophints
  (popup +all +defaults)
  switch-select
  ;tabs
  ;treemacs
- ;unicode
+ unicode
  vc-gutter
- ;window-select
+ window-select
  ;workspaces
  ;zen
  vi-tilde-fringe)

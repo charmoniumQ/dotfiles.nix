@@ -15,11 +15,20 @@
 - [X] exa -> lsd
 - [X] Switch to nerdfonts
 - [X] Switch to flake
-- [ ] zsh -> Xonsh
+- [X] zsh -> Xonsh
 - [X] ncdu -> gdu
-- [ ] Get fzf
+- [X] Get fzf
 - [X] Doom Emacs
 - [ ] Make shell tell Emacs cwd
 - [X] Switch .config/emacs/init.el package manager from el-get to ~straight.el~ Nixpkgs.
+- [ ] Switch to application launcher
+- [ ] Switch to Hyperland
+- [ ] Add status bar
+  - Clock HH:MM:SS
+  - Battery
+  - org calendar events
+  - org-clocked-in task
+  - notifications
+- Emacs theme should be compatible Xonsh theme
 
 [[https://www.reddit.com/r/emacs/comments/8hbp8e/what_window_manager_and_terminal_emulator_do_you/]]

@@ -15,5 +15,7 @@
 
 (package! trashed)
 
+(package! multi-vterm)
+
 (provide 'packages)
 ;;; packages.el ends here

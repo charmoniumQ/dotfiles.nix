@@ -4,8 +4,13 @@
       firefox
       keepassxc
       pcmanfm
-      # thunderbird
-      # zotero
+      bitwarden
+      imagemagick
+      musescore
+      thunderbird
+      zotero
+      betterbird
+      xsel
     ];
   };
   dconf = {
