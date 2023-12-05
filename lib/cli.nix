@@ -13,6 +13,7 @@
       neofetch
       dtrx
       mosh
+      psmisc
       moreutils
       wgetpaste
       ripgrep
@@ -27,6 +28,7 @@
       pwgen
       xkcdpass
       nix-index
+      file
       mosh
       (pkgs.stdenv.mkDerivation {
         name = "scripts";
@@ -55,6 +57,9 @@
   };
   programs = {
     lsd = {
+      enable = true;
+    };
+    bash = {
       enable = true;
     };
     man = {

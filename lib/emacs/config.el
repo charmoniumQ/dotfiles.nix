@@ -14,7 +14,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
-(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+;(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
 
 ; LSP mode
@@ -66,6 +66,7 @@
 (defun get-nix-flake-targets ()
   "Get flake targets (apps, devShells, packages)."
   (let* ((flake-show-text (shell-command-to-string "nix flake show --json"))
+         ; TODO: only use the last line of output
          (flake-show (json-parse-string (car (last (split-string flake-show-text "\n") 2))))
          (arch (string-trim (shell-command-to-string "nix-instantiate --eval --expr 'builtins.currentSystem'") "\"" "\"\n"))
          (flake-show-table (make-hash-table :test 'equal))
@@ -178,18 +179,39 @@
 (setq kept-new-versions 5)
 
 ;; Org mode
-(setq org-deadline-warning-days 0)
-(setq org-directory "~/box/sync/")
-(setq org-agenda-files '("~/box/sync/todo.org" "~/box/self/calendar.org" "~/box/self/shared-calendar.org"))
+(setq org-directory "~/box/self/")
+(setq org-agenda-files '("~/box/self/todo.org" "~/box/self/calendar.org" "~/box/self/shared-calendar.org"))
 (setq org-startup-folded t)
 (setq org-agenda-dim-blocked-tasks t)
-(setq org-deadline-warning-days 14)
+(setq org-deadline-warning-days 0)
 (use-package! org-edna
   :config
   (org-edna-mode))
 
+(defun partition (str delim)
+  "Like STR.partition(DELIM) in Python."
+  (let ((index (string-search delim str)))
+    (if index
+        (list (substring str 0 index) (substring str (+ 1 index) nil))
+        (list str ""))))
+
 ; Shortcut for terminal
-(map! "C-x C-t" (lambda () (interactive) (vterm (format "vterm %s" default-directory))))
+(map!
+ "C-x C-t"
+ (lambda ()
+   (interactive)
+   (mapcar
+    (lambda (line)
+      (let* ((line-parts (partition line "="))
+             (var (car line-parts))
+             (val (car (cdr line-parts))))
+        (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
+            (setenv var val)
+          nil)))
+    (split-string
+     (shell-command-to-string "systemctl --user show-environment")
+     "\n"))
+   (vterm (format "vterm %s" default-directory))))
 (setq multi-term-program "xonsh")
 (setq vterm-shell "xonsh")
 ; TODO: directory tracking in term`'

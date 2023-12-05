@@ -183,6 +183,8 @@ in {
           from xonsh.tools import register_custom_style as _register_custom_style
           # _register_custom_style("my-nord", custom_style, base="nord")
           # $XONSH_COLOR_STYLE="my-nord"
+          # TODO: use nord theme
+          # TODO: investigate nested xonsh sessions
 
           import json
           aliasFile = p"$HOME/.config/xonsh/aliases.json"

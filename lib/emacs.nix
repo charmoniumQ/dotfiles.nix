@@ -19,7 +19,8 @@ in {
     sessionVariables = {
       # Make sure GUI Emacs shows up in launcher
       XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
-      EDITOR = "emacsclient";
+      # TODO: is the above line really necessary?
+      EDITOR = "emacsclient -c";
     };
   };
   programs = {

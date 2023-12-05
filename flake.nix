@@ -20,6 +20,9 @@
     nix-doom-emacs = {
       url = "github:nix-community/nix-doom-emacs";
     };
+    nur = {
+      url = github:nix-community/NUR;
+    };
   };
 
   outputs = (
@@ -27,25 +30,29 @@
     , home-manager
     , nix-doom-emacs
     , flake-utils
+    , nur
     , self
-    }:
+    }@inputs:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       homeConfigurations = {
         sam = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = {
-            inherit nix-doom-emacs;
+          extraSpecialArgs = inputs // {
             nproc = 4;
           };
           inherit pkgs;
           modules = [
             ./user-specific-config.nix
             ./lib/cli.nix
+            ./lib/desktop.nix
             ./lib/devtools.nix
             ./lib/emacs.nix
+            ./lib/firefox.nix
             ./lib/home-manager.nix
+            ./lib/hyprland.nix
+            ./lib/nextcloud.nix
             ./lib/nixConf.nix
             ./lib/xdg-ninja.nix
             ./lib/xonsh.nix
@@ -62,11 +69,16 @@
           switch = {
             program = let
               switch-package = pkgs.writeShellScriptBin "script" ''
+                f=/home/sam/.mozilla/firefox/default/search.json.mozlz4
+                if [ -f $f ]; then
+                  mv $f $f.backup
+                fi
                 ${home-manager.packages.${system}.home-manager}/bin/home-manager \
                   --print-build-logs \
                   --keep-going \
                   --show-trace \
                   --flake . \
+                  -b backup \
                   switch
               '';
             in "${switch-package}/bin/script";

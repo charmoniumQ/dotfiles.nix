@@ -1,34 +1,40 @@
-- [ ] Make vterm work in Emacs
-  - [ ] Have multiple vterms in one Emacs
-  - [ ] Test htop with F10
-- [X] Use Keepassxc to store SSH-keys and GPG-keys
-- [ ] Switch Keepassxc -> Vaultwarden/Bitwarden
-- [ ] Show home-manager desktop files in Gnome (emacsclient)
-  -  https://www.google.com/search?hl=en&q=home%20manager%20xdg%20desktop%20entries
-- [X] Make .local/bin scripts
-  - [X] Add to $PATH
-  - [X] Install deps
-- [X] Split into modules
-- [X] Install scc
-- [X] Switch off of oh-my-zsh
-- [X] Install spaceship theme
-- [X] exa -> lsd
-- [X] Switch to nerdfonts
-- [X] Switch to flake
-- [X] zsh -> Xonsh
-- [X] ncdu -> gdu
-- [X] Get fzf
-- [X] Doom Emacs
+- [ ] Use Emacs as $PAGER
+  - https://github.com/mbriggs/emacs-pager
+  - https://github.com/lewang/e-sink
+  - https://github.com/tom-seddon/bin/blob/master/pmacs.py
+- [ ] Fix journalctl --user
+- [ ] Test screensharing
+  - https://wiki.hyprland.org/Useful-Utilities/Screen-Sharing/
+  - https://wiki.hyprland.org/Useful-Utilities/Hyprland-desktop-portal/
+  - https://gist.github.com/PowerBall253/2dea6ddf6974ba4e5d26c3139ffb75
+- [ ] Theme Waybar
+  - https://github.com/Alexays/Waybar/wiki/Styling
 - [ ] Make shell tell Emacs cwd
-- [X] Switch .config/emacs/init.el package manager from el-get to ~straight.el~ Nixpkgs.
-- [ ] Switch to application launcher
-- [ ] Switch to Hyperland
+- [ ] Set up keyring
+- [ ] App launcher
+  - [ ] Style rofi
+  - [ ] Add plugins for rofi (open terminal program, open file in Emacsclient, do calculation)
+  - [ ] udiskie-dmenu
+  - [ ] clihpist-rofi/cliphist-rofi-img
+- [x] Switch to Hyperland
+- [ ] Fix udiskie
 - [ ] Add status bar
   - Clock HH:MM:SS
   - Battery
   - org calendar events
   - org-clocked-in task
   - notifications
-- Emacs theme should be compatible Xonsh theme
-
-[[https://www.reddit.com/r/emacs/comments/8hbp8e/what_window_manager_and_terminal_emulator_do_you/]]
+- [x] Emacs theme should be compatible Xonsh theme
+- [ ] Toggle between gruvbox and nord
+  - https://github.com/chriskempson/base16
+  - https://github.com/chriskempson/tomorrow-theme
+- [ ] Make nix command not found
+- [ ] Enable dark theme
+- [ ] Enable cool iconset
+  - https://github.com/vinceliuice/Orchis-theme
+- [ ] Flux with gammastep
+- [ ] Brightness with clight
+- [ ] Move Betterbird credentials and email store to box/
+- [ ] Connect Betterbird to Exchange
+- [ ] Style dunst
+- [ ] Fix deprecation warning

@@ -1,16 +1,14 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: {
   home = {
     packages = with pkgs; [
       firefox
       keepassxc
-      pcmanfm
       bitwarden
       imagemagick
       musescore
       thunderbird
       zotero
       betterbird
-      xsel
     ];
   };
   dconf = {
@@ -18,10 +16,7 @@
       "org/gnome/desktop/background" = {
         draw-background = true;
         picture-options = "zoom";
-        picture-uri = pkgs.stdenv.fetchurl {
-          url = "https://upload.wikimedia.org/wikipedia/commons/a/a8/Nighthawks_by_Edward_Hopper_1942.jpg";
-          hash = "";
-        };
+        picture-uri = config.desktop.bgimg;
         show-desktop-icons = false;
       };
       "org/gnome/desktop/interface" = {
