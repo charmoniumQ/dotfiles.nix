@@ -1,40 +1,45 @@
-- [ ] Use Emacs as $PAGER
-  - https://github.com/mbriggs/emacs-pager
-  - https://github.com/lewang/e-sink
-  - https://github.com/tom-seddon/bin/blob/master/pmacs.py
-- [ ] Fix journalctl --user
-- [ ] Test screensharing
-  - https://wiki.hyprland.org/Useful-Utilities/Screen-Sharing/
-  - https://wiki.hyprland.org/Useful-Utilities/Hyprland-desktop-portal/
-  - https://gist.github.com/PowerBall253/2dea6ddf6974ba4e5d26c3139ffb75
-- [ ] Theme Waybar
-  - https://github.com/Alexays/Waybar/wiki/Styling
-- [ ] Make shell tell Emacs cwd
 - [ ] Set up keyring
-- [ ] App launcher
+- Emacs stuff
+  - Emacs CalDAV
+  - [ ] Use Emacs as $PAGER
+    - https://github.com/mbriggs/emacs-pager
+    - https://github.com/lewang/e-sink
+    - https://github.com/tom-seddon/bin/blob/master/pmacs.py
+  - [ ] Make shell tell Emacs cwd
+  - [ ] Enable customizable {Gruvbox or Nord}
+- Wayland/Hyprland
+  - [ ] Get swaylock to work
+  - [ ] Get lid-close to sleep
+  - https://github.com/hyprland-community/hyprland-autoname-workspaces
+  - [ ] Test screensharing
+    - https://wiki.hyprland.org/Useful-Utilities/Screen-Sharing/
+    - https://wiki.hyprland.org/Useful-Utilities/Hyprland-desktop-portal/
+    - https://gist.github.com/PowerBall253/2dea6ddf6974ba4e5d26c3139ffb75
+  - [ ] Flux with gammastep
+  - [ ] Brightness with clight
+- Styling
+  - [ ] Theme Waybar
+    - org calendar events
+    - org-clocked-in task
+    - notifications
+    - https://github.com/Alexays/Waybar/wiki/Styling
   - [ ] Style rofi
-  - [ ] Add plugins for rofi (open terminal program, open file in Emacsclient, do calculation)
-  - [ ] udiskie-dmenu
-  - [ ] clihpist-rofi/cliphist-rofi-img
-- [x] Switch to Hyperland
+    - https://davatorium.github.io/rofi/guides/Transparency/theme3-transparency/
+    - [ ] Add plugins for rofi (open terminal program, open file in Emacsclient, do calculation)
+    - [ ] udiskie-dmenu
+    - [ ] clihpist-rofi/cliphist-rofi-img
+  - [ ] Style swaylock
+    - Blur
+    - Theme
+  - [ ] Theme GTK and QT
+    - [ ] Enable customizable theme {Gruvbox or Nord}
+    - [ ] Enable cool iconset in GTK and QT
+      - https://github.com/vinceliuice/Orchis-theme
+  - [ ] Style dunst
+  - [ ] Theme SDDM
+- [ ] Fix journalctl --user
 - [ ] Fix udiskie
-- [ ] Add status bar
-  - Clock HH:MM:SS
-  - Battery
-  - org calendar events
-  - org-clocked-in task
-  - notifications
-- [x] Emacs theme should be compatible Xonsh theme
-- [ ] Toggle between gruvbox and nord
-  - https://github.com/chriskempson/base16
-  - https://github.com/chriskempson/tomorrow-theme
-- [ ] Make nix command not found
-- [ ] Enable dark theme
-- [ ] Enable cool iconset
-  - https://github.com/vinceliuice/Orchis-theme
-- [ ] Flux with gammastep
-- [ ] Brightness with clight
+- [ ] Get GUI hw heat monitor
+- [ ] Make nix command-not-found
 - [ ] Move Betterbird credentials and email store to box/
-- [ ] Connect Betterbird to Exchange
-- [ ] Style dunst
-- [ ] Fix deprecation warning
+- [ ] Fix Nix deprecation warning about docbook

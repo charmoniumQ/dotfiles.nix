@@ -5,11 +5,11 @@
     packages = with pkgs; [
       zoom-us
       betterbird
-      keepassxc
       zotero
+      vmware-horizon-client
     ];
     file = {
-      "Zotero" = {
+      Zotero = {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";
       };
     };

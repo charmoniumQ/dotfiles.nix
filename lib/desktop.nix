@@ -2,12 +2,13 @@
   config = {
     home = {
       packages = with pkgs; [
-        xsel
         libnotify
         dconf
         evince
         pcmanfm
         peazip
+        lxterminal
+        usbutils
       ];
     };
     xdg = {

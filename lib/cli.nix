@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   home = {
     packages = with pkgs; [
       comma
@@ -53,6 +53,11 @@
       # Shortcuts
       pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";
       passphrase = "xkcdpass --wordfile eff-long --numwords 14";
+    };
+    file = {
+      ".ssh" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/ssh";
+      };
     };
   };
   programs = {

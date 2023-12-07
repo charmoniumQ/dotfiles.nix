@@ -52,6 +52,7 @@
             ./lib/firefox.nix
             ./lib/home-manager.nix
             ./lib/hyprland.nix
+            ./lib/keyring.nix
             ./lib/nextcloud.nix
             ./lib/nixConf.nix
             ./lib/xdg-ninja.nix

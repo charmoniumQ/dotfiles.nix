@@ -17,10 +17,7 @@ in {
       # dictionary
     ];
     sessionVariables = {
-      # Make sure GUI Emacs shows up in launcher
-      XDG_DATA_DIRS = "$HOME/.nix-profile/share:$XDG_DATA_DIRS";
-      # TODO: is the above line really necessary?
-      EDITOR = "emacsclient -c";
+      EDITOR = "emacsclient";
     };
   };
   programs = {

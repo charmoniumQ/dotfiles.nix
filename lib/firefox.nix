@@ -20,9 +20,9 @@
             bitwarden
             vimium
             i-dont-care-about-cookies
-            darkreader
+            # darkreader
             tree-style-tab
-            disconnect
+            # disconnect
             privacy-badger
             link-cleaner
           ];
