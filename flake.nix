@@ -1,13 +1,11 @@
 {
-  description = "Home Manager configuration of sam";
-
   inputs = {
     # Specify the source of Home Manager and Nixpkgs.
     nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-unstable";
+      url = github:nixos/nixpkgs/nixos-unstable;
     };
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = github:nix-community/home-manager;
       inputs = {
         nixpkgs = {
           follows = "nixpkgs";
@@ -15,10 +13,15 @@
       };
     };
     flake-utils = {
-      url = "github:numtide/flake-utils";
+      url = github:numtide/flake-utils;
     };
     nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
+      url = github:nix-community/nix-doom-emacs;
+      inputs = {
+        nix-straight = {
+          url = github:codingkoi/nix-straight.el/codingkoi/apply-librephoenixs-fix;
+        };
+      };
     };
     nur = {
       url = github:nix-community/NUR;
@@ -38,9 +41,9 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       homeConfigurations = {
-        sam = home-manager.lib.homeManagerConfiguration {
+        laptop = home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = inputs // {
-            nproc = 4;
+            nproc = 8;
           };
           inherit pkgs;
           modules = [
@@ -67,7 +70,7 @@
             program = "${home-manager.packages.${system}.home-manager}/bin/home-manager";
             type = "app";
           };
-          switch = {
+          apply = {
             program = let
               switch-package = pkgs.writeShellScriptBin "script" ''
                 f=/home/sam/.mozilla/firefox/default/search.json.mozlz4
@@ -78,13 +81,18 @@
                   --print-build-logs \
                   --keep-going \
                   --show-trace \
-                  --flake . \
+                  --flake .#laptop \
                   -b backup \
-                  switch
+                  switch $@
               '';
             in "${switch-package}/bin/script";
             type = "app";
           };
+        };
+      };
+      packages = {
+        "${system}" = {
+          pkgs = pkgs;
         };
       };
       devShells = {

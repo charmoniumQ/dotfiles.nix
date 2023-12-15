@@ -103,7 +103,7 @@
     };
     clock = {
       format = "{:%a %d, %OH:%OM} ";
-      tooltip-format = "{:%a, %Y-%b-%0d, %OH:%OM:%OS} ";
+      tooltip-format = "{:%Y %b %Od, %a, %OH:%OM:%OS} ";
       calendar = {
         mode = "month";
       };

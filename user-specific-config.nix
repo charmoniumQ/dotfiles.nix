@@ -4,14 +4,22 @@
 	  homeDirectory = "/home/sam";
     packages = with pkgs; [
       zoom-us
-      betterbird
+      thunderbird
+      # (pkgs.callPackage (import ./betterbird.nix) {})
       zotero
+      element-desktop
+      musescore
+    ] ++ [
       vmware-horizon-client
+      libv4l
+      pcsclite
+      opensc
+      pcsctools
     ];
     file = {
-      Zotero = {
-        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";
-      };
+      # Zotero = {
+      #   source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";
+      # };
     };
   };
   nixpkgs = {

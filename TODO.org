@@ -1,14 +1,12 @@
 - [ ] Set up keyring
+- [ ] Fix journalctl --user
+- [ ] Fix udiskie
 - Emacs stuff
-  - Emacs CalDAV
   - [ ] Use Emacs as $PAGER
-    - https://github.com/mbriggs/emacs-pager
-    - https://github.com/lewang/e-sink
-    - https://github.com/tom-seddon/bin/blob/master/pmacs.py
   - [ ] Make shell tell Emacs cwd
+    - https://github.com/akermu/emacs-libvterm
   - [ ] Enable customizable {Gruvbox or Nord}
 - Wayland/Hyprland
-  - [ ] Get swaylock to work
   - [ ] Get lid-close to sleep
   - https://github.com/hyprland-community/hyprland-autoname-workspaces
   - [ ] Test screensharing
@@ -17,6 +15,7 @@
     - https://gist.github.com/PowerBall253/2dea6ddf6974ba4e5d26c3139ffb75
   - [ ] Flux with gammastep
   - [ ] Brightness with clight
+  - [ ] Find a better screenshot util and save them in Downloads
 - Styling
   - [ ] Theme Waybar
     - org calendar events
@@ -37,9 +36,6 @@
       - https://github.com/vinceliuice/Orchis-theme
   - [ ] Style dunst
   - [ ] Theme SDDM
-- [ ] Fix journalctl --user
-- [ ] Fix udiskie
 - [ ] Get GUI hw heat monitor
 - [ ] Make nix command-not-found
-- [ ] Move Betterbird credentials and email store to box/
-- [ ] Fix Nix deprecation warning about docbook
+- [ ] Move Thunderbird credentials and email store to box/

@@ -15,7 +15,7 @@
 
 (package! trashed)
 
-(package! multi-vterm)
+(package! org-caldav)
 
 (provide 'packages)
 ;;; packages.el ends here

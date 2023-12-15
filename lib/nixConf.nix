@@ -2,7 +2,7 @@
   nix = {
     package = pkgs.nixUnstable;
     settings = {
-      cores = nproc / 2;
+      cores = 2;
       max-jobs = nproc / 2;
       use-xdg-base-directories = true;
       warn-dirty = false;
@@ -31,8 +31,9 @@
     };
   };
   home = {
-    packages = [
-      pkgs.git # Needed to make Nix flakes work
+    packages = with pkgs; [
+      git # Needed to make Nix flakes work
+      nix-output-monitor
     ];
   };
 }

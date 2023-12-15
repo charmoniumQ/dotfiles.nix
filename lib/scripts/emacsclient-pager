@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-# https://superuser.com/questions/103612/emacs-as-a-pager
-file="$(mktemp /tmp/emacsstdin-XXXXX)"
-emacsclient --eval "(find-file-read-only \"${file}\")"
-trap "echo rm ; rm ${file}; exit" SIGINT
-cat >"${file}"
+set -e
+
+mkdir --parents /tmp/emacsclient-pager
+file="$(mktemp /tmp/emacsclient-pager/XXXXX.emacspager)"
+cat >"${file}" </dev/stdin &
+catpid=$!
+emacsclient "${file}"
+if ps --pid "${catpid}" > /dev/null; then
+   kill --signal TERM --timeout 1000 KILL "${catpid}"
+fi
 rm "${file}"

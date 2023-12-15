@@ -17,6 +17,7 @@
   env = "XCURSOR_SIZE,24";
   input = {
     kb_layout = "us";
+    kb_options = "compose:Caps_Lock";
     touchpad = {
       natural_scroll = true;
     };

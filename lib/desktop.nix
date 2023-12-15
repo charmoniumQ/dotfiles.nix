@@ -9,6 +9,7 @@
         peazip
         lxterminal
         usbutils
+        vlc
       ];
     };
     xdg = {

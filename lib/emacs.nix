@@ -18,6 +18,7 @@ in {
     ];
     sessionVariables = {
       EDITOR = "emacsclient";
+      PAGER = "emacsclient-pager";
     };
   };
   programs = {

@@ -33,8 +33,8 @@
   "Renames current buffer and file it is visiting."
   (interactive)
   (let* ((name (buffer-name))
-        (filename (buffer-file-name))
-        (basename (file-name-nondirectory filename)))
+         (filename (buffer-file-name))
+         (basename (file-name-nondirectory filename)))
     (if (not (and filename (file-exists-p filename)))
         (error "Buffer '%s' is not visiting a file!" name)
       (let ((new-name (read-file-name "New name: " (file-name-directory filename) basename nil basename)))
@@ -102,8 +102,8 @@
   "Return the position of STR within RADIUS away from the POSITION or (point) in BUFFER or (current-buffer) going either direction or ONLY-FORWARD."
   (let* ((position (or position (point)))
          (buffer (or buffer (current-buffer)))
-         (len (length str))
-         )
+         (len (length str)))
+         
     (progn
       (defun find-start (i)
         (cond
@@ -111,12 +111,12 @@
          ((and
            (< (+ position i len) (point-max))
            (string= str (buffer-substring-no-properties (+ position i) (+ position i len))))
-           (+ position i))
+          (+ position i))
          ((and
            (> (+ len (- position i )) (point-min))
            (not only-forward)
            (string= str (buffer-substring-no-properties (- position i) (+ (- position i) len))))
-           (- position i))
+          (- position i))
          (t (find-start (+ i 1)))))
       (find-start 0))))
                                         ; (find-str-nearby "<" 10) ; <  >
@@ -143,10 +143,10 @@
   :config
   (map! "C-x o" #'ace-window)
 ; Increase size of ace-window
-(custom-set-faces!
-  '(aw-leading-char-face
-    :foreground "white" :background "red"
-    :weight bold :height 2.5 :box (:line-width 10 :color "red"))))
+ (custom-set-faces!
+   '(aw-leading-char-face
+     :foreground "white" :background "red"
+     :weight bold :height 2.5 :box (:line-width 10 :color "red"))))
 
 ; Open recent files
 (use-package! recentf
@@ -180,7 +180,7 @@
 
 ;; Org mode
 (setq org-directory "~/box/self/")
-(setq org-agenda-files '("~/box/self/todo.org" "~/box/self/calendar.org" "~/box/self/shared-calendar.org"))
+(setq org-agenda-files '("~/box/self/todo.org" "~/box/self/cals/personal-calendar.org" "~/box/self/cals/shared-calendar.org"))
 (setq org-startup-folded t)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 0)
@@ -203,8 +203,8 @@
    (mapcar
     (lambda (line)
       (let* ((line-parts (partition line "="))
-             (var (car line-parts))
-             (val (car (cdr line-parts))))
+             (var (first line-parts))
+             (val (second line-parts)))
         (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
             (setenv var val)
           nil)))
@@ -212,39 +212,27 @@
      (shell-command-to-string "systemctl --user show-environment")
      "\n"))
    (vterm (format "vterm %s" default-directory))))
+; TODO: I think we should take _all_ of the systemctl environment variables. Why not?
+; Perhaps even Xonsh should do this itself on startup.X
 (setq multi-term-program "xonsh")
 (setq vterm-shell "xonsh")
 ; TODO: directory tracking in term`'
 
 ; ANSI colors and pager
-; https://tecosaur.github.io/emacs-config/config.html#emacs-client-wrapper
-; https://github.com/tom-seddon/bin/blob/master/pmacs.py
-; https://karthinks.com/software/more-less-emacs/
+; https://superuser.com/questions/103612/emacs-as-a-pager
+; https://github.com/mbriggs/emacs-pager
 ; https://github.com/bradhowes/emacs-pager
-; https://www.reddit.com/r/emacs/comments/2rr1ha/comment/cnik8wb/?utm_source=share&utm_medium=web2x&context=3
-; TODO: ANSI pager
-(use-package!
- ansi-color
- :config
- (defun display-ansi-colors ()
-   (interactive)
-   (let ((inhibit-read-only t))
-     (ansi-color-apply-on-region (point-min) (point-max))))
- ;; See https://www.emacswiki.org/emacs/EmacsPipe
- (defun ansi-colorize ()
-   "Ansi colorize current buffer."
-   (interactive)
-   (ansi-color-apply-on-region (point-min) (point-max)))
- (defun start-pager (tmp)
-   "Start a pager reading TMP."
-   (let ((b (generate-new-buffer "*stdin*")))
-	   (switch-to-buffer b)
-	   (insert-file-contents tmp)
-	   (delete-file tmp)
-	   (ansi-colorize)
-	   (read-only-mode t))))
-
-; TODO: figure out why lsd colors aren't working in ansi-term
+; https://github.com/lewang/e-sink
+; https://github.com/tom-seddon/bin/blob/master/pmacs.py
+; https://tecosaur.github.io/emacs-config/config.html#emacs-client-wrapper
+; https://karthinks.com/software/more-less-emacs/
+; https://www.reddit.com/r/emacs/comments/2rr1ha/comment/cnik8wb/
+; https://www.emacswiki.org/emacs/EmacsPipe
+(defun start-pager ()
+  "Start a pager reading TMP."
+  (interactive)
+  (ansi-color-apply-on-region (point-min) (point-max))
+  (read-only-mode t))
 
 ; Delete by moving to trash
 (setq delete-by-moving-to-trash t)
