@@ -1,8 +1,7 @@
 { config, ... }: {
+  # See xdg-ninja (https://github.com/b3nj5m1n/xdg-ninja)
   home = {
     sessionVariables = {
-      #PS1 = "\$PREPEND_TO_PS1$PS1";
-      # See xdg-ninja (https://github.com/b3nj5m1n/xdg-ninja)
       XDG_DATA_HOME = "${config.xdg.dataHome}";
       XDG_CONFIG_HOME = "${config.xdg.configHome}";
       XDG_STATE_HOME = "${config.xdg.stateHome}";
@@ -27,7 +26,6 @@
       BOTO_CONFIG = "${config.xdg.configHome}/gsutil/config";
       # _JAVA_OPTIONS = "-Djava.util.prefs.userRoot=${config.xdg.configHome}/java";
       CONDARC = "${config.xdg.configHome}/conda/condarc";
-      KEEPASSDB = "$HOME/box/Database.kdbx";
       SPACK_USER_CONFIG_PATH="${config.xdg.dataHome}/spack-data";
       SPACK_USER_CACHE_PATH="${config.xdg.cacheHome}/spack";
     };

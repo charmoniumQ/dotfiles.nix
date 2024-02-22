@@ -1,13 +1,20 @@
+* TODO items
+- [ ] Lock on Suspend
+  - https://hund.tty1.se/2019/01/08/using-i3lock-with-systemd-suspend.html
+  - https://unix.stackexchange.com/a/557414/59973
+  - https://wiki.archlinux.org/title/Power_management#Sleep_hooks
+- [ ] Hibernate
+  - May require systemd 255
+    - https://github.com/NixOS/nixpkgs/issues/276374
+  - Use resume=, resume_offset= kernel params
+    - https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate
+    - https://wiki.archlinux.org/title/Dm-crypt/Swap_encryption
 - [ ] Set up keyring
-- [ ] Fix journalctl --user
-- [ ] Fix udiskie
 - Emacs stuff
-  - [ ] Use Emacs as $PAGER
-  - [ ] Make shell tell Emacs cwd
-    - https://github.com/akermu/emacs-libvterm
   - [ ] Enable customizable {Gruvbox or Nord}
 - Wayland/Hyprland
   - [ ] Get lid-close to sleep
+    - https://discourse.nixos.org/t/how-to-make-xscreensaver-lock-screen-when-laptop-lid-closed/11411/2
   - https://github.com/hyprland-community/hyprland-autoname-workspaces
   - [ ] Test screensharing
     - https://wiki.hyprland.org/Useful-Utilities/Screen-Sharing/
@@ -18,6 +25,7 @@
   - [ ] Find a better screenshot util and save them in Downloads
 - Styling
   - [ ] Theme Waybar
+    - Fix icons which are missing in my font
     - org calendar events
     - org-clocked-in task
     - notifications
@@ -27,9 +35,6 @@
     - [ ] Add plugins for rofi (open terminal program, open file in Emacsclient, do calculation)
     - [ ] udiskie-dmenu
     - [ ] clihpist-rofi/cliphist-rofi-img
-  - [ ] Style swaylock
-    - Blur
-    - Theme
   - [ ] Theme GTK and QT
     - [ ] Enable customizable theme {Gruvbox or Nord}
     - [ ] Enable cool iconset in GTK and QT
@@ -39,3 +44,5 @@
 - [ ] Get GUI hw heat monitor
 - [ ] Make nix command-not-found
 - [ ] Move Thunderbird credentials and email store to box/
+- [ ] Get a network manager better than nmtui
+- [ ] Figure out why bash puts the cursor one behind the current character

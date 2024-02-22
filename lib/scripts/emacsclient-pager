@@ -3,7 +3,7 @@
 set -e
 
 mkdir --parents /tmp/emacsclient-pager
-file="$(mktemp /tmp/emacsclient-pager/XXXXX.emacspager)"
+file="$(mktemp /tmp/emacsclient-pager/XXXXX.pager)"
 cat >"${file}" </dev/stdin &
 catpid=$!
 emacsclient "${file}"

@@ -24,14 +24,14 @@
     ];
     "hyprland/workspaces" = {
       disable-scroll = false;
-      active-only = true;
+      active-only = false;
+	    format-icons = {
+		    active = "";
+		    default = "";
+	    };
       # all-outputs = true;
       # warp-on-scroll = false;
-      # format = "{name}: {icon}";
-      # format-icons = {
-      #   "1" = "";
-      #   "2" = "";
-      # }
+      format = "{icon}{id}";
     };
     "hyprland/windows" = {
       rewrite = {

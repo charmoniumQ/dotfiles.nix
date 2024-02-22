@@ -25,7 +25,34 @@ in {
     doom-emacs = {
       enable = true;
       # emacsPackage = pkgs.emacs29-pgtk;
-      doomPrivateDir = ./emacs;
+      doomPrivateDir = pkgs.buildEnv {
+        name = "env";
+        paths =
+          let
+            org-linker = pkgs.fetchFromGitHub {
+              owner = "toshism";
+              repo = "org-linker";
+              rev = "master";
+              hash = "sha256-tOvpQPH8PPdEJeN87paz3MiHrVZqOaRghNHJXm0k4yg=";
+            };
+            org-linker-edna = pkgs.fetchFromGitHub {
+              owner = "toshism";
+              repo = "org-linker-edna";
+              rev = "master";
+              hash = "sha256-mq9hN9I3ts/6jGwvBiOd0caizY3Mj86I7N15LyhSIkU=";
+            };
+            remove-files = drv: files: pkgs.runCommand "${drv.name}-removed" {} ''
+              mkdir $out
+              cp ${drv}/* $out
+              ${builtins.concatStringsSep "\n" (builtins.map (file: "rm $out/${file}") files)}
+            '';
+          in [
+            ./emacs
+            org-linker
+            (remove-files org-linker [ "LICENSE" "README.org" ])
+            (remove-files org-linker-edna [ "LICENSE" "README.org" ])
+          ];
+      };
       doomPackageDir = pkgs.stdenv.mkDerivation {
         name = "doom-without-config";
         src = builtins.path {

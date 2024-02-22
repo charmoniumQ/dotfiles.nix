@@ -1,197 +1,175 @@
 { pkgs, config, ... }:
 let
-  python = pkgs.python311;
-  xonsh-pkgs = python.pkgs.toPythonModule pkgs.xonsh;
-  pythonPkgs = pypkgs: with pypkgs; [
+  xonsh = pkgs.xonsh.override {
+    extraPackages = pypkgs: with pypkgs; [
+    # REPL
+    ipython
+    ptpython
+    jedi
+    jupyter
+
+    # Utilities
     click
     typer
     tqdm
+    virtualenv
+    pyyaml
+    dask
+
+    # Scraping
+    lxml
+    beautifulsoup4
+    requests
+
+    # Science
     numpy
     scipy
-    pandas
     matplotlib
-    ipython
-    requests
-    lxml
-    pyyaml
-    mypy
-    jupyter
-    virtualenv
+    pandas
 
     # Language server
+    mypy
     python-lsp-server
-    jedi
     pylsp-mypy
     python-lsp-black
     python-lsp-ruff
-
-    # xonsh deps
-    ply
-    pygments
-    prompt-toolkit
-    setproctitle
-
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib-prompt-starship";
-      version = "0.3.4";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "2106d4e13618891f12657bd44f32ffba48cdeca18239031369de1a6fa4ff152b";
-      };
-      checkPhase = ''
-        runHook preCheck
-        runHook postCheck
-      '';
-      makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.starship ]) ];
-      propagatedBuildInputs = [ pkgs.starship ];
-      doCheck = false;
-    })
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib-jedi";
-      version = "0.0.2";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "a0f75525a425214fa1039241b2ba18690967875056905f0a57cacca34959e48b";
-      };
-      propagatedBuildInputs = [ python.pkgs.jedi ];
-      # pythonImportsCheck = [ "xontrib.jedi" ];
-      # nativeCheckInputs = [
-      #   python.pkgs.pytestCheckHook
-      # ];
-      # checkInputs = [ python.pkgs.pytest ];
-      doCheck = false;
-    })
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib-fish-completer";
-      version = "0.0.1";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "2abd62a25c7a0f1aa0c5536d5f0c1f82090badb1fd0658a51806196a1bd1fb76";
-      };
-      makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.fish ]) ];
-      propagatedBuildInputs = [ pkgs.fish ];
-      # pythonImportsCheck = [ "xontrib.fish_completer" ];
-      # nativeCheckInputs = [ python.pkgs.pytestCheckHook ];
-      # checkInputs = [ python.pkgs.pytest ];
-      doCheck = false;
-    })
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib_zoxide";
-      version = "1.0.0";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "606be2220779e3dd550703c545953c1fd86125c91f6a53421f4597b0d09fb85c";
-      };
-      makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.zoxide ]) ];
-      propagatedBuildInputs = [ pkgs.zoxide ];
-      buildInputs = [ python.pkgs.poetry-core ];
-      # pythonImportsCheck = [ "xontrib.zoxide" ];
-      # nativeCheckInputs = [ python.pkgs.pytestCheckHook ];
-      # checkInputs = [ python.pkgs.pytest ];
-      doCheck = false;
-    })
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib-fzf-widgets";
-      version = "0.0.4";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "12978eafd7371f015d17cb4ca5490536eedcae6c6a6cbd558d4839c13ccdcd49";
-      };
-      makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.fzf ]) ];
-      propagatedBuildInputs = [ pkgs.fzf ];
-      doCheck = false;
-    })
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib-pipeliner";
-      version = "0.3.4";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "7fcb548cf11061bc9cab56f76e15f03d4d9817d7e4a75511a830cb1f609e369a";
-      };
-      propagatedBuildInputs = [ python.pkgs.six ];
-      # pythonImportsCheck = [ "xontrib_pipeliner_asttokens" "xontrib.pipeliner" ];
-      doCheck = false;
-    })
-    (python.pkgs.buildPythonPackage rec {
-      pname = "xontrib-readable-traceback";
-      version = "0.4.0";
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        sha256 = "b5e841f0aa32dc941741cda784b67d5a4434352a4b9ffdd2da2cdb1dce850ebf";
-      };
-      doCheck = false;
-      propagatedBuildInputs = [
-        python.pkgs.colorama
-        (python.pkgs.buildPythonPackage rec {
-          pname = "backtrace";
-          version = "0.2.1";
-          src = pkgs.fetchPypi {
-            inherit pname version;
-            sha256 = "723ddc4c988c221a2d02455e51e8a07fe6245ded6b9e810c0ade429624b177f7";
-          };
-          propagatedBuildInputs = [ python.pkgs.colorama ];
-          # checkPhase = ''
-          #   runHook preCheck
-          #   runHook postCheck
-          # '';
-          # pythonImportsCheck = [ "backtrace" ];
-          doCheck = false;
-        })
-      ];
-    })
-    # TODO: consider https://dystroy.org/broot/
-  ];
+  ] ++ [
+      ply
+      pygments
+      prompt-toolkit
+      setproctitle
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib-prompt-starship";
+        version = "0.3.4";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "2106d4e13618891f12657bd44f32ffba48cdeca18239031369de1a6fa4ff152b";
+        };
+        checkPhase = ''
+          runHook preCheck
+          runHook postCheck
+        '';
+        makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.starship ]) ];
+        propagatedBuildInputs = [ pkgs.starship ];
+        doCheck = false;
+      })
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib-jedi";
+        version = "0.0.2";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "a0f75525a425214fa1039241b2ba18690967875056905f0a57cacca34959e48b";
+        };
+        propagatedBuildInputs = [ pypkgs.jedi ];
+        # pythonImportsCheck = [ "xontrib.jedi" ];
+        # nativeCheckInputs = [
+        #   pypkgs.pytestCheckHook
+        # ];
+        # checkInputs = [ pypkgs.pytest ];
+        doCheck = false;
+      })
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib-fish-completer";
+        version = "0.0.1";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "2abd62a25c7a0f1aa0c5536d5f0c1f82090badb1fd0658a51806196a1bd1fb76";
+        };
+        makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.fish ]) ];
+        propagatedBuildInputs = [ pkgs.fish ];
+        # pythonImportsCheck = [ "xontrib.fish_completer" ];
+        # nativeCheckInputs = [ pypkgs.pytestCheckHook ];
+        # checkInputs = [ pypkgs.pytest ];
+        doCheck = false;
+      })
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib_zoxide";
+        version = "1.0.0";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "606be2220779e3dd550703c545953c1fd86125c91f6a53421f4597b0d09fb85c";
+        };
+        makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.zoxide ]) ];
+        propagatedBuildInputs = [ pkgs.zoxide ];
+        buildInputs = [ pypkgs.poetry-core ];
+        # pythonImportsCheck = [ "xontrib.zoxide" ];
+        # nativeCheckInputs = [ pypkgs.pytestCheckHook ];
+        # checkInputs = [ pypkgs.pytest ];
+        doCheck = false;
+      })
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib-fzf-widgets";
+        version = "0.0.4";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "12978eafd7371f015d17cb4ca5490536eedcae6c6a6cbd558d4839c13ccdcd49";
+        };
+        makeWrapperArgs = [ "--prefix" "PATH" ":" (lib.makeBinPath [ pkgs.fzf ]) ];
+        propagatedBuildInputs = [ pkgs.fzf ];
+        doCheck = false;
+      })
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib-pipeliner";
+        version = "0.3.4";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "7fcb548cf11061bc9cab56f76e15f03d4d9817d7e4a75511a830cb1f609e369a";
+        };
+        propagatedBuildInputs = [ pypkgs.six ];
+        # pythonImportsCheck = [ "xontrib_pipeliner_asttokens" "xontrib.pipeliner" ];
+        doCheck = false;
+      })
+      (pypkgs.buildPythonPackage rec {
+        pname = "xontrib-readable-traceback";
+        version = "0.4.0";
+        src = pkgs.fetchPypi {
+          inherit pname version;
+          sha256 = "b5e841f0aa32dc941741cda784b67d5a4434352a4b9ffdd2da2cdb1dce850ebf";
+        };
+        doCheck = false;
+        propagatedBuildInputs = [
+          pypkgs.colorama
+          (pypkgs.buildPythonPackage rec {
+            pname = "backtrace";
+            version = "0.2.1";
+            src = pkgs.fetchPypi {
+              inherit pname version;
+              sha256 = "723ddc4c988c221a2d02455e51e8a07fe6245ded6b9e810c0ade429624b177f7";
+            };
+            propagatedBuildInputs = [ pypkgs.colorama ];
+            # checkPhase = ''
+            #   runHook preCheck
+            #   runHook postCheck
+            # '';
+            # pythonImportsCheck = [ "backtrace" ];
+            doCheck = false;
+          })
+        ];
+      })
+      # (pypkgs.buildPythonPackage rec {
+      #   pname = "xontrib-abbrevs";
+      #   version = "0.0.1";
+      #   src = pkgs.fetchPypi {
+      #     inherit pname version;
+      #     sha256 = "6f7e7a1b5f83a63a83151fb85ac336a8cbbdd496873a7396e1aa77293b61ec16";
+      #   };
+      #   buildInputs = [
+      #     pypkgs.setuptools
+      #     pypkgs.poetry-core
+      #     pypkgs.wheel
+      #   ];
+      #   propagatedBuildInputs = [ pypkgs.prompt-toolkit ];
+      #   doCheck = false;
+      #   # pythonImportsCheck = [ "xontrib.abbrevs" ];
+      # })
+      # TODO: consider https://dystroy.org/broot/
+    ];
+  };
 in {
   home = {
     file = {
       xonsh = {
-        text = ''
-          # The SQLite history backend saves command immediately
-          # unlike JSON backend that save the commands at the end of the session.
-          $XONSH_HISTORY_BACKEND = 'sqlite'
-
-          # Enable mouse support in the prompt_toolkit shell.
-          # This allows clicking for positioning the cursor or selecting a completion.
-          # In some terminals however, this disables the ability to scroll back through the history of the terminal.
-          # To scroll on macOS in iTerm2 press Option key and scroll on touchpad.
-          $MOUSE_SUPPORT = True
-
-          # Easy way to go back cd-ing
-          @aliases.register("...")
-          @aliases.register("....")
-          def _dotdotdot():
-              cd @("../" * (len($__ALIAS_NAME) - 1))
-
-          from xonsh.xontribs import xontribs_load as _xontribs_load
-          _xontribs_load(["prompt_starship", "jedi", "zoxide", "fzf-widgets", "pipeliner", "readable-traceback"])
-
-          gray = "#a0a4b0"
-          custom_style = {
-              "BLUE": "#88c0d0",
-              "BOLD_BLUE": "bold #88c0d0",
-              "BLACK": "#000000",
-              "INTENSE_BLACK": "#000000",
-              "GREEN": "#8fbcbb",
-              "BOLD_GREEN": "bold #8fbcbb",
-              "Token.Comment": gray,
-              "Token.PTK.Aborting": gray,
-              "Token.Comment.Multiline": gray,
-              "Token.Literal.String.Doc": gray,
-              "Token.Comment.PreprocFile": gray,
-              "Token.PTK.AutoSuggestion": gray,
-          }
-          from xonsh.tools import register_custom_style as _register_custom_style
-          # _register_custom_style("my-nord", custom_style, base="nord")
-          # $XONSH_COLOR_STYLE="my-nord"
-          # TODO: use nord theme
-          # TODO: investigate nested xonsh sessions
-
-          import json
-          aliasFile = p"$HOME/.config/xonsh/aliases.json"
-          if aliasFile.exists():
-              for alias, expansion in json.loads(aliasFile.read_text()).items():
-                  aliases[alias] = expansion
-        '';
+        source = ./xonsh/rc.xsh;
         target = ".config/xonsh/rc.xsh";
       };
       xonsh-aliases = {
@@ -200,11 +178,8 @@ in {
       };
     };
     packages = [
-      # (python.withPackages (pypkgs: (pythonPkgs pypkgs) ++ (python.pkgs.toPythonModule pkgs.xonsh)))
-      (pkgs.xonsh.override {
-        extraPackages = pypkgs: (pythonPkgs pypkgs);
-      })
-      pkgs.ruff
+      xonsh
+      pkgs.starship
     ];
   };
   programs = {

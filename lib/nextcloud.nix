@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, lib, ... }: {
   services = {
     nextcloud-client = {
       enable = true;
@@ -9,5 +9,16 @@
     packages = with pkgs; [
       nextcloud-client
     ];
+  };
+  systemd = {
+    user = {
+      services = {
+        nextcloud-client = {
+          Service = {
+            Environment = lib.mkForce "'PATH=${config.home.profileDirectory}/bin' 'QT_QPA_PLATFORM=wayland'";
+          };
+        };
+      };
+    };
   };
 }

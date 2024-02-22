@@ -6,32 +6,17 @@
         dconf
         evince
         pcmanfm
-        peazip
+        xarchiver
         lxterminal
         usbutils
         vlc
+        gthumb
+        distrobox
       ];
     };
     xdg = {
       mimeApps = {
         enable = true;
-        defaultApplications = let
-          archiver = "${pkgs.peazip}/share/applications/peazip-open.desktop";
-          browser = "${config.programs.firefox.package}/share/applications/firefox.desktop";
-        in {
-          "inode/directory" = "${pkgs.pcmanfm}/share/applications/pcmanfm.desktop";
-          "application/pdf" = "${pkgs.evince}/share/applications/org.gnome.Evince.desktop";
-          "application/x-zip-compressed" = archiver;
-          "application/gzip" = archiver;
-          "application/x-gzip" = archiver;
-          "application/tar" = archiver;
-          "application/x-tar" = archiver;
-          "application/tar+gzip" = archiver;
-          "x-scheme-handler/http" = browser;
-          "x-scheme-handler/https" = browser;
-          "x-www-browser" = browser;
-          "text/html" = browser;
-        };
       };
     };
   };

@@ -3,19 +3,22 @@
 
 ;;; Code:
 
+(package! vlf)
+
+(package! trashed)
+
 (package! rainbow-delimiters)
 
 (package! org-edna)
-
-(package! vlf)
+(package! org-ql)
+(package! helm-org-ql)
+(package! org-super-agenda)
+(package! org-caldav)
+(package! org-super-agenda)
 
 (package! string-inflection)
 
 (package! systemd)
-
-(package! trashed)
-
-(package! org-caldav)
 
 (provide 'packages)
 ;;; packages.el ends here

@@ -2,7 +2,6 @@
 {
   home = {
     packages = with pkgs; [
-      comma
       htop
       direnv
       trash-cli
@@ -26,7 +25,6 @@
       gitg
       meld
       xdot
-      starship
     ];
     shellAliases = {
       ipy = "ipython";

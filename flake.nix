@@ -26,6 +26,14 @@
     nur = {
       url = github:nix-community/NUR;
     };
+    nix-index-database = {
+      url = github:Mic92/nix-index-database;
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
   };
 
   outputs = (
@@ -34,6 +42,7 @@
     , nix-doom-emacs
     , flake-utils
     , nur
+    , nix-index-database
     , self
     }@inputs:
     let
@@ -51,13 +60,17 @@
             ./lib/cli.nix
             ./lib/desktop.nix
             ./lib/devtools.nix
+            ./lib/disks.nix
             ./lib/emacs.nix
             ./lib/firefox.nix
             ./lib/home-manager.nix
+            ./lib/libreoffice.nix
             ./lib/hyprland.nix
             ./lib/keyring.nix
             ./lib/nextcloud.nix
             ./lib/nixConf.nix
+            ./lib/python.nix
+            ./lib/starship.nix
             ./lib/xdg-ninja.nix
             ./lib/xonsh.nix
             ./lib/zsh.nix
@@ -81,6 +94,7 @@
                   --print-build-logs \
                   --keep-going \
                   --show-trace \
+                  --verbose \
                   --flake .#laptop \
                   -b backup \
                   switch $@

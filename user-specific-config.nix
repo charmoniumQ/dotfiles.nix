@@ -3,12 +3,21 @@
     username = "sam";
 	  homeDirectory = "/home/sam";
     packages = with pkgs; [
-      zoom-us
+      (zoom-us.overrideAttrs (attr: rec {
+        # https://github.com/NixOS/nixpkgs/pull/277831
+        version = "5.17.1.1840";
+        src = fetchurl {
+          url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
+          hash = "sha256-nuYyTAZ3J6i6gpoRJxhskWfBCf/SWmU0lfEvPSSWXR4=";
+        };
+      }))
+
       thunderbird
-      # (pkgs.callPackage (import ./betterbird.nix) {})
+      signal-desktop
       zotero
       element-desktop
       musescore
+      gnome.cheese
     ] ++ [
       vmware-horizon-client
       libv4l

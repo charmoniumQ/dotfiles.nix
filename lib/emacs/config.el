@@ -29,7 +29,7 @@
 
 ; New keybinds
 ; Rename file
-(defun rename-current-buffer-file ()
+(defun my-rename-file ()
   "Renames current buffer and file it is visiting."
   (interactive)
   (let* ((name (buffer-name))
@@ -46,7 +46,7 @@
             (set-buffer-modified-p nil)
             (message "File '%s' successfully renamed to '%s'"
                      name (file-name-nondirectory new-name)))))))
-(map! "C-c r" #'rename-current-buffer-file)
+(map! "C-c r" #'my-rename-file)
 (map! "M-p" #'scroll-down-line)
 (map! "M-n" #'scroll-up-line)
 (defun hash-values (table)
@@ -125,17 +125,20 @@
   (interactive)
   (setq start (find-str-nearby "<" 20))
   (if start
-      (progn (setq end (find-str-nearby ">" 20 nil nil t))
+      (progn (setq end (find-str-nearby ">" 25 start nil t))
              (if end
-                 (progn (delete-region start (+ 1 end))
-                        (goto-char start)
-                        (insert (format-time-string (car org-time-stamp-formats))))
+                 (progn
+                  (setq end (+ start 15))
+                  (message (format "help %S %S" start end))
+                  (delete-region (+ start 1) end)
+                  (goto-char (+ start 1))
+                  (insert (format-time-string (car org-time-stamp-formats))))
                (message "No >")))
     (message "No <")))
 (map! :map org-mode-map
       :after org-mode
       "d" #'org-set-today)
-; (org-set-today)  <2023-11-06 Mon>
+; (org-set-today)  <2024-02-22 Thu +1w>
 
 
 ; Ace-window
@@ -212,11 +215,8 @@
      (shell-command-to-string "systemctl --user show-environment")
      "\n"))
    (vterm (format "vterm %s" default-directory))))
-; TODO: I think we should take _all_ of the systemctl environment variables. Why not?
-; Perhaps even Xonsh should do this itself on startup.X
 (setq multi-term-program "xonsh")
 (setq vterm-shell "xonsh")
-; TODO: directory tracking in term`'
 
 ; ANSI colors and pager
 ; https://superuser.com/questions/103612/emacs-as-a-pager
@@ -228,16 +228,66 @@
 ; https://karthinks.com/software/more-less-emacs/
 ; https://www.reddit.com/r/emacs/comments/2rr1ha/comment/cnik8wb/
 ; https://www.emacswiki.org/emacs/EmacsPipe
-(defun start-pager ()
-  "Start a pager reading TMP."
-  (interactive)
-  (ansi-color-apply-on-region (point-min) (point-max))
-  (read-only-mode t))
+(progn
+ (defun ansi-color-buffer ()
+   "Replace ANSI codes with colors the current buffer."
+   (interactive)
+   (ansi-color-apply-on-region (point-min) (point-max)))
+ (defun revert-buffer-nocheck ()
+   "Revert the buffer, without asking to overwrite local change."
+   (interactive)
+   (let ((tmp (point)))
+     (progn
+       (revert-buffer t t)
+       (setq point tmp)))
+   (not-modified))
+ (defun end-of-reverted-buffer ()
+   "Revert buffer, and go to the end; (like tail --follow)."
+   (interactive)
+   (revert-buffer-nocheck)
+   (end-of-buffer))
+ (defun scroll-down-little () "Scroll down the current buffer a little." (interactive) (scroll-down 3))
+ (defun scroll-up-little () "Scroll up the current buffer a little." (interactive) (scroll-up 3))
+ (defvar-keymap pager-mode-map
+   (kbd "q") #'server-edit
+   (kbd "r") #'revert-buffer-nocheck
+   (kbd "S") #'isearch-backward
+   (kbd "s") #'isearch-forward
+   (kbd "g") #'end-of-reverted-buffer
+   (kbd "G") #'beginning-of-buffer
+   (kbd "p") #'scroll-down-little
+   (kbd "n") #'scroll-up-little)
+ (defun enable-read-only-mode ()
+   "Enable read-only mode in the current buffer."
+   (read-only-mode t))
+ (define-derived-mode pager-mode fundamental-mode "Emacs pager mode"
+   "This mode is for paging through output of otherprograms.
+
+This mode is read-only and interprets ANSI control characters as
+colors. It also binds a few keys to more convenient places (since
+you won't need to do any typing)."
+   (setq backup-inhibited t)
+   (ansi-color-buffer)
+   (not-modified)
+   (read-only-mode t)
+   (rename-buffer "*Pager*" t)
+   (add-hook 'after-revert-hook #'ansi-color-buffer)
+   (add-hook 'after-revert-hook #'enable-read-only-mode))
+ (add-to-list 'auto-mode-alist '("\\.pager\\'" . pager-mode)))
+
 
 ; Delete by moving to trash
 (setq delete-by-moving-to-trash t)
 (setq magit-delete-by-moving-to-trash t)
 (use-package! trashed)
+
+; Install org-linker and org-linker-edna declaratively
+
+(use-package org-linker
+  :load-path doom-private-dir)
+
+(use-package org-linker-edna
+  :load-path doom-private-dir)
 
 (provide 'config)
 ;;; config.el ends here
