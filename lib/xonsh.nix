@@ -1,39 +1,39 @@
 { pkgs, config, ... }:
 let
-  xonsh = pkgs.xonsh.override {
+  xonsh = pkgs.xonsh.wrapper.override {
     extraPackages = pypkgs: with pypkgs; [
-    # REPL
-    ipython
-    ptpython
-    jedi
-    jupyter
+      # REPL
+      ipython
+      ptpython
+      jedi
+      jupyter
 
-    # Utilities
-    click
-    typer
-    tqdm
-    virtualenv
-    pyyaml
-    dask
+      # Utilities
+      click
+      typer
+      tqdm
+      virtualenv
+      pyyaml
+      dask
 
-    # Scraping
-    lxml
-    beautifulsoup4
-    requests
+      # Scraping
+      lxml
+      beautifulsoup4
+      requests
 
-    # Science
-    numpy
-    scipy
-    matplotlib
-    pandas
+      # Science
+      numpy
+      scipy
+      matplotlib
+      pandas
 
-    # Language server
-    mypy
-    python-lsp-server
-    pylsp-mypy
-    python-lsp-black
-    python-lsp-ruff
-  ] ++ [
+      # Language server
+      mypy
+      python-lsp-server
+      pylsp-mypy
+      # python-lsp-black
+      python-lsp-ruff
+    ] ++ [
       ply
       pygments
       prompt-toolkit
@@ -146,22 +146,6 @@ let
           })
         ];
       })
-      # (pypkgs.buildPythonPackage rec {
-      #   pname = "xontrib-abbrevs";
-      #   version = "0.0.1";
-      #   src = pkgs.fetchPypi {
-      #     inherit pname version;
-      #     sha256 = "6f7e7a1b5f83a63a83151fb85ac336a8cbbdd496873a7396e1aa77293b61ec16";
-      #   };
-      #   buildInputs = [
-      #     pypkgs.setuptools
-      #     pypkgs.poetry-core
-      #     pypkgs.wheel
-      #   ];
-      #   propagatedBuildInputs = [ pypkgs.prompt-toolkit ];
-      #   doCheck = false;
-      #   # pythonImportsCheck = [ "xontrib.abbrevs" ];
-      # })
       # TODO: consider https://dystroy.org/broot/
     ];
   };

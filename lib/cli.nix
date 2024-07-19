@@ -30,6 +30,8 @@
         fd
         gnupg
         magic-wormhole
+        man-pages
+        man-pages-posix
         nix-du
         mtr
         pwgen
@@ -59,6 +61,7 @@
         # Shortcuts
         pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";
         passphrase = "xkcdpass --wordfile eff-long --numwords 14";
+        nix-locat = "nix-locate --top-level --regex";
       };
       file = {
         # ".ssh" = {

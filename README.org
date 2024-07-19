@@ -46,3 +46,11 @@
 - [ ] Move Thunderbird credentials and email store to box/
 - [ ] Get a network manager better than nmtui
 - [ ] Figure out why bash puts the cursor one behind the current character
+- Fix Nix doom emacs so it recompiles less often, uses a cache, or doesn't take as long to compile
+  - https://github.com/nix-community/nix-doom-emacs/issues/324#issuecomment-1817944709
+  - https://github.com/nix-community/nix-doom-emacs/issues/353
+  - https://web.archive.org/web/20201211102918/https://github.com/vlaci/nix-straight.el/issues/1
+  - https://github.com/vlaci/nix-straight.el/
+  - https://github.com/radian-software/straight.el/issues/105
+  - https://github.com/ckiee/nix-doom-emacs/blob/move-nix-straight-in/src/straight.nix#L29
+  - https://github.com/marienz/nix-doom-emacs-unstraightened

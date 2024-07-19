@@ -12,6 +12,10 @@
         vlc
         gthumb
         distrobox
+        system-config-printer
+        libsForQt5.qt5.qtwayland
+        hplipWithPlugin
+        # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
       ];
     };
     xdg = {

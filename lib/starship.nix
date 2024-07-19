@@ -20,8 +20,8 @@
         };
         shell = {
           disabled = false;
-          bash_indicator = "🅱️";
-          zsh_indicator = "💤";
+          bash_indicator = "bash";
+          zsh_indicator = "zsh";
           xonsh_indicator = "xonsh";
         };
       };

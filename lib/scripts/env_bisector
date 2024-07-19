@@ -43,6 +43,13 @@ def format_env_diff(old_env: Mapping[str, str], new_env: Mapping[str, str]) -> s
     return " ".join(result)
 
 
+def expect_type(typ: type[_T], data: typing.Any) -> _T:
+    if not isinstance(data, typ):
+        raise TypeError(f"Expected type {typ} for {data}")
+    return data
+
+
+
 def main(
         bad_env_json: typer.FileText,
         good_env_json: typer.FileText,
@@ -64,7 +71,7 @@ def main(
         return filter_values({
             **bad_env,
             **{
-                key: good_env.get(key, None)
+                key: expect_type(str, good_env.get(key, None))
                 for key in candidate_keys
             }
         }, lambda value: value is not None)
@@ -106,7 +113,7 @@ def main(
             candidates = list(powerset(differing_keys))
             rng.shuffle(candidates)
         for i, candidate in enumerate(candidates):
-            candidate_env = modify_bad_env(candidate)
+            candidate_env = modify_bad_env(set(candidate))
             successful = success(candidate_env)
             print(
                 f"candidate {i+1: >5}/{len(candidates): >5}",

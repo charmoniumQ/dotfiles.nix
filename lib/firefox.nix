@@ -22,12 +22,18 @@
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
             bitwarden
             vimium
-            i-dont-care-about-cookies
+            darkreader
+            consent-o-matic
+            ublock-origin
+            refined-github
+            wikiwand-wikipedia-modernized
+            auto-tab-discard
+            foxytab
+            wayback-machine
+            return-youtube-dislikes
+            languagetool
             # darkreader
-            tree-style-tab
-            # disconnect
-            privacy-badger
-            link-cleaner
+            # tree-style-tab
           ];
           search = {
             default = "DuckDuckGo";

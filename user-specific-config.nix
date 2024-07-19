@@ -3,27 +3,27 @@
     username = "sam";
 	  homeDirectory = "/home/sam";
     packages = with pkgs; [
-      (zoom-us.overrideAttrs (attr: rec {
-        # https://github.com/NixOS/nixpkgs/pull/277831
-        version = "5.17.1.1840";
-        src = fetchurl {
-          url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
-          hash = "sha256-nuYyTAZ3J6i6gpoRJxhskWfBCf/SWmU0lfEvPSSWXR4=";
-        };
-      }))
-
+      zoom-us
+      inkscape
       thunderbird
       signal-desktop
       zotero
       element-desktop
       musescore
+      wireguard-tools
+      anki
       gnome.cheese
-    ] ++ [
       vmware-horizon-client
       libv4l
       pcsclite
       opensc
       pcsctools
+      bitwarden
+      bitwarden-cli
+      audacity
+      gimp
+      slack
+      ffmpeg
     ];
     file = {
       # Zotero = {

@@ -13,7 +13,9 @@ in
       syntaxHighlighting = {
         enable = true;
       };
-      enableAutosuggestions = true;
+      autosuggestion = {
+        enable = true;
+      };
       #historySubstringSearch = {
       #  enable = true;
       #};

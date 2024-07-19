@@ -1,6 +1,6 @@
 { pkgs, nproc, nur, ... }: {
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixVersions.latest;
     settings = {
       cores = 2;
       max-jobs = nproc / 2;

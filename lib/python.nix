@@ -31,7 +31,7 @@ let
     mypy
     python-lsp-server
     pylsp-mypy
-    python-lsp-black
+    # python-lsp-black
     python-lsp-ruff
   ];
 in {
@@ -39,6 +39,7 @@ in {
     packages = [
       (python.withPackages pythonPkgs)
       pkgs.ruff
+      pkgs.poetry
     ];
   };
 }
