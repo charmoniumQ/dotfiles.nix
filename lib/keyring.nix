@@ -4,7 +4,7 @@
       keepassxc
       bitwarden
       (if config.desktop.guiFramework == "gtk"
-       then gnome.seahorse
+       then pkgs.seahorse
        else if config.desktop.guiFramework == "qt"
        then libsForQt5.kwalletmanager
        else builtins.throw "Unknown desktop guiFramework: ${config.desktop.guiFramework}")

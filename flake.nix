@@ -34,16 +34,21 @@
         };
       };
     };
+    flox = {
+      url = github:flox/floxpkgs;
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
   };
 
   outputs = (
     { nixpkgs
     , home-manager
-    , nix-doom-emacs
-    , flake-utils
-    , nur
-    , nix-index-database
     , self
+    , ...
     }@inputs:
     let
       system = "x86_64-linux";
@@ -53,6 +58,7 @@
         laptop = home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = inputs // {
             nproc = 8;
+            system = system;
           };
           inherit pkgs;
           modules = [

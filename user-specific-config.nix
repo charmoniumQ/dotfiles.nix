@@ -12,7 +12,7 @@
       musescore
       wireguard-tools
       anki
-      gnome.cheese
+      pkgs.cheese
       vmware-horizon-client
       libv4l
       pcsclite
@@ -26,9 +26,9 @@
       ffmpeg
     ];
     file = {
-      # Zotero = {
-      #   source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";
-      # };
+      Zotero = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";
+      };
     };
   };
   nixpkgs = {

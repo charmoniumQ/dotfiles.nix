@@ -1,4 +1,4 @@
-{ pkgs, config, nix-index-database, ... }: {
+{ pkgs, config, nix-index-database, flox, ... }: {
   imports = [
     nix-index-database.hmModules.nix-index
   ];
@@ -32,6 +32,7 @@
         magic-wormhole
         man-pages
         man-pages-posix
+        flox.packages.${system}.flox
         nix-du
         mtr
         pwgen
