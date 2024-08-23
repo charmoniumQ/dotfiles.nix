@@ -4,6 +4,12 @@
     nixpkgs = {
       url = github:nixos/nixpkgs/nixpkgs-unstable;
     };
+    nixpkgs-stable = {
+      url = "github:nixos/nixpkgs/release-24.05";
+    };
+    nixpkgs-minecraft = {
+      url = github:matteo4375/nixpkgs/minecraft-launcher-use-fhsenv;
+    };
     home-manager = {
       url = github:nix-community/home-manager;
       inputs = {
@@ -92,10 +98,15 @@
           apply = {
             program = let
               switch-package = pkgs.writeShellScriptBin "script" ''
-                f=/home/sam/.mozilla/firefox/default/search.json.mozlz4
-                if [ -f $f ]; then
-                  mv $f $f.backup
-                fi
+                files=(
+                  "$HOME/.mozilla/firefox/default/search.json.mozlz4"
+                  "$HOME/.config/mimeapps.list"
+                )
+                for file in "$${files[@]}"; do
+                  if [ -f "$file" ]; then
+                    mv "$file" "$file.backup"
+                  fi
+                done
                 ${home-manager.packages.${system}.home-manager}/bin/home-manager \
                   --print-build-logs \
                   --keep-going \

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }: {
+{ system, config, pkgs, lib, nixpkgs-minecraft, ... }: {
   home = {
     username = "sam";
 	  homeDirectory = "/home/sam";
@@ -24,7 +24,7 @@
       gimp
       slack
       ffmpeg
-    ];
+    ] ++ [  ];
     file = {
       Zotero = {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";

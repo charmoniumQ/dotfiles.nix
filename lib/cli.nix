@@ -39,6 +39,7 @@
         xkcdpass
         file
         mosh
+        pciutils
         (pkgs.stdenv.mkDerivation {
           name = "scripts";
           src = ./scripts;
