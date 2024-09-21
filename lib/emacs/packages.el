@@ -9,6 +9,8 @@
 
 (package! rainbow-delimiters)
 
+(package! csv-mode)
+
 (package! org-edna)
 (package! org-ql)
 (package! helm-org-ql)

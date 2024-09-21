@@ -21,8 +21,6 @@
       slurp
       xdg-desktop-portal-hyprland
       xdg-desktop-portal
-
-
       networkmanagerapplet
       cliphist
       wl-clipboard
@@ -35,6 +33,8 @@
           hash = "sha256-W9Qk4aX0s+thNy9Slsaz/v2dw+4bLV/OsWH4vhgtXRE=";
         })];
       }))
+      nwg-displays
+      # kanshi
       bluez
       blueman
       (pkgs.writeShellScriptBin "mirror" ''
@@ -47,9 +47,9 @@
         laptop=eDP-1
         dell=$(hyprctl monitors -j | jq '.[] | select(.make == "Dell Inc.") | .name' --raw-output | head --lines 1)
         acer=$(hyprctl monitors -j | jq '.[] | select(.make == "Acer Technologies") | .name' --raw-output | head --lines 1)
-        ${pkgs.hyprland}/bin/hyprctl keywords monitor $laptop,1152x768,0x0,2
-        ${pkgs.hyprland}/bin/hyprctl keywords monitor $acer,preferred,-1920x-418,1
-        ${pkgs.hyprland}/bin/hyprctl keywords monitor $dell,preferred,1128x-698,1,transform,3
+        ${pkgs.hyprland}/bin/hyprctl keywords monitor $acer,preferred,0x0,1
+        ${pkgs.hyprland}/bin/hyprctl keywords monitor $laptop,1152x768,1000x0,2
+        ${pkgs.hyprland}/bin/hyprctl keywords monitor $dell,preferred,2000x0,1,transform,3
         ${pkgs.hyprland}/bin/hyprctl dispatch moveworkspacetomonitor 1 $acer
         ${pkgs.hyprland}/bin/hyprctl dispatch moveworkspacetomonitor 2 $laptop
         ${pkgs.hyprland}/bin/hyprctl dispatch moveworkspacetomonitor 3 $dell

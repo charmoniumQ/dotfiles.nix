@@ -2,29 +2,75 @@
 {
   home = {
     packages = with pkgs; [
+      # System tools
       htop
       direnv
       trash-cli
       google-cloud-sdk
       asciinema
-      git
-      pdftk
-      tig
+      direnv
+
+      # Source code utils
       wgetpaste
       ripgrep
+      fd
+      delta
+      difftastic
+      bat
+      meld
+      # TODO: fix diffoscope
+
+      # Containers
+      bubblewrap
+      #podman # Must be installed by host (NixOS or other)
+      dive
+      diffoci
+      proot
+
+      # Pictures
+      xdot
+      plantuml
+      mermaid-cli
+      ditaa
+
+      pandoc
+
+      ruby
+
+      # Data munging
+      graphviz
+      xdot
       jq
       yq
-      fd
-      icdiff
-      bfg-repo-cleaner
-      pandoc
-      ruby
-      bat
-      graphviz
-      pipenv
+      hdf5
+
+      # Java
+      jdk
+      maven
+      gradle
+
+      # VCS
+      git
+      tig
       gitg
-      meld
-      xdot
+      bfg-repo-cleaner
+      mercurial
+      subversion
+
+      # Build systems
+      cmake
+      meson
+
+      # GNU build-essentials
+      gcc
+      gnumake
+      automake
+      gdb
+
+      # Clang equivalents
+      #TODO: clang conflicts with gcc. How to rename the package?
+      llvm
+      lldb
     ];
     shellAliases = {
       ipy = "ipython";

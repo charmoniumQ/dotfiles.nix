@@ -102,7 +102,7 @@
                   "$HOME/.mozilla/firefox/default/search.json.mozlz4"
                   "$HOME/.config/mimeapps.list"
                 )
-                for file in "$${files[@]}"; do
+                for file in "''${files[@]}"; do
                   if [ -f "$file" ]; then
                     mv "$file" "$file.backup"
                   fi

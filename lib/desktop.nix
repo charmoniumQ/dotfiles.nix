@@ -2,6 +2,8 @@
   config = {
     home = {
       packages = with pkgs; [
+        # TODO: lshw-gui conflicts with lshw
+        pdftk
         libnotify
         dconf
         evince

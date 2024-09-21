@@ -5,41 +5,74 @@
   config = {
     home = {
       packages = with pkgs; [
+        # Utils
+        coreutils
+        findutils
+        gnugrep
+        gnused
+        gawk
+        psmisc
+        # TODO: moreutils parallel conflicts with GNU parallel
+        ripgrep
+        fd
+        diffutils
+        unixtools.procps
+        unixtools.util-linux
+        unixtools.xxd
+        unixtools.script
+        unixtools.watch
+        parallel
+        hwatch
+        watchman
+
+        # Netowrking
+        unixtools.route
+        unixtools.ping
+        unixtools.netstat
+        mtr
+
+        # Compressions
         zip
         unzip
         gnutar
         bzip2
         xz
+        dtrx
+
+        # System utils
         tmux
         htop
-        direnv
         gdu
         trash-cli
-        rclone
-        rsync
         neofetch
-        dtrx
-        mosh
-        psmisc
-        sqlite
-        moreutils
-        wgetpaste
-        ripgrep
-        jq
-        yq
-        fd
-        gnupg
-        magic-wormhole
-        man-pages
-        man-pages-posix
-        flox.packages.${system}.flox
         nix-du
-        mtr
         pwgen
         xkcdpass
         file
-        mosh
         pciutils
+        lshw
+        hwloc
+        libfaketime
+
+        # Sending files
+        rclone
+        rsync
+        wgetpaste
+        magic-wormhole
+
+        # Data munging
+        sqlite
+        jq
+        yq
+        bc
+
+        # Misc
+        mosh
+        gnupg
+        man-pages
+        man-pages-posix
+        flox.packages.${system}.flox
+
         (pkgs.stdenv.mkDerivation {
           name = "scripts";
           src = ./scripts;
