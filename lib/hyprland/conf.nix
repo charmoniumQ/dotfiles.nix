@@ -23,6 +23,7 @@
     };
     sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
   };
+  source = "~/.config/hypr/monitors.conf";
   general = {
     # See https://wiki.hyprland.org/Configuring/Variables/ for more
     gaps_in = 2;

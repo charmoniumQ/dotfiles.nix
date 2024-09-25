@@ -121,11 +121,6 @@
           };
         };
       };
-      packages = {
-        "${system}" = {
-          pkgs = pkgs;
-        };
-      };
       devShells = {
         "${system}" = {
           default = pkgs.mkShell {

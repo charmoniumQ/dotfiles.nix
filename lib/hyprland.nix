@@ -34,7 +34,7 @@
         })];
       }))
       nwg-displays
-      # kanshi
+      kanshi
       bluez
       blueman
       (pkgs.writeShellScriptBin "mirror" ''

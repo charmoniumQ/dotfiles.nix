@@ -17,26 +17,26 @@
           bookmarks = { };
           settings = {
             "browser.startup.homepage" = "about:blank";
-            "browser.search.hiddenOneOffs" = "Google,Yahoo,Bing,Amazon.com,Twitter";
+            # "browser.search.hiddenOneOffs" = "Google,Yahoo,Bing,Amazon.com,Twitter";
+            "ui.systemUsesDarkTheme" = "1";
           };
           extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-            bitwarden
             vimium
-            darkreader
+            bitwarden
             consent-o-matic
             ublock-origin
             refined-github
-            wikiwand-wikipedia-modernized
             auto-tab-discard
-            foxytab
-            wayback-machine
             return-youtube-dislikes
             languagetool
+            # foxytab
+            # wayback-machine
             # darkreader
             # tree-style-tab
           ];
           search = {
             default = "DuckDuckGo";
+            force = true;
           };
         };
       };

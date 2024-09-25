@@ -11,29 +11,37 @@ let
     qtconsole
     ptpython
 
+    # Misc
     hy
-
     panflute
+    # TODO: fix macropy
+    pygithub
+    gitpython
+    xxhash
+    pendulum
 
     # Debugging
     icecream
     ipdb
 
-    # Utilities
+    # CLI/UI
     cyclopts
     click
     typer
     tqdm
-    pyyaml
-    types-pyyaml
-    dask
     rich
     textual
-    jsonschema
-    # TODO: fix macropy
+
+    # Data
+    sqlalchemy
+    sqlmodel
+    pyyaml
+    types-pyyaml
+    pydantic
+
+    # Testing
     pytest
-    pygithub
-    gitpython
+    pytest-xdist
 
     # Scraping
     lxml
@@ -41,27 +49,50 @@ let
     types-beautifulsoup4
     requests
     types-requests
+    aiohttp
+    aiodns
 
-    # Data science
+    # Files
+    aiofiles
+    fsspec
+    sshfs
+
+    # Science
     numpy
     scipy
-    pandas
-    scikit-learn
     torch
     jax
-    pyarrow
+
+    # Data science
+    pandas
     polars
-    pendulum
-    scikit-image
+    pyarrow
     h5py
     xlrd
     networkx
+    numpyro
+    arviz
+
+    # NLP
+    # TODO: fix spacy
+
+    # ML
+    scikit-learn
+    scikit-image
+
+    # Distributed computation
+    dask
+    distributed
 
     # Servers
     flask
+    fastapi
+    django
 
     # Plotting
     matplotlib
+    bokeh
+    # TODO: holoviews
     seaborn
     plotext
     (pypkgs.buildPythonPackage rec {
