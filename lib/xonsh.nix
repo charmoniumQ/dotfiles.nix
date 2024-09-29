@@ -1,6 +1,7 @@
 { pkgs, config, ... }:
 let
-  xonsh = pkgs.xonsh.wrapper.override {
+  #xonsh = pkgs.xonsh.wrapper.override {
+  xonsh = pkgs.xonsh.override {
     extraPackages = pypkgs: with pypkgs; [
       # REPL
       ipython
