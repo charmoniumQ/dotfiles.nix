@@ -22,15 +22,18 @@ $PATH = [
 $MOUSE_SUPPORT = True
 
 xontrib load \
+    vox \
     prompt_starship \
     jedi \
+    fish_completer \
     fzf-widgets \
     pipeliner \
     readable-traceback \
-    fish_completer \
 
 # TODO: Why doesn't zoxide work?
     # zoxide
+
+$fzf_file_binding = "c-t" # Ctrl+T
 
 _gray = "#a0a4b0"
 custom_style = {

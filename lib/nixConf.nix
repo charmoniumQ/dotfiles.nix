@@ -36,6 +36,7 @@
       nix-output-monitor
       #flox.packages.${system}.flox
       nix-info
+      alejandra
     ];
   };
 }
