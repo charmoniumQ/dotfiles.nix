@@ -54,6 +54,7 @@
     { nixpkgs
     , home-manager
     , self
+    , nix-index-database
     , ...
     }@inputs:
     let
@@ -68,24 +69,19 @@
           };
           inherit pkgs;
           modules = [
-            ./user-specific-config.nix
-            ./lib/cli.nix
-            ./lib/desktop.nix
-            ./lib/devtools.nix
-            ./lib/disks.nix
-            ./lib/emacs.nix
-            ./lib/firefox.nix
-            ./lib/home-manager.nix
-            ./lib/libreoffice.nix
-            ./lib/hyprland.nix
-            ./lib/keyring.nix
-            ./lib/nextcloud.nix
-            ./lib/nixConf.nix
-            ./lib/python.nix
-            ./lib/starship.nix
-            ./lib/xdg-ninja.nix
-            ./lib/xonsh.nix
-            ./lib/zsh.nix
+            ./profiles/laptop.nix
+            nix-index-database.hmModules.nix-index
+          ];
+        };
+        remote = home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = inputs // {
+            nproc = 8;
+            system = system;
+          };
+          inherit pkgs;
+          modules = [
+            ./profiles/remote.nix
+            nix-index-database.hmModules.nix-index
           ];
         };
       };
@@ -98,6 +94,7 @@
           apply = {
             program = let
               switch-package = pkgs.writeShellScriptBin "script" ''
+                set -ex
                 files=(
                   "$HOME/.mozilla/firefox/default/search.json.mozlz4"
                   "$HOME/.config/mimeapps.list"
@@ -107,12 +104,15 @@
                     mv "$file" "$file.backup"
                   fi
                 done
+                profile=''${1:-laptop}
+                shift
+                echo $@
                 ${home-manager.packages.${system}.home-manager}/bin/home-manager \
                   --print-build-logs \
                   --keep-going \
                   --show-trace \
                   --verbose \
-                  --flake .#laptop \
+                  --flake .#''${profile} \
                   -b backup \
                   switch $@
               '';

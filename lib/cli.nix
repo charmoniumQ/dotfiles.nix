@@ -1,7 +1,4 @@
-{ pkgs, config, nix-index-database, flox, ... }: {
-  imports = [
-    nix-index-database.hmModules.nix-index
-  ];
+{ pkgs, config, flox, ... }: {
   config = {
     home = {
       packages = with pkgs; [
@@ -44,7 +41,7 @@
         htop
         gdu
         trash-cli
-        neofetch
+        fastfetch
         nix-du
         pwgen
         xkcdpass
@@ -71,7 +68,6 @@
         gnupg
         man-pages
         man-pages-posix
-        flox.packages.${system}.flox
 
         (pkgs.stdenv.mkDerivation {
           name = "scripts";
@@ -121,6 +117,29 @@
       };
       man = {
         enable = true;
+      };
+      tmux = {
+        enable = true;
+        extraConfig = ''
+          set -g prefix C-h
+          unbind C-b
+          bind C-h send-prefix
+
+          # force a reload of the config file
+          unbind r
+          bind r source-file ~/.tmux.conf
+
+          # Enable mouse mode (tmux 2.1 and above)
+          set -g mouse on
+
+          set -g visual-bell on
+
+          # Split window using | and -
+          bind | split-window -h
+          bind - split-window -v
+          unbind '"'
+          unbind %
+        '';
       };
     };
   };

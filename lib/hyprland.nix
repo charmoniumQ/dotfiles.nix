@@ -1,5 +1,5 @@
 { pkgs, config, lib, ... }@inputs: {
-  wayland = {
+  wayland = lib.attrsets.optionalAttrs config.desktop.enable {
     windowManager = {
       hyprland = {
         enable = true;
@@ -7,7 +7,7 @@
       };
     };
   };
-  home = {
+  home = lib.attrsets.optionalAttrs config.desktop.enable {
     packages = with pkgs; [
       # https://wiki.hyprland.org/Useful-Utilities/Must-have/#qt-wayland-support
       # qt5-wayland
@@ -62,7 +62,7 @@
       QT_QPA_PLATFORM = "wayland";
     };
   };
-  programs = {
+  programs = lib.attrsets.optionalAttrs config.desktop.enable {
     waybar = {
       enable = true;
       settings = (import ./hyprland/waybar.nix) inputs;
@@ -73,9 +73,20 @@
       location = "center";
     };
   };
-  services = {
+  services = lib.attrsets.optionalAttrs config.desktop.enable {
     dunst = {
       enable = true;
+    };
+  };
+  xdg = lib.attrsets.optionalAttrs config.desktop.enable {
+    configFile = {
+      "swappy/config" = {
+        text = ''
+          [Default]
+          save_dir=$HOME/Pictures
+          save_filename_format=swappy-%Y%m%d-%H%M%S.png
+        '';
+      };
     };
   };
 }

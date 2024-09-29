@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }: {
   config = {
-    home = {
+    home = lib.attrsets.optionalAttrs config.desktop.enable {
       packages = with pkgs; [
         # TODO: lshw-gui conflicts with lshw
         pdftk
@@ -25,7 +25,7 @@
         # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
       ];
     };
-    xdg = {
+    xdg = lib.attrsets.optionalAttrs config.desktop.enable {
       mimeApps = {
         enable = true;
       };
@@ -33,6 +33,10 @@
   };
   options = {
     desktop = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
       guiFramework = lib.mkOption {
         type = lib.types.enum [ "qt" "gtk" ];
         default = "gtk";

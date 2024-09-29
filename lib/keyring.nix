@@ -1,5 +1,5 @@
-{ config, pkgs, ... }: {
-  home = {
+{ lib, config, pkgs, ... }: {
+  home = lib.attrsets.optionalAttrs config.desktop.enable {
     packages = with pkgs; [
       keepassxc
       bitwarden
@@ -10,7 +10,7 @@
        else builtins.throw "Unknown desktop guiFramework: ${config.desktop.guiFramework}")
     ];
   };
-  services = {
+  services = lib.attrsets.optionalAttrs config.desktop.enable {
     gnome-keyring = {
       enable = true;
       components = [ "secrets" ];

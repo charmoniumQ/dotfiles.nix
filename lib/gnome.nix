@@ -1,17 +1,5 @@
 { config, pkgs, ... }: {
-  home = {
-    packages = with pkgs; [
-      firefox
-      keepassxc
-      bitwarden
-      imagemagick
-      musescore
-      thunderbird
-      zotero
-      betterbird
-    ];
-  };
-  dconf = {
+  dconf = lib.attrsets.optionalAttrs config.desktop.enable {
     settings = {
       "org/gnome/desktop/background" = {
         draw-background = true;

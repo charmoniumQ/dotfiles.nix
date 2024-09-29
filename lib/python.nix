@@ -8,7 +8,6 @@ let
     jedi
     jupyter
     ptpython
-    qtconsole
     ptpython
 
     # Misc
@@ -75,6 +74,8 @@ let
 
     # NLP
     # TODO: fix spacy
+    levenshtein
+    nltk
 
     # ML
     scikit-learn
@@ -83,6 +84,7 @@ let
     # Distributed computation
     dask
     distributed
+    fabric
 
     # Servers
     flask
@@ -110,7 +112,7 @@ let
     pylsp-mypy
     # python-lsp-black
     python-lsp-ruff
-  ];
+  ] ++ (lib.lists.optional config.desktop.enable qtconsole);
 in {
   home = {
     packages = [

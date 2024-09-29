@@ -1,16 +1,16 @@
 { pkgs, config, lib, ... }: {
-  services = {
+  services = lib.attrsets.optionalAttrs config.desktop.enable {
     nextcloud-client = {
       enable = true;
       startInBackground = true;
     };
   };
-  home = {
+  home = lib.attrsets.optionalAttrs config.desktop.enable {
     packages = with pkgs; [
       nextcloud-client
     ];
   };
-  systemd = {
+  systemd = lib.attrsets.optionalAttrs config.desktop.enable {
     user = {
       services = {
         nextcloud-client = {

@@ -1,4 +1,27 @@
-{ system, config, pkgs, lib, nixpkgs-minecraft, ... }: {
+{ system, config, pkgs, lib, nixpkgs-minecraft... }: {
+  imports = [
+    ../lib/cli.nix
+    ../lib/desktop.nix
+    ../lib/devtools.nix
+    ../lib/disks.nix
+    ../lib/emacs.nix
+    ../lib/firefox.nix
+    ../lib/libreoffice.nix
+    ../lib/home-manager.nix
+    ../lib/hyprland.nix
+    ../lib/keyring.nix
+    ../lib/nextcloud.nix
+    ../lib/nixConf.nix
+    ../lib/python.nix
+    ../lib/starship.nix
+    ../lib/xdg-ninja.nix
+    ../lib/xonsh.nix
+    ../lib/zsh.nix
+    nix-index-database.hmModules.nix-index
+  ];
+  desktop = {
+    enable = true;
+  };
   home = {
     username = "sam";
 	  homeDirectory = "/home/sam";
@@ -13,11 +36,11 @@
       wireguard-tools
       anki
       pkgs.cheese
-      vmware-horizon-client
-      libv4l
-      pcsclite
-      opensc
-      pcsctools
+      # vmware-horizon-client
+      # libv4l
+      # pcsclite
+      # opensc
+      # pcsctools
       bitwarden
       bitwarden-cli
       audacity

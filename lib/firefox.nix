@@ -1,13 +1,13 @@
-{ pkgs, ... }: {
+{ pkgs, lib, config ... }: {
   home = {
-    sessionVariables = {
+    sessionVariables = lib.attrsets.optionalAttrs config.desktop.enable {
       # https://bbs.archlinux.org/viewtopic.php?id=267954
       MOZ_ENABLE_WAYLAND = 1;
       MOZ_DBUS_REMOTE = 1;
     };
     packages = with pkgs; [ google-chrome ];
   };
-  programs = {
+  programs = lib.attrsets.optionalAttrs config.desktop.enable {
     firefox = {
       enable = true;
       profiles = {
