@@ -4,12 +4,6 @@
     nixpkgs = {
       url = github:nixos/nixpkgs/nixpkgs-unstable;
     };
-    nixpkgs-stable = {
-      url = "github:nixos/nixpkgs/release-24.05";
-    };
-    nixpkgs-minecraft = {
-      url = github:matteo4375/nixpkgs/minecraft-launcher-use-fhsenv;
-    };
     home-manager = {
       url = github:nix-community/home-manager;
       inputs = {
@@ -70,7 +64,6 @@
           inherit pkgs;
           modules = [
             ./profiles/laptop.nix
-            nix-index-database.hmModules.nix-index
           ];
         };
         remote = home-manager.lib.homeManagerConfiguration {
@@ -81,7 +74,6 @@
           inherit pkgs;
           modules = [
             ./profiles/remote.nix
-            nix-index-database.hmModules.nix-index
           ];
         };
       };

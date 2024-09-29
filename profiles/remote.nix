@@ -1,4 +1,4 @@
-{ ... }: {
+{ nix-index-database, ... }: {
   imports = [
     ../lib/cli.nix
     ../lib/desktop.nix
@@ -9,6 +9,7 @@
     ../lib/xdg-ninja.nix
     ../lib/xonsh.nix
     ../lib/zsh.nix
+    nix-index-database.hmModules.nix-index
   ];
   home = {
     username = "grayson5";

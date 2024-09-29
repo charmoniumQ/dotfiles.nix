@@ -926,22 +926,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-minecraft": {
-      "locked": {
-        "lastModified": 1720733863,
-        "narHash": "sha256-lKg1v+zxdTtPdkkqXqXxbk8xwNf0U+mV5SbEQabwzmU=",
-        "owner": "matteo4375",
-        "repo": "nixpkgs",
-        "rev": "c1a490255dab6ed32333ac6b07d2a50f058be9f1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "matteo4375",
-        "ref": "minecraft-launcher-use-fhsenv",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1685801374,
@@ -986,22 +970,6 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-23.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-stable_4": {
-      "locked": {
-        "lastModified": 1723311493,
-        "narHash": "sha256-aA1JNhFh97BHPTXoJvcvgG4VSyjx0U1wT2EivxMp77o=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "c306d09c1dc6492442ae4af0d1ba575869c41fc3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "release-24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1372,8 +1340,6 @@
         "nix-doom-emacs": "nix-doom-emacs",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs_7",
-        "nixpkgs-minecraft": "nixpkgs-minecraft",
-        "nixpkgs-stable": "nixpkgs-stable_4",
         "nur": "nur"
       }
     },

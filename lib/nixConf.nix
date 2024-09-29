@@ -35,6 +35,7 @@
       git # Needed to make Nix flakes work
       nix-output-monitor
       #flox.packages.${system}.flox
+      nix-info
     ];
   };
 }

@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }@inputs: {
   # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
+  "debug:disable_logs" = false;
   exec-once = [
     "${config.services.dunst.package}/bin/dunst &"
     "${config.programs.waybar.package}/bin/waybar"

@@ -1,4 +1,4 @@
-{ system, config, pkgs, lib, nixpkgs-minecraft... }: {
+{ system, config, pkgs, lib, nix-index-database, ... }: {
   imports = [
     ../lib/cli.nix
     ../lib/desktop.nix

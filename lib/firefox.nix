@@ -1,4 +1,4 @@
-{ pkgs, lib, config ... }: {
+{ pkgs, lib, config, ... }: {
   home = {
     sessionVariables = lib.attrsets.optionalAttrs config.desktop.enable {
       # https://bbs.archlinux.org/viewtopic.php?id=267954
