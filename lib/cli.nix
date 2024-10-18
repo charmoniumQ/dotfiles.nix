@@ -21,6 +21,7 @@
         parallel
         hwatch
         watchman
+        ldns
 
         # Netowrking
         unixtools.route
@@ -50,6 +51,8 @@
         lshw
         hwloc
         libfaketime
+        imagemagick
+        ghostscript_headless
 
         # Sending files
         rclone

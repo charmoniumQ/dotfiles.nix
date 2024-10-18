@@ -1,3 +1,7 @@
+import datetime
+
+start = datetime.datetime.now()
+
 # The SQLite history backend saves command immediately
 # unlike JSON backend that save the commands at the end of the session.
 # https://xon.sh/envvars.html#histcontrol
@@ -9,17 +13,13 @@ $XONSH_SHOW_TRACEBACK = True
 
 $AUTO_PUSHD = True
 
-# https://github.com/NixOS/nixpkgs/issues/276326
-$PATH = [
-    path for path in $PATH
-    if not ((p"" / path / "xonsh").exists() and (p"" / path).parts[1] == "nix")
-]
-
 # Enable mouse support in the prompt_toolkit shell.
 # This allows clicking for positioning the cursor or selecting a completion.
 # In some terminals however, this disables the ability to scroll back through the history of the terminal.
 # To scroll on macOS in iTerm2 press Option key and scroll on touchpad.
 $MOUSE_SUPPORT = True
+
+print((datetime.datetime.now() - start).total_seconds())
 
 xontrib load \
     vox \
@@ -34,6 +34,8 @@ xontrib load \
     # zoxide
 
 $fzf_file_binding = "c-t" # Ctrl+T
+
+print((datetime.datetime.now() - start).total_seconds())
 
 _gray = "#a0a4b0"
 custom_style = {
@@ -57,13 +59,14 @@ from xonsh.tools import register_custom_style as _register_custom_style
 # TODO: use nord theme
 # TODO: investigate nested xonsh sessions
 
+print((datetime.datetime.now() - start).total_seconds())
+
 import json
 aliasFile = p"$HOME/.config/xonsh/aliases.json"
 if aliasFile.exists():
     for alias, expansion in json.loads(aliasFile.read_text()).items():
         aliases[alias] = expansion
-
-from pathlib import Path as P
+del json
 
 def _vterm_printf(msg):
     if ${...}.get("TMUX") and ("screen" in $TERM or "tmux" in $TERM):
@@ -75,3 +78,5 @@ def _vterm_printf(msg):
 
 __xonsh__.env["PROMPT_FIELDS"]["vterm_prompt_end"] = lambda: _vterm_printf("51;A" + $(whoami).strip() + "@" + $(hostname).strip() + ":" + $(pwd).strip())
 __xonsh__.env["PROMPT"] = "{starship_left}{vterm_prompt_end}"
+
+print((datetime.datetime.now() - start).total_seconds())

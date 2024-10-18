@@ -48,7 +48,6 @@ in {
             '';
           in [
             ./emacs
-            org-linker
             (remove-files org-linker [ "LICENSE" "README.org" ])
             (remove-files org-linker-edna [ "LICENSE" "README.org" ])
           ];

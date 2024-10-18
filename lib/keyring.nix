@@ -1,8 +1,9 @@
 { lib, config, pkgs, ... }: {
   home = lib.attrsets.optionalAttrs config.desktop.enable {
     packages = with pkgs; [
-      keepassxc
-      bitwarden
+      # keepassxc
+      # bitwarden
+      # bitwarden-cli
       (if config.desktop.guiFramework == "gtk"
        then pkgs.seahorse
        else if config.desktop.guiFramework == "qt"

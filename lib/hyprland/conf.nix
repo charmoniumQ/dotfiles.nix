@@ -7,9 +7,9 @@
     "${config.services.dunst.package}/bin/dunst &"
     "${config.programs.waybar.package}/bin/waybar"
     "${pkgs.swaybg}/bin/swaybg --mode fill --image ${config.desktop.bgimg} &"
-    "${pkgs.udiskie}/bin/udiskie &"
+    # "${pkgs.udiskie}/bin/udiskie &"
     "${pkgs.wl-clipboard}/bin/wl-paste --watch cliphist store"
-    # "${pkgs.networkmanagerapplet}/bin/nm-applet &"
+    "${pkgs.networkmanagerapplet}/bin/nm-applet &"
   ] ++ (lib.lists.optionals (config.desktop.guiFramework == "gtk") [
     "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1 &"
   ]) ++ (lib.lists.optionals (config.desktop.guiFramework == "qt")

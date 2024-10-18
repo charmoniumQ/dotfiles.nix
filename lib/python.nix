@@ -23,6 +23,9 @@
         gitpython
         xxhash
         pendulum
+        # dateutil.parser.parse still makes me really happy :)
+        dateutil
+        bitmath
 
         # Debugging
         icecream
@@ -42,6 +45,7 @@
         pyyaml
         types-pyyaml
         pydantic
+        rdflib
 
         # Testing
         pytest
@@ -55,11 +59,16 @@
         types-requests
         aiohttp
         aiodns
+        httpx
+
+        # Emails
+        imap-tools
 
         # Files
         aiofiles
         fsspec
-        sshfs
+        # TODO
+        # sshfs
 
         # Science
         numpy
@@ -89,7 +98,9 @@
         # Distributed computation
         dask
         distributed
-        fabric
+        (fabric.overrideAttrs (oldAttrs: rec {
+           propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [ pypkgs.pynacl ];
+         }))
 
         # Servers
         flask

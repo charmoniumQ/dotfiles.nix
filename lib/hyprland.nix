@@ -22,7 +22,9 @@
       xdg-desktop-portal-hyprland
       xdg-desktop-portal
       networkmanagerapplet
-      cliphist
+      # TODO: cliphist
+      # https://nixpk.gs/pr-tracker.html?pr=348887
+      # cliphist
       wl-clipboard
       brightnessctl
       pavucontrol

@@ -1,6 +1,7 @@
 { config, pkgs, ... }: [
   "$mainMode, space, exec, ${pkgs.rofi-wayland}/bin/rofi -combi-modi window,drun -show combi -show-icons"
-  "$mainMode, V, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi-wayland}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
+  # TODO: cliphist
+  #"$mainMode, V, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi-wayland}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
   "$mainMode, Enter, exec, ${config.programs.doom-emacs.package}/bin/emacsclient -c"
   "$mainMode, L, exec, lock"
 

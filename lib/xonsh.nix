@@ -23,6 +23,7 @@
       enable = true;
       options = [ "--hook" "pwd" ];
       # TODO: zoxide.el
+      # TODO: Xonsh direnv
     };
   };
 }

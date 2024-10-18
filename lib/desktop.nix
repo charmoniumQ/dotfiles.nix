@@ -15,6 +15,7 @@
         gthumb
         distrobox
         system-config-printer
+        yt-dlp
         libsForQt5.qt5.qtwayland
         hplipWithPlugin
         (pkgs.writeShellScriptBin "alert-me-sound" ''

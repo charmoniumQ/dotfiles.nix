@@ -9,6 +9,7 @@
       google-cloud-sdk
       asciinema
       direnv
+      hyperfine
 
       # Source code utils
       wgetpaste
@@ -35,7 +36,13 @@
 
       pandoc
 
+      sqlitebrowser
+
+      just
+
       ruby
+      # I guess bundler is included with Ruby now?
+      # bundler
 
       # Data munging
       graphviz
@@ -43,6 +50,7 @@
       jq
       yq
       hdf5
+      gephi
 
       # Java
       jdk

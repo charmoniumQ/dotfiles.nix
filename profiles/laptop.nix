@@ -14,6 +14,7 @@
     ../lib/nixConf.nix
     ../lib/python.nix
     ../lib/starship.nix
+    ../lib/texlive.nix
     ../lib/xdg-ninja.nix
     ../lib/xonsh.nix
     ../lib/zsh.nix
@@ -34,15 +35,13 @@
       element-desktop
       musescore
       wireguard-tools
-      anki
+      # anki
       pkgs.cheese
       # vmware-horizon-client
       # libv4l
       # pcsclite
       # opensc
       # pcsctools
-      bitwarden
-      bitwarden-cli
       audacity
       gimp
       slack

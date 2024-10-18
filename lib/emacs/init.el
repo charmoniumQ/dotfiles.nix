@@ -45,10 +45,12 @@
  (latex +latexmk +cdlatex +fold +lsp)
  (markdown +grip)
  nix
- (org +dragndrop +pretty)
+ ; TODO:
+ ;(org +dragndrop +pretty)
  plantuml
  (python +lsp +poetry)
- (rust +lsp)
+ ; TODO:
+; (rust +lsp)
  (sh +lsp)
  (yaml +lsp)
 
