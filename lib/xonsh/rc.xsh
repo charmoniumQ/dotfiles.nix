@@ -19,8 +19,6 @@ $AUTO_PUSHD = True
 # To scroll on macOS in iTerm2 press Option key and scroll on touchpad.
 $MOUSE_SUPPORT = True
 
-print((datetime.datetime.now() - start).total_seconds())
-
 xontrib load \
     vox \
     prompt_starship \
@@ -33,9 +31,9 @@ xontrib load \
 # TODO: Why doesn't zoxide work?
     # zoxide
 
-$fzf_file_binding = "c-t" # Ctrl+T
+print(f"+{(datetime.datetime.now() - start).total_seconds():.2f} xontrib load")
 
-print((datetime.datetime.now() - start).total_seconds())
+$fzf_file_binding = "c-t" # Ctrl+T
 
 _gray = "#a0a4b0"
 custom_style = {
@@ -59,8 +57,6 @@ from xonsh.tools import register_custom_style as _register_custom_style
 # TODO: use nord theme
 # TODO: investigate nested xonsh sessions
 
-print((datetime.datetime.now() - start).total_seconds())
-
 import json
 aliasFile = p"$HOME/.config/xonsh/aliases.json"
 if aliasFile.exists():
@@ -79,4 +75,4 @@ def _vterm_printf(msg):
 __xonsh__.env["PROMPT_FIELDS"]["vterm_prompt_end"] = lambda: _vterm_printf("51;A" + $(whoami).strip() + "@" + $(hostname).strip() + ":" + $(pwd).strip())
 __xonsh__.env["PROMPT"] = "{starship_left}{vterm_prompt_end}"
 
-print((datetime.datetime.now() - start).total_seconds())
+print(f"+{(datetime.datetime.now() - start).total_seconds():.2f} rc.xsh finished")

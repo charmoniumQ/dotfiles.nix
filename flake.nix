@@ -98,7 +98,6 @@
                 done
                 profile=''${1:-laptop}
                 shift
-                echo $@
                 ${home-manager.packages.${system}.home-manager}/bin/home-manager \
                   --print-build-logs \
                   --keep-going \

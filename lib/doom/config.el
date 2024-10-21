@@ -8,13 +8,20 @@
 (require 'doom-keybinds)
 
 ; Theme
-(setq doom-theme 'doom-nord)
-(set-frame-parameter nil 'alpha-background 85)
-(add-to-list 'default-frame-alist '(alpha-background . 85))
+
+(setq confirm-kill-emacs nil)
+
+;(setq doom-theme 'doom-nord)
+;(set-frame-parameter nil 'alpha-background 85)
+;(add-to-list 'default-frame-alist '(alpha-background . 85))
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
+
+; Explicit full-screen not needed in tiling window manager
 ;(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+
 (setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
 
 ; LSP mode
@@ -25,7 +32,8 @@
 (global-subword-mode 1)
 (setq standard-indent 4)
 (define-key text-mode-map (kbd "TAB") 'self-insert-command)
-(use-package! vlf-setup)
+; TODO: re-enable vlf
+;(use-package! vlf-setup)
 
 ; New keybinds
 ; Rename file
@@ -183,7 +191,10 @@
 
 ;; Org mode
 (setq org-directory "~/box/self/")
-(setq org-agenda-files '("~/box/self/todo.org" "~/box/self/cals/personal-calendar.org" "~/box/self/cals/shared-calendar.org"))
+(setq org-agenda-files '(
+                         "~/box/self/todo.org"))
+                         ;"~/box/self/cals/personal-calendar.org" "~/box/self/cals/shared-calendar.org"))
+
 (setq org-startup-folded t)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 0)
@@ -275,19 +286,10 @@ you won't need to do any typing)."
    (add-hook 'after-revert-hook #'enable-read-only-mode))
  (add-to-list 'auto-mode-alist '("\\.pager\\'" . pager-mode)))
 
-
 ; Delete by moving to trash
 (setq delete-by-moving-to-trash t)
 (setq magit-delete-by-moving-to-trash t)
 (use-package! trashed)
-
-; Install org-linker and org-linker-edna declaratively
-
-(use-package org-linker
-  :load-path doom-private-dir)
-
-(use-package org-linker-edna
-  :load-path doom-private-dir)
 
 (provide 'config)
 ;;; config.el ends here

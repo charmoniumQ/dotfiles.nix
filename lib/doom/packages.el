@@ -11,6 +11,7 @@
 
 (package! csv-mode)
 
+; Org stuff
 (package! org-edna)
 (package! org-ql)
 (package! helm-org-ql)
