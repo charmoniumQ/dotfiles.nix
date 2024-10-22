@@ -15,11 +15,14 @@
     flake-utils = {
       url = github:numtide/flake-utils;
     };
-    nix-doom-emacs = {
-      url = github:nix-community/nix-doom-emacs;
+    emacs-overlay = {
+      url = github:nix-community/emacs-overlay;
       inputs = {
-        nix-straight = {
-          url = github:codingkoi/nix-straight.el/codingkoi/apply-librephoenixs-fix;
+        flake-utils = {
+          follows = "flake-utils";
+        };
+        nixpkgs = {
+          follows = "nixpkgs";
         };
       };
     };
@@ -47,8 +50,7 @@
   outputs = (
     { nixpkgs
     , home-manager
-    , self
-    , nix-index-database
+    , emacs-overlay
     , ...
     }@inputs:
     let
@@ -56,7 +58,7 @@
       pkgs = nixpkgs.legacyPackages.${system};
     in {
       homeConfigurations = {
-        laptop = home-manager.lib.homeManagerConfiguration {
+        "sam@laptop" = home-manager.lib.homeManagerConfiguration {
           extraSpecialArgs = inputs // {
             nproc = 8;
             system = system;
@@ -96,16 +98,9 @@
                     mv "$file" "$file.backup"
                   fi
                 done
-                profile=''${1:-laptop}
-                shift
-                ${home-manager.packages.${system}.home-manager}/bin/home-manager \
-                  --print-build-logs \
-                  --keep-going \
-                  --show-trace \
-                  --verbose \
-                  --flake .#''${profile} \
-                  -b backup \
-                  switch $@
+                ${pkgs.nh}/bin/nh home switch \
+                  --backup-extension backup \
+                  . $@
               '';
             in "${switch-package}/bin/script";
             type = "app";

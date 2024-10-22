@@ -45,7 +45,7 @@
  (latex +latexmk +cdlatex +fold +lsp)
  (markdown +grip)
  nix
- (org -noter +pomodoro +pretty)
+ (org -noter +pretty)
  plantuml
  (python +lsp +poetry)
  (racket +lsp)
@@ -64,9 +64,8 @@
 
  :tools
  direnv
- (docker +lsp)
- ; TODO[use]: figure out how to use editorconfig
- editorconfig
+ (docker +lsp
+  editorconfig)
  ; TODO[use]: figure out how to use ein
  ein
  (eval +overlay)
@@ -90,7 +89,7 @@
  hl-todo
  indent-guides
  ; TODO[use]: Figure out why True/False/str ligatures don't work for me
- ;(ligatures +extra)
+ (ligatures +fira +extra)
  modeline
  nav-flash
  ;neotree

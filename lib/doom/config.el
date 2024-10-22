@@ -22,7 +22,7 @@
 ; Explicit full-screen not needed in tiling window manager
 ;(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
-(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
+;(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
@@ -111,7 +111,7 @@
   (let* ((position (or position (point)))
          (buffer (or buffer (current-buffer)))
          (len (length str)))
-         
+
     (progn
       (defun find-start (i)
         (cond
@@ -173,7 +173,6 @@
  '(org-mode)
  "<<" ">>"
  :actions '(insert))
-(use-package! string-inflection)
 
 ; Systemd mode
 (use-package! systemd)
@@ -202,30 +201,31 @@
   :config
   (org-edna-mode))
 
+; Shortcut for terminal
+(use-package vterm
+  :ensure t
+  :bind ("C-x C-t" . my-vterm))
+(defun my-vterm ()
+  "Opens vterm with proper shell environment."
+  (interactive)
+  (mapcar
+   (lambda (line)
+     (let* ((line-parts (partition line "="))
+            (var (first line-parts))
+            (val (second line-parts)))
+       (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
+           (setenv var val)
+         nil)))
+   (split-string
+    (shell-command-to-string "systemctl --user show-environment")
+    "\n"))
+  (vterm (format "vterm %s" default-directory)))
 (defun partition (str delim)
   "Like STR.partition(DELIM) in Python."
   (let ((index (string-search delim str)))
     (if index
         (list (substring str 0 index) (substring str (+ 1 index) nil))
         (list str ""))))
-
-; Shortcut for terminal
-(map!
- "C-x C-t"
- (lambda ()
-   (interactive)
-   (mapcar
-    (lambda (line)
-      (let* ((line-parts (partition line "="))
-             (var (first line-parts))
-             (val (second line-parts)))
-        (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
-            (setenv var val)
-          nil)))
-    (split-string
-     (shell-command-to-string "systemctl --user show-environment")
-     "\n"))
-   (vterm (format "vterm %s" default-directory))))
 (setq multi-term-program "xonsh")
 (setq vterm-shell "xonsh")
 

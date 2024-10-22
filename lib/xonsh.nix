@@ -24,6 +24,7 @@
       options = [ "--hook" "pwd" ];
       # TODO: zoxide.el
       # TODO: Xonsh direnv
+      # https://github.com/74th/xonsh-direnv
     };
   };
 }
