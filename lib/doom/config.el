@@ -22,7 +22,7 @@
 ; Explicit full-screen not needed in tiling window manager
 ;(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
-;(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
+(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
@@ -203,7 +203,6 @@
 
 ; Shortcut for terminal
 (use-package vterm
-  :ensure t
   :bind ("C-x C-t" . my-vterm))
 (defun my-vterm ()
   "Opens vterm with proper shell environment."

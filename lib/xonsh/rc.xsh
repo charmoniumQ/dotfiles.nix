@@ -20,16 +20,14 @@ $AUTO_PUSHD = True
 $MOUSE_SUPPORT = True
 
 xontrib load \
-    vox \
     prompt_starship \
-    jedi \
+    xonsh-direnv \
     fish_completer \
-    fzf-widgets \
-    pipeliner \
-    readable-traceback \
+    vox \
+    zoxide
 
-# TODO: Why doesn't zoxide work?
-    # zoxide
+# import rich.traceback
+# rich.traceback.install()
 
 print(f"+{(datetime.datetime.now() - start).total_seconds():.2f} xontrib load")
 

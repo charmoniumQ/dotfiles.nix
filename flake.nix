@@ -100,7 +100,10 @@
                 done
                 ${pkgs.nh}/bin/nh home switch \
                   --backup-extension backup \
-                  . $@
+                  . \
+                  -- \
+                  --keep-going \
+                   $@
               '';
             in "${switch-package}/bin/script";
             type = "app";

@@ -34,6 +34,8 @@
       mermaid-cli
       ditaa
 
+      librsvg # needed to put svgs in pandoc
+      # svgs are the best (or "based") format for including figures from PlantUML, Graphviz, etc. in documents
       pandoc
 
       sqlitebrowser

@@ -29,6 +29,7 @@
             auto-tab-discard
             return-youtube-dislikes
             languagetool
+            zotero-connector
             # foxytab
             # wayback-machine
             # darkreader
