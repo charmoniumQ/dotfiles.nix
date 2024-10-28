@@ -148,14 +148,15 @@
         pkgs.nur.repos.xonsh-xontribs.xontrib-fish-completer
         # pkgs.nur.repos.xonsh-xontribs.xontrib-jedi
         (pkgs.nur.repos.xonsh-xontribs.xontrib-zoxide.overrideAttrs (old: {
-          postPatch = "";
+          postPatch = ''
+            sed -ie "/xonsh.*=/d" pyproject.toml"
+          '';
           src = pkgs.fetchFromGitHub {
-            owner = "charmoniumQ";
+            owner = "dyuri";
             repo = "xontrib-zoxide";
-            rev = "xdg-cache-home";
+            rev = "36d3d0bc5945f2cd7aefdff598c6f7eeccfb1770";
             hash = "sha256-lYx5dfmVebSYls9rbvAeD8GdzYkwv/qy75xp1m+/mdA=";
           };
-          nativeBuildInputs = old.nativeBuildInputs ++ [ pypkgs.xonsh ];
         }))
         # pkgs.nur.repos.xonsh-xontribs.xontrib-pipeliner
         pkgs.nur.repos.xonsh-xontribs.xontrib-sh

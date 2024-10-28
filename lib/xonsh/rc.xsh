@@ -21,8 +21,8 @@ $MOUSE_SUPPORT = True
 
 xontrib load \
     prompt_starship \
-    xonsh-direnv \
     fish_completer \
+    sh \
     vox \
     zoxide
 
