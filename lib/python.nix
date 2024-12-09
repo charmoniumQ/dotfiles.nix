@@ -149,7 +149,7 @@
         # pkgs.nur.repos.xonsh-xontribs.xontrib-jedi
         (pkgs.nur.repos.xonsh-xontribs.xontrib-zoxide.overrideAttrs (old: {
           postPatch = ''
-            sed -ie "/xonsh.*=/d" pyproject.toml"
+            sed -ie "/xonsh.*=/d" pyproject.toml
           '';
           src = pkgs.fetchFromGitHub {
             owner = "dyuri";

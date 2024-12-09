@@ -61,6 +61,7 @@
 
       # VCS
       git
+      git-machete
       tig
       gitg
       bfg-repo-cleaner

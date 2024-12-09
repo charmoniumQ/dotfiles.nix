@@ -21,7 +21,9 @@
         parallel
         hwatch
         watchman
-        ldns
+        ldns # drill
+        inetutils # ping6
+        nurl
 
         # Netowrking
         unixtools.route

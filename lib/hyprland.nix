@@ -1,4 +1,7 @@
 { pkgs, config, lib, ... }@inputs: {
+  imports = [
+    ./hyprland/hyprshade.nix
+  ];
   wayland = lib.attrsets.optionalAttrs config.desktop.enable {
     windowManager = {
       hyprland = {
@@ -64,7 +67,7 @@
       '')
     ];
     sessionVariables = {
-      QT_QPA_PLATFORM = "wayland";
+      #QT_QPA_PLATFORM = "wayland";
     };
   };
   programs = lib.attrsets.optionalAttrs config.desktop.enable {
@@ -81,6 +84,19 @@
   services = lib.attrsets.optionalAttrs config.desktop.enable {
     dunst = {
       enable = true;
+    };
+    hyprshade = {
+      enable = true;
+      schedule = [
+        {
+          name = "blue-light-filter";
+          startTime = "19:00:00";
+          endTime = "06:00:00";
+        }
+      ];
+      systemd = {
+        enable = true;
+      };
     };
   };
   xdg = lib.attrsets.optionalAttrs config.desktop.enable {

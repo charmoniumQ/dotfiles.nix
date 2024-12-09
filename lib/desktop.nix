@@ -16,14 +16,16 @@
         distrobox
         system-config-printer
         yt-dlp
+        # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
         libsForQt5.qt5.qtwayland
-        hplipWithPlugin
+        xsane
+
+        # echo alert-me-sound hello | at now+20m
         (pkgs.writeShellScriptBin "alert-me-sound" ''
           ${pkgs.ffmpeg}/bin/ffplay -v 0 -nodisp -autoexit ~/Documents/timer.mp3 &
           ${libnotify}/bin/notify-send --expire-time=10000 "Alert" "$1"
           wait
         '')
-        # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
       ];
     };
     xdg = lib.attrsets.optionalAttrs config.desktop.enable {

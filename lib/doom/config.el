@@ -204,21 +204,24 @@
 ; Shortcut for terminal
 (use-package vterm
   :bind ("C-x C-t" . my-vterm))
+
+(defun print-and-eval (msg x) "Prints X with MSG and evaluates to X." (message msg x) x)
 (defun my-vterm ()
   "Opens vterm with proper shell environment."
   (interactive)
   (mapcar
    (lambda (line)
      (let* ((line-parts (partition line "="))
-            (var (first line-parts))
-            (val (second line-parts)))
+            (var (car line-parts))
+            (val (cadr line-parts)))
        (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
            (setenv var val)
          nil)))
    (split-string
     (shell-command-to-string "systemctl --user show-environment")
     "\n"))
-  (vterm (format "vterm %s" default-directory)))
+  (funcall-interactively 'vterm (format "vterm %s" default-directory)))
+
 (defun partition (str delim)
   "Like STR.partition(DELIM) in Python."
   (let ((index (string-search delim str)))
@@ -227,6 +230,11 @@
         (list str ""))))
 (setq multi-term-program "xonsh")
 (setq vterm-shell "xonsh")
+
+(defun copy-realpath ()
+  "Copies path of buffer to kill ring."
+  (interactive)
+  (kill-new (buffer-file-name)))
 
 ; ANSI colors and pager
 ; https://superuser.com/questions/103612/emacs-as-a-pager

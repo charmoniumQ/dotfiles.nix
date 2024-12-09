@@ -23,5 +23,7 @@
 
 (package! systemd)
 
+(package! snakemake-mode)
+
 (provide 'packages)
 ;;; packages.el ends here

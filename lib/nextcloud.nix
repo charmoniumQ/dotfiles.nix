@@ -15,7 +15,7 @@
       services = {
         nextcloud-client = {
           Service = {
-            Environment = lib.mkForce "'PATH=${config.home.profileDirectory}/bin' 'QT_QPA_PLATFORM=wayland'";
+            #Environment = lib.mkForce "'PATH=${config.home.profileDirectory}/bin' 'QT_QPA_PLATFORM=wayland'";
           };
         };
       };
