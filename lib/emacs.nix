@@ -48,7 +48,6 @@ in {
   home = {
     packages = [
       (pkgs.aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
-      (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
       (pkgs.writeShellScriptBin "emacsclient-pager" ''
         set -e
         mkdir --parents /tmp/emacsclient-pager
@@ -61,9 +60,6 @@ in {
         fi
         rm "''${file}"
       '')
-      pkgs.fira
-      pkgs.emacs-all-the-icons-fonts
-      pkgs.fontconfig
       pkgs.shellcheck
       pkgs.rustc
       pkgs.cargo

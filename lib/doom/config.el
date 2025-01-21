@@ -22,7 +22,11 @@
 ; Explicit full-screen not needed in tiling window manager
 ;(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
-(setq doom-font (font-spec :family "FiraCode Nerd Font Mono" :size 12))
+;(frame-parameter nil 'font-backend)
+;(font-family-list)
+;(find-font (font-spec :name "FiraCode Nerd Font"))
+(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 12))
+(setq doom-unicode-font (font-spec :family "FiraCode Nerd Font" :size 12))
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
@@ -292,6 +296,10 @@ you won't need to do any typing)."
    (add-hook 'after-revert-hook #'ansi-color-buffer)
    (add-hook 'after-revert-hook #'enable-read-only-mode))
  (add-to-list 'auto-mode-alist '("\\.pager\\'" . pager-mode)))
+
+; Authinfo
+; Used by magit-forge
+(setq auth-sources '("~/box/ssh/authinfo"))
 
 ; Delete by moving to trash
 (setq delete-by-moving-to-trash t)

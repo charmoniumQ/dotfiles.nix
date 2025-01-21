@@ -25,7 +25,7 @@
     };
   };
   nixpkgs = {
-    overlays = [ nur.overlay ];
+    overlays = [ nur.overlays.default ];
     config = {
       allowUnfree = true;
     };

@@ -86,7 +86,7 @@
       enable = true;
     };
     hyprshade = {
-      enable = true;
+      enable = false;
       schedule = [
         {
           name = "blue-light-filter";

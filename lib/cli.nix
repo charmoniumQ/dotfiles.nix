@@ -85,6 +85,7 @@
       ];
       shellAliases = {
         # Newer tools
+        neofetch = "fastfetch";
         rm = "trash";
         ncdu = "gdu";
         edit = "emacsclient";

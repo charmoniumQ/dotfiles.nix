@@ -64,6 +64,17 @@
     git = {
       userName = "Samuel Grayson";
       userEmail = "sam@samgrayson.me";
+      delta = {
+        enable = true;
+      };
+      extraConfig = {
+        github = {
+          user = "charmoniumQ";
+        };
+      };
+      lfs = {
+        enable = true;
+      };
     };
   };
   desktop = {
