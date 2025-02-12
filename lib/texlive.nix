@@ -2,9 +2,8 @@
   config = {
     home = {
       packages = with pkgs; [
-        (pkgs.texlive.combine {
-          inherit (texlive) scheme-medium;
-        })
+        pkgs.pandoc
+        pkgs.texlive.combined.scheme-full
         haskellPackages.pandoc-crossref
       ];
     };

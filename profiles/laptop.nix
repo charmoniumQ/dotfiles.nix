@@ -12,6 +12,7 @@
     ../lib/keyring.nix
     ../lib/nextcloud.nix
     ../lib/nixConf.nix
+    ../lib/printer-scanner.nix
     ../lib/python.nix
     ../lib/starship.nix
     ../lib/texlive.nix

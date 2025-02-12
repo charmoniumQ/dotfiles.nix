@@ -18,7 +18,6 @@
         yt-dlp
         # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
         libsForQt5.qt5.qtwayland
-        xsane
         sqlitebrowser
 
         # echo alert-me-sound hello | at now+20m

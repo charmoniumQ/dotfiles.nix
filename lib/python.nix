@@ -173,7 +173,7 @@ in {
       (python.withPackages pythonPkgs)
       # TODO: fix pkgs.pipenv
       pkgs.pipx
-      pkgs.hatch
+      # pkgs.hatch
       pkgs.virtualenv
     ];
   };

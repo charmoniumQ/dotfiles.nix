@@ -30,6 +30,7 @@
             return-youtube-dislikes
             languagetool
             zotero-connector
+            leechblock-ng
             # foxytab
             # wayback-machine
             # darkreader
