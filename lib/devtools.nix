@@ -46,6 +46,11 @@
       # I guess bundler is included with Ruby now?
       # bundler
 
+      # Rust
+      # For long-term projects, you should use Crane in a Flake
+      # For experimentation, it's nice to have a default version installed
+      rustup
+
       # Data munging
       graphviz
       xdot

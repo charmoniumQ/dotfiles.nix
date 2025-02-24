@@ -36,7 +36,7 @@
       element-desktop
       musescore
       wireguard-tools
-      # anki
+      anki
       pkgs.cheese
       # vmware-horizon-client
       # libv4l

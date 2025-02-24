@@ -61,11 +61,14 @@ in {
         rm "''${file}"
       '')
       pkgs.shellcheck
-      pkgs.rustc
-      pkgs.cargo
+      pkgs.rustup
+      # Rustup conflicts with the following:
+      # pkgs.rustc
+      # pkgs.cargo
+      # pkgs.rust-analyzer
+
       pkgs.racket
       #pkgs.pipenv
-      pkgs.rust-analyzer
       # pkgs.plantuml
       pkgs.nixfmt-rfc-style
       pkgs.grip

@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   home = {
-    pacakges = with pkgs; [
+    packages = with pkgs; [
       xsane
       sane-backends
       imagemagick

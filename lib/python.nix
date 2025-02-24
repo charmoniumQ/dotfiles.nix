@@ -87,7 +87,8 @@
         arviz
 
         # NLP
-        # TODO: fix spacy
+        # TODO: fix
+        # spacy
         levenshtein
         nltk
 
@@ -171,9 +172,10 @@ in {
   home = {
     packages = [
       (python.withPackages pythonPkgs)
-      # TODO: fix pkgs.pipenv
+      #pkgs.pipenv # TODO: fix
+      pkgs.pyenv
       pkgs.pipx
-      # pkgs.hatch
+      # pkgs.hatch # TODO: fix
       pkgs.virtualenv
     ];
   };
