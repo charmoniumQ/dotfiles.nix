@@ -3,10 +3,6 @@
 
 ;;; Code:
 
-(require 'doom-modules)
-(require 'doom-ui)
-(require 'doom-keybinds)
-
 ; Theme
 
 (setq confirm-kill-emacs nil)

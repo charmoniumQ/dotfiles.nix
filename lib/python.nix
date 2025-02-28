@@ -131,6 +131,8 @@
         pylsp-mypy
         # python-lsp-black
         python-lsp-ruff
+        isort
+        nose2
       ]
       ++ (lib.lists.optional config.desktop.enable qtconsole)
       ++ [

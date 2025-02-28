@@ -3,8 +3,6 @@
 
 ;;; Code:
 
-(require 'doom-modules)
-
 ; https://github.com/doomemacs/doomemacs/blob/master/docs/modules.org
 ; https://docs.doomemacs.org/latest/#/modules
 (doom!
@@ -21,6 +19,7 @@
  :editor
  fold
  ;;(format +onsave)
+ ;; TODO: Nix doom doesn't like parinfer
  parinfer
  snippets
  word-wrap
@@ -47,7 +46,7 @@
  nix
  (org -noter +pretty)
  plantuml
- (python +lsp +poetry)
+ (python +lsp +poetry -pyenv)
  (racket +lsp)
  (rust +lsp)
  (rest)
@@ -106,6 +105,7 @@
 
  :config
  (default +bindings +smartparens))
+
 
 (provide 'init)
 ;;; init.el ends here

@@ -62,14 +62,8 @@ in {
       '')
       pkgs.shellcheck
       pkgs.rustup
-      # Rustup conflicts with the following:
-      # pkgs.rustc
-      # pkgs.cargo
-      # pkgs.rust-analyzer
-
+      pkgs.glslang
       pkgs.racket
-      #pkgs.pipenv
-      # pkgs.plantuml
       pkgs.nixfmt-rfc-style
       pkgs.grip
       pkgs.html-tidy
@@ -99,10 +93,10 @@ in {
   programs = {
     emacs = {
       enable = true;
-      package = ((emacs-overlay-pkgs.emacsPackagesFor emacs-overlay-pkgs.emacs-pgtk).emacsWithPackages (
-        epkgs: [ epkgs.vterm ]
-      ));
-      # extraPackages = epkgs: [ epkgs.emacs-vterm ];
+      package = ((emacs-overlay-pkgs.emacsPackagesFor emacs-overlay-pkgs.emacs-pgtk).emacsWithPackages (epkgs: with epkgs; [
+        vterm
+        parinfer-rust-mode
+      ]));
     };
   };
   services = {

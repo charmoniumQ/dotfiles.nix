@@ -20,7 +20,8 @@
             # "browser.search.hiddenOneOffs" = "Google,Yahoo,Bing,Amazon.com,Twitter";
             "ui.systemUsesDarkTheme" = "1";
           };
-          extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          extensions = {
+          packages = with pkgs.nur.repos.rycee.firefox-addons; [
             vimium
             bitwarden
             consent-o-matic
@@ -36,6 +37,7 @@
             # darkreader
             # tree-style-tab
           ];
+          };
           search = {
             default = "DuckDuckGo";
             force = true;
