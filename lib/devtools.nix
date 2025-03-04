@@ -42,6 +42,9 @@
 
       just
 
+      nodejs
+      yarn-berry
+
       ruby
       # I guess bundler is included with Ruby now?
       # bundler
