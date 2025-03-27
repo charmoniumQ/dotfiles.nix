@@ -27,42 +27,49 @@
       dive
       diffoci
       proot
+      ctop
 
       # Pictures
       xdot
       plantuml
       mermaid-cli
+      d2
       ditaa
-
       librsvg # needed to put svgs in pandoc
       # svgs are the best (or "based") format for including figures from PlantUML, Graphviz, etc. in documents
       pandoc
 
-      sqlitebrowser
-
+      # Project tools
       just
 
+      # JS tools
       nodejs
       yarn-berry
 
+      # Ruby tools
       ruby
+      rubocop
       # I guess bundler is included with Ruby now?
       # bundler
 
-      # Rust
+      # Rust tools
       # For long-term projects, you should use Crane in a Flake
       # For experimentation, it's nice to have a default version installed
       rustup
 
       # Data munging
+      sqlite
       graphviz
       xdot
       jq
       yq
       hdf5
       gephi
+      sqlitebrowser
+      miller
+      pup
 
-      # Java
+      # Java tools
       jdk
       maven
       gradle
@@ -90,6 +97,15 @@
       #TODO: clang conflicts with gcc. How to rename the package?
       llvm
       lldb
+
+      # VM tools
+      vagrant
+
+      # Nix tools
+      alejandra
+
+      # Sem Web tools
+      protege-distribution
     ];
     shellAliases = {
       ipy = "ipython";
@@ -97,6 +113,11 @@
     };
     # For pipx and friends
     sessionPath = ["$HOME/.local/bin"];
+  };
+  services = {
+    lorri = {
+      enable = true;
+    };
   };
   programs = {
     direnv = {

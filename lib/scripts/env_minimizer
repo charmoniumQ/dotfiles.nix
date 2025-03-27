@@ -1,0 +1,23 @@
+from typing import Mapping
+import subprocess
+import shlex
+import random
+import typer
+
+
+class AssumptionError(Exception):
+    pass
+
+
+def main(
+        env: pathlib.Path,
+        command: list[str],
+        seed: int = 0,
+        capture_cmd_output: bool = True,
+) -> tuple[dict[str, str], dict[str, str]]:
+    json.loads(env.read_text())
+    new_failing, new_passing = bisect_env(failing_env, passing_env, comman, seed, capture_cmd_output)
+    for key, diff in dict_diff(new_failing, new_passing):
+        if
+    print(new_failing)
+    print(new_passing)

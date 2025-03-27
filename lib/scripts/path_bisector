@@ -1,0 +1,146 @@
+import pathlib
+import os
+import subprocess
+import shlex
+import random
+import typer
+
+
+class AssumptionError(Exception):
+    pass
+
+
+def bisect_path(
+        path_val: list[str],
+        passing_path_mask: list[int],
+        path_var: str,
+        path_sep: str,
+        command: list[str],
+        seed: int,
+        retries: int,
+        show_cmd_output: bool,
+        show_progress: bool,
+) -> tuple[list[int], list[int]]:
+
+    def test(idxs: list[int]) -> bool:
+        if show_cmd_output:
+            print(path_var + "=" + path_sep.join(path_val[idx] for idx in idxs))
+            print(shlex.join(command))
+        result = subprocess.run(
+            command,
+            env={
+                **os.environ,
+                path_var: path_sep.join(
+                    path_val[idx]
+                    for idx in idxs
+                ),
+            },
+            check=False,
+            capture_output=not show_cmd_output,
+        )
+        return result.returncode == 0
+
+    n_path_segments = len(path_val)
+    if test(list(range(n_path_segments))):
+        raise AssumptionError("Command should fail in failing_env, but it passed.")
+
+    if not test(passing_path_mask):
+        raise AssumptionError("Command should pass in passing_env, but it failed.")
+
+    rng = random.Random(seed)
+
+    # def bisect_path_helper(
+    #         failing_path_mask: list[int],
+    # ) -> list[int]:
+    #     candidates = sorted(set(failing_path_mask) - set(passing_path_mask))
+    #     if show_progress:
+    #         print("One of these causes failure:")
+    #         print("\n".join(
+    #             path_val[idx]
+    #             for idx in candidates
+    #         ))
+    #         print()
+    #     if len(failing_path_mask) == 0:
+    #         raise AssumptionError("No difference between passing_env and failing_env")
+    #     elif len(candidates) == 1:
+    #         return failing_path_mask
+    #     else:
+    #         mid = len(candidates) // 2
+    #         for _ in range(retries):
+    #             if show_progress:
+    #                 print(f"{len(passing_path_mask)} paths in the passing path list, {len(failing_path_mask)} paths in failing path list, {len(candidates)} differences, trying to cut differences to {mid}")
+    #             rng.shuffle(candidates)
+    #             left_half = sorted(passing_path_mask + candidates[:mid])
+    #             right_half = sorted(passing_path_mask + candidates[mid:])
+    #             if not test(left_half):
+    #                 print("Left candidate failed")
+    #                 return bisect_path_helper(left_half)
+    #             elif not test(right_half):
+    #                 print("Right candidate failed")
+    #                 return bisect_path_helper(right_half)
+    #             else:
+    #                 print("Retrying shuffle")
+    #         else:
+    #             raise AssumptionError("Subadditivity violated\ntest(passing_mask), but not test(passing_mask | left_half) and not test(passing_mask | right_half)")
+
+    def linear_bisect_path_helper(
+            failing_path_mask: list[int],
+    ) -> list[int]:
+        candidates = sorted(set(failing_path_mask) - set(passing_path_mask))
+        if show_progress:
+            print("One of these causes failure:")
+            print("\n".join(
+                path_val[idx]
+                for idx in candidates
+            ))
+            print()
+        if len(failing_path_mask) == 0:
+            raise AssumptionError("No difference between passing_env and failing_env")
+        elif len(candidates) == 1:
+            return failing_path_mask
+        else:
+            for candidate_idx in candidates:
+                candidate_for_failure = sorted(set(failing_path_mask) - {candidate_idx})
+                if not test(candidate_for_failure):
+                    return linear_bisect_path_helper(candidate_for_failure)
+            print("All of the paths in failing_path_mask are essential; removing any 1 causes pass")
+            return failing_path_mask
+
+
+    min_failing_path_mask = linear_bisect_path_helper(list(range(n_path_segments)))
+    return min_failing_path_mask, passing_path_mask
+
+
+
+def main(
+        path_val: pathlib.Path,
+        passing_path_mask: str,
+        command: list[str],
+        path_var: str = "PATH",
+        path_sep: str = ":",
+        seed: int = 0,
+        retries: int = 10,
+        show_cmd_output: bool = False,
+        show_progress: bool = True,
+) -> None:
+    path_val_lst = path_val.read_text().split("\n")
+    passing_path_mask_lst = sorted(list(map(int, passing_path_mask.split(path_sep))))
+    new_failing, new_passing = bisect_path(
+        path_val_lst,
+        passing_path_mask_lst,
+        path_var=path_var,
+        path_sep=path_sep,
+        command=command,
+        seed=seed,
+        retries=retries,
+        show_cmd_output=show_cmd_output,
+        show_progress=show_progress,
+    )
+    print("Minimized failing path list:")
+    for idx in new_passing:
+        print(path_val_lst[idx])
+    print(f"{path_var}={path_sep.join(path_val_lst[idx] for idx in new_passing)}")
+
+
+if __name__ == "__main__":
+    typer.run(main)

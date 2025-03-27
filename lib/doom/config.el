@@ -26,6 +26,9 @@
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
+(use-package direnv
+ :config
+ (direnv-mode))
 
 ; Misc functionality
 (delete-selection-mode t)
@@ -193,8 +196,6 @@
 (setq org-agenda-files '(
                          "~/box/self/todo.org"))
                          ;"~/box/self/cals/personal-calendar.org" "~/box/self/cals/shared-calendar.org"))
-
-(setq org-startup-folded t)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 0)
 (use-package! org-edna

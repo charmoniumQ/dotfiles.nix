@@ -2,34 +2,57 @@
   config = {
     home = {
       packages = with pkgs; [
-        # Utils
+        # Classic utils
         coreutils
         findutils
         gnugrep
         gnused
         gawk
-        psmisc
         # TODO: moreutils parallel conflicts with GNU parallel
-        ripgrep
-        fd
         diffutils
-        unixtools.procps
         unixtools.util-linux
         unixtools.xxd
         unixtools.script
-        unixtools.watch
         parallel
-        hwatch
-        watchman
-        ldns # drill
-        inetutils # ping6
-        nurl
+        lsof
+        watchman # watch a directory for file changes
+        shellcheck
+        progress
+        pv
+        sysctl
+
+        # Next gen tools
+        ripgrep # grep replacement
+        fd # file replacement
+        duf # df replacement
+        gdu # du replacement
+        bat # cat replacement
+        grc # cat replacement
+        hexyl # hexdump replacement
+        hwatch # watch replacement
+        sd # sed replacement
+
+        # TUI builders
+        rich-cli
+        choose
+
+        # Monitoring
+        htop # CPU/mem
+        glances # everything else
+        smartmontools
+        cpufrequtils
+        iotop
+        nethogs
+        lm_sensors
 
         # Netowrking
         unixtools.route
         unixtools.ping
         unixtools.netstat
         mtr
+        nload
+        doggo # drill replacement
+        inetutils # ping6
 
         # Compressions
         zip
@@ -41,11 +64,8 @@
 
         # System utils
         tmux
-        htop
-        gdu
         trash-cli
         fastfetch
-        nix-du
         pwgen
         xkcdpass
         file
@@ -61,12 +81,6 @@
         rsync
         wgetpaste
         magic-wormhole
-
-        # Data munging
-        sqlite
-        jq
-        yq
-        bc
 
         # Misc
         mosh
@@ -92,29 +106,23 @@
         l = "lsd --human-readable --almost-all --long --timesort";
         tree = "lsd --human-readable --long --timesort --tree";
         rs = "rsync  --archive --verbose --progress --partial --human-readable";
-        nix-build = "nom-build";
-        nix-shell = "nom-shell";
+        df = "duf";
+        dig = "echo 'try doggo'";
+        drill = "echo 'try doggo'";
+        watch = "echo 'try hwatch'";
+        pstree = "echo 'try procs --tree'";
 
         # Shortcuts
         pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";
         passphrase = "xkcdpass --wordfile eff-long --numwords 14";
-        nix-locat = "nix-locate --top-level --regex";
       };
       file = {
-        # ".ssh" = {
-        #   source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/ssh";
-        # };
+        ".ssh" = {
+          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/ssh";
+        };
       };
     };
     programs = {
-      nix-index = {
-        enable = true;
-      };
-      nix-index-database = {
-        comma = {
-          enable = true;
-        };
-      };
       lsd = {
         enable = true;
       };

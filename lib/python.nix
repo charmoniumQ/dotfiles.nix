@@ -18,7 +18,7 @@
         # Misc
         hy
         panflute
-        # TODO: fix macropy
+        # macropy is no longer maintained
         pygithub
         gitpython
         xxhash
@@ -67,8 +67,7 @@
         # Files
         aiofiles
         fsspec
-        # TODO
-        # sshfs
+        sshfs
 
         # Science
         numpy
@@ -87,8 +86,7 @@
         arviz
 
         # NLP
-        # TODO: fix
-        # spacy
+        spacy
         levenshtein
         nltk
 
@@ -99,11 +97,7 @@
         # Distributed computation
         dask
         distributed
-        # We won't need this when #345326 drops
-        # https://nixpk.gs/pr-tracker.html?pr=345326
-        (fabric.overrideAttrs (oldAttrs: rec {
-           propagatedBuildInputs = (oldAttrs.propagatedBuildInputs or []) ++ [ pypkgs.pynacl ];
-         }))
+        fabric
 
         # Servers
         flask
@@ -113,7 +107,9 @@
         # Plotting
         matplotlib
         bokeh
-        # TODO: holoviews
+        holoviews
+        altair
+        vega
         seaborn
         plotext
         (pypkgs.buildPythonPackage rec {
@@ -129,13 +125,14 @@
         mypy
         python-lsp-server
         pylsp-mypy
-        # python-lsp-black
+        python-lsp-black
         python-lsp-ruff
         isort
         nose2
       ]
       ++ (lib.lists.optional config.desktop.enable qtconsole)
       ++ [
+        # Xonsh and plugins
         xonsh
 
         # For the fullest interactive user experience, these additional packages should also be installed:
@@ -149,6 +146,7 @@
         pkgs.nur.repos.xonsh-xontribs.xontrib-vox
         pkgs.nur.repos.xonsh-xontribs.xonsh-direnv
         pkgs.nur.repos.xonsh-xontribs.xontrib-fish-completer
+        # TODO: Straighten out the plugin nonsense
         # pkgs.nur.repos.xonsh-xontribs.xontrib-jedi
         (pkgs.nur.repos.xonsh-xontribs.xontrib-zoxide.overrideAttrs (old: {
           postPatch = ''
@@ -165,19 +163,18 @@
         pkgs.nur.repos.xonsh-xontribs.xontrib-sh
         # pkgs.nur.repos.xonsh-xontribs.xontrib-fzf-widgets
 
-        # Use rich.traceback.install instead of readable_traceback
-        # pkgs.nur.repos.xonsh-xontribs.xontrib-readable-traceback
-
-        # TODO: consider https://dystroy.org/broot/
+        # TODO: Use rich.traceback.install instead of readable_traceback
+        pkgs.nur.repos.xonsh-xontribs.xontrib-readable-traceback
       ];
 in {
   home = {
     packages = [
       (python.withPackages pythonPkgs)
-      #pkgs.pipenv # TODO: fix
+      # TODO: Fix
+      # pkgs.pipenv
       pkgs.pyenv
       pkgs.pipx
-      # pkgs.hatch # TODO: fix
+      pkgs.hatch
       pkgs.virtualenv
     ];
   };

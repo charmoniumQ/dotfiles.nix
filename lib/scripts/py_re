@@ -16,7 +16,7 @@ def main(find: str, replace: str, dry_run: bool, print_src: bool, print_dst: boo
     replace_b = replace.encode()
     for file_line in sys.stdin:
         file = file_line.strip()
-        line_buffer = []
+        line_buffer: list[bytes | tuple[bytes, bytes]] = []
         with open(file, "rb") as f:
             for line in f:
                 if find_b.search(line):
@@ -36,7 +36,7 @@ def main(find: str, replace: str, dry_run: bool, print_src: bool, print_dst: boo
         if not dry_run:
             with open(file, "wb") as f:
                 for line_replacement in line_buffer:
-                if isinstance(line_replacement, tuple):
+                    if isinstance(line_replacement, tuple):
                         f.write(line_replacement[1])
                     else:
                         f.write(line_replacement)

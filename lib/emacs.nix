@@ -93,7 +93,7 @@ in {
   programs = {
     emacs = {
       enable = true;
-      package = ((emacs-overlay-pkgs.emacsPackagesFor emacs-overlay-pkgs.emacs-pgtk).emacsWithPackages (epkgs: with epkgs; [
+      package = ((emacs-overlay-pkgs.emacsPackagesFor emacs-overlay-pkgs.emacs-git-pgtk).emacsWithPackages (epkgs: with epkgs; [
         vterm
         parinfer-rust-mode
       ]));

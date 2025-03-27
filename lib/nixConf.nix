@@ -38,6 +38,24 @@
       #flox.packages.${system}.flox
       nix-info
       alejandra
+      nurl
+      nix-du
     ];
+    shellAliases = {
+      nix-locat = "nix-locate --top-level --regex";
+      nix-prefetch-url = "echo 'try nurl'";
+      nix-build = "nom-build";
+      nix-shell = "nom-shell";
+    };
+  };
+  programs = {
+    nix-index = {
+      enable = true;
+    };
+    nix-index-database = {
+      comma = {
+        enable = true;
+      };
+    };
   };
 }

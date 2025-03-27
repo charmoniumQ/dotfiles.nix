@@ -9,7 +9,16 @@
 
 (package! rainbow-delimiters)
 
-(package! csv-mode)
+; Now included in data
+;; (package! csv-mode)
+
+(package! direnv)
+
+(package! string-inflection)
+
+(package! systemd)
+
+(package! snakemake-mode)
 
 ; Org stuff
 (package! org-edna)
@@ -18,12 +27,6 @@
 (package! org-super-agenda)
 (package! org-caldav)
 (package! org-super-agenda)
-
-(package! string-inflection)
-
-(package! systemd)
-
-(package! snakemake-mode)
 
 (provide 'packages)
 ;;; packages.el ends here

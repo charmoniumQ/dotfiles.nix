@@ -24,7 +24,8 @@ xontrib load \
     fish_completer \
     sh \
     vox \
-    zoxide
+    zoxide \
+    readable-traceback
 
 # import rich.traceback
 # rich.traceback.install()

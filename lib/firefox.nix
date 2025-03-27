@@ -32,6 +32,14 @@
             languagetool
             zotero-connector
             leechblock-ng
+            semantic-scholar
+            gaoptout
+            floccus
+            clearurls
+            user-agent-string-switcher
+            canvasblocker
+            # https://addons.mozilla.org/en-US/firefox/addon/google-scholar-button/
+            # web-archives
             # foxytab
             # wayback-machine
             # darkreader
