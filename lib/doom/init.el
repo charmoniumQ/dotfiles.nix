@@ -1,3 +1,4 @@
+;;; ...  -*- lexical-binding: t -*-
 ;;; init.el --- Summary:
 ;;; Commentary:
 
@@ -109,3 +110,6 @@
 
 (provide 'init)
 ;;; init.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved)
+;; End:

@@ -1,20 +1,10 @@
+;;; ...  -*- lexical-binding: t -*-
 ;;; config.el --- Summary:
 ;;; Commentary:
 
 ;;; Code:
 
 ; Theme
-
-(setq confirm-kill-emacs nil)
-
-;(setq doom-theme 'doom-nord)
-;(set-frame-parameter nil 'alpha-background 85)
-;(add-to-list 'default-frame-alist '(alpha-background . 85))
-
-;; This determines the style of line numbers in effect. If set to `nil', line
-;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
-
 ; Explicit full-screen not needed in tiling window manager
 ;(add-to-list 'default-frame-alist '(fullscreen . fullboth))
 
@@ -26,7 +16,7 @@
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
-(use-package direnv
+(use-package! direnv
  :config
  (direnv-mode))
 
@@ -62,18 +52,14 @@
 (map! "M-n" #'scroll-up-line)
 (defun hash-values (table)
   "List of all values in TABLE."
-  (setq values '())
-  (maphash
-   (lambda (key value) (setq values (cons value values)))
-   table)
-  values)
+  (let (values2)
+    (maphash (lambda (value _) (push value values2)) table)
+    values2))
 (defun hash-keys (table)
   "List of all keys in TABLE."
-  (setq keys '())
-  (maphash
-   (lambda (key value) (setq keys (cons key keys)))
-   table)
-  keys)
+  (let (keys)
+    (maphash (lambda (key _) (push key keys)) table)
+    keys))
 (defun get-nix-flake-targets ()
   "Get flake targets (apps, devShells, packages)."
   (let* ((flake-show-text (shell-command-to-string "nix flake show --json"))
@@ -98,7 +84,7 @@
            (mapcar (lambda (app     ) (cons (format "%s (app)"      app     ) `("nix" "run"     ,@nix-args ,(format ".#%s" app     )))) (gethash "apps"      flake-targets))
            (mapcar (lambda (devShell) (cons (format "%s (devShell)" devShell) `("nix" "develop" ,@nix-args ,(format ".#%s" devShell)))) (gethash "devShells" flake-targets))
            (mapcar (lambda (package ) (cons (format "%s (package)"  package ) `("nix" "build"   ,@nix-args ,(format ".#%s" package )))) (gethash "packages"  flake-targets))
-           (mapcar (lambda (check   ) (cons (format "%s (check)"    package ) `("nix" "check"   ,@nix-args ,(format ".#%s" check   )))) (gethash "checks"    flake-targets))))
+           (mapcar (lambda (check   ) (cons (format "%s (check)"    check ) `("nix" "check"   ,@nix-args ,(format ".#%s" check   )))) (gethash "checks"    flake-targets))))
          (command
           (helm
            :sources
@@ -108,49 +94,85 @@
            :buffer
            "*helm nix targets*")))
     (setq compile-command (combine-and-quote-strings command))))
-; Org set today
-(defun find-str-nearby (str radius &optional position buffer only-forward)
-  "Return the position of STR within RADIUS away from the POSITION or (point) in BUFFER or (current-buffer) going either direction or ONLY-FORWARD."
-  (let* ((position (or position (point)))
-         (buffer (or buffer (current-buffer)))
-         (len (length str)))
 
-    (progn
-      (defun find-start (i)
-        (cond
-         ((>= i radius) nil)
-         ((and
-           (< (+ position i len) (point-max))
-           (string= str (buffer-substring-no-properties (+ position i) (+ position i len))))
-          (+ position i))
-         ((and
-           (> (+ len (- position i )) (point-min))
-           (not only-forward)
-           (string= str (buffer-substring-no-properties (- position i) (+ (- position i) len))))
-          (- position i))
-         (t (find-start (+ i 1)))))
-      (find-start 0))))
-                                        ; (find-str-nearby "<" 10) ; <  >
+; Org set today
+(defun find-str-nearby (str radius &rest keyword-args)
+  "Locate position of STR within RADIUS from POSITION (or point) in any
+   direction (or ONLY-FORWARD), returning ((or THEN identity)
+   found-position) or (or ELSE (always nil))."
+  (let* ((position (or (plist-get keyword-args :position) (point)))
+         (len (length str))
+         (identity (lambda (x) x))
+         (then (or (plist-get keyword-args :then) identity))
+         (else (or (plist-get keyword-args :else) identity))
+         (only-forward (plist-get keyword-args :only-forward))
+         (found (cl-loop for candidate-radius from 0 to radius
+                         for ahead-of-position = (+ position candidate-radius)
+                         for behind-position   = (- position candidate-radius)
+                         thereis (cond ((and                    (<= ahead-of-position (point-max)) (string= str (buffer-substring-no-properties ahead-of-position (+ ahead-of-position len))))
+                                        (cons t (funcall then ahead-of-position)))
+                                       ((and (not only-forward) (>= behind-position   (point-min)) (string= str (buffer-substring-no-properties behind-position   (+ ahead-of-position len))))
+                                        (cons t (funcall then behind-position)))))))
+      (if found (cdr found) (funcall else))))
+; (find-str-nearby "<" 10 :then (lambda (x) (goto-char x))) ; <  >
 (defun org-set-today ()
   "Set the date at or near point to today."
   (interactive)
-  (setq start (find-str-nearby "<" 20))
-  (if start
-      (progn (setq end (find-str-nearby ">" 25 start nil t))
-             (if end
-                 (progn
-                  (setq end (+ start 15))
-                  (message (format "help %S %S" start end))
-                  (delete-region (+ start 1) end)
-                  (goto-char (+ start 1))
-                  (insert (format-time-string (car org-time-stamp-formats))))
-               (message "No >")))
-    (message "No <")))
+  (find-str-nearby
+   "<" 20
+   :then (lambda (start)
+           (find-str-nearby
+            ">" 25
+            :start start
+            :only-forward t
+            :then (lambda (end)
+                     (delete-region (+ start 1) end)
+                     (goto-char (+ start 1))
+                     (insert (format-time-string (car org-time-stamp-formats)))
+                     (buffer-substring-no-properties start (+ 1 (point))))
+            :else (lambda () (message "No >"))))
+   :else (lambda () (message "No <"))))
 (map! :map org-mode-map
       :after org-mode
       "d" #'org-set-today)
-; (org-set-today)  <2024-02-22 Thu +1w>
+; (org-set-today)
+; <2024-02-22 Thu +1w>
 
+(defun org-start-at-stop ()
+  "Start clock entry at the stop of another."
+  (interactive)
+  (find-str-nearby
+   "CLOCK: [" 20
+   :then (lambda (pos-of-clock)
+           (let ((pos-of-1st-time (+ pos-of-clock (length "CLOCK: [")))
+                 (length-of-bracketted-time (length "[2025-04-07 Mon 01:23]")))
+                (find-str-nearby
+                 "[" (+ 5 length-of-bracketted-time)
+                 :only-forward t
+                 :position (+ 1 pos-of-1st-time)
+                 :then (lambda (pos-of-2nd-time)
+                         (delete-region (- pos-of-1st-time 1) pos-of-2nd-time)
+                         (find-str-nearby
+                          "]" (+ 5 length-of-bracketted-time)
+                          :only-forward t
+                          :position pos-of-1st-time
+                          :then (lambda (end-of-new-1st-time)
+                                  (goto-char (+ 1 end-of-new-1st-time))
+                                  (insert (format-time-string "--[%Y-%m-%d %a %H:%M]"))
+                                  (org-clock-update-time-maybe)
+                                  (buffer-substring-no-properties
+                                   pos-of-clock
+                                   (find-str-nearby
+                                     "\n" (+ 20 length-of-bracketted-time)
+                                     :position end-of-new-1st-time
+                                     :only-forward t
+                                     :else (lambda () end-of-new-1st-time))))
+                          :else (lambda () (message "No ] found at end of new 1st timestamp"))))
+                 :else (lambda () (message "No [ found to denote 2nd timestamp")))))
+   :else (lambda () (message "No CLOCK: [ found to denote clock entry and 1st timestamp"))))
+
+; (org-start-at-stop)
+; CLOCK: [2025-04-07 Mon 12:34]--[2025-04-07 Mon 02:54] =>  0:00
 
 ; Ace-window
 (use-package! ace-window
@@ -203,34 +225,34 @@
   (org-edna-mode))
 
 ; Shortcut for terminal
-(use-package vterm
-  :bind ("C-x C-t" . my-vterm))
+;; (use-package! vterm
+;;   :bind ("C-x C-t" . my-vterm))
 
-(defun print-and-eval (msg x) "Prints X with MSG and evaluates to X." (message msg x) x)
-(defun my-vterm ()
-  "Opens vterm with proper shell environment."
-  (interactive)
-  (mapcar
-   (lambda (line)
-     (let* ((line-parts (partition line "="))
-            (var (car line-parts))
-            (val (cadr line-parts)))
-       (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
-           (setenv var val)
-         nil)))
-   (split-string
-    (shell-command-to-string "systemctl --user show-environment")
-    "\n"))
-  (funcall-interactively 'vterm (format "vterm %s" default-directory)))
+;; (defun print-and-eval (msg x) "Prints X with MSG and evaluates to X." (message msg x) x)
+;; (defun my-vterm ()
+;;   "Opens vterm with proper shell environment."
+;;   (interactive)
+;;   (dolist
+;;    (lambda (line)
+;;      (let* ((line-parts (partition line "="))
+;;             (var (car line-parts))
+;;             (val (cadr line-parts)))
+;;        (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
+;;            (setenv var val)
+;;          nil)))
+;;    (split-string
+;;     (shell-command-to-string "systemctl --user show-environment")
+;;     "\n"))
+;;   (funcall-interactively 'vterm (format "vterm %s" default-directory)))
 
-(defun partition (str delim)
-  "Like STR.partition(DELIM) in Python."
-  (let ((index (string-search delim str)))
-    (if index
-        (list (substring str 0 index) (substring str (+ 1 index) nil))
-        (list str ""))))
-(setq multi-term-program "xonsh")
-(setq vterm-shell "xonsh")
+;; (defun partition (str delim)
+;;   "Like STR.partition(DELIM) in Python."
+;;   (let ((index (string-search delim str)))
+;;     (if index
+;;         (list (substring str 0 index) (substring str (+ 1 index) nil))
+;;         (list str ""))))
+;; (setq multi-term-program "xonsh")
+;; (setq vterm-shell "xonsh")
 
 (defun copy-realpath ()
   "Copies path of buffer to kill ring."
@@ -259,12 +281,12 @@
      (progn
        (revert-buffer t t)
        (setq point tmp)))
-   (not-modified))
+   (set-buffer-modified-p 'nil))
  (defun end-of-reverted-buffer ()
    "Revert buffer, and go to the end; (like tail --follow)."
    (interactive)
    (revert-buffer-nocheck)
-   (end-of-buffer))
+   (goto-char (point-max)))
  (defun scroll-down-little () "Scroll down the current buffer a little." (interactive) (scroll-down 3))
  (defun scroll-up-little () "Scroll up the current buffer a little." (interactive) (scroll-up 3))
  (defvar-keymap pager-mode-map
@@ -287,7 +309,7 @@ colors. It also binds a few keys to more convenient places (since
 you won't need to do any typing)."
    (setq backup-inhibited t)
    (ansi-color-buffer)
-   (not-modified)
+   (set-buffer-modified-p 'nil)
    (read-only-mode t)
    (rename-buffer "*Pager*" t)
    (add-hook 'after-revert-hook #'ansi-color-buffer)
@@ -305,3 +327,7 @@ you won't need to do any typing)."
 
 (provide 'config)
 ;;; config.el ends here
+;;; packages.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved)
+;; End:

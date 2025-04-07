@@ -1,4 +1,5 @@
 * TODO items
+- https://github.com/ryan4yin/nix-config
 - [ ] Lock on Suspend
   - https://hund.tty1.se/2019/01/08/using-i3lock-with-systemd-suspend.html
   - https://unix.stackexchange.com/a/557414/59973

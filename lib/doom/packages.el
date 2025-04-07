@@ -1,3 +1,4 @@
+;;; ...  -*- lexical-binding: t -*-
 ;;; packages.el --- Summary:
 ;;; Commentary:
 
@@ -11,6 +12,8 @@
 
 ; Now included in data
 ;; (package! csv-mode)
+
+(package! elmacro)
 
 (package! direnv)
 
@@ -30,3 +33,6 @@
 
 (provide 'packages)
 ;;; packages.el ends here
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars unresolved)
+;; End:

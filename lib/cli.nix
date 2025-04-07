@@ -38,6 +38,7 @@
 
         # Monitoring
         htop # CPU/mem
+        btop # everything else
         glances # everything else
         smartmontools
         cpufrequtils

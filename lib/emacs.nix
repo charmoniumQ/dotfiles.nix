@@ -69,6 +69,9 @@ in {
       pkgs.html-tidy
       pkgs.stylelint
       pkgs.nodePackages_latest.js-beautify
+      pkgs.ccls
+      pkgs.clang-tools
+      pkgs.bear # generate compile_commands.json
     ];
     sessionVariables = {
       EDITOR = "emacsclient";

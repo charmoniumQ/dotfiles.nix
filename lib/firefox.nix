@@ -47,7 +47,7 @@
           ];
           };
           search = {
-            default = "DuckDuckGo";
+            default = "ddgGo";
             force = true;
           };
         };

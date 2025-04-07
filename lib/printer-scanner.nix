@@ -1,7 +1,7 @@
 { pkgs, ... }: {
   home = {
     packages = with pkgs; [
-      xsane
+      gscan2pdf
       sane-backends
       imagemagick
     ];
