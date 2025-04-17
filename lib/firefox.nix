@@ -5,7 +5,10 @@
       MOZ_ENABLE_WAYLAND = 1;
       MOZ_DBUS_REMOTE = 1;
     };
-    packages = with pkgs; [ google-chrome ];
+    packages = with pkgs; [
+      google-chrome
+      tor-browser
+    ];
   };
   programs = lib.attrsets.optionalAttrs config.desktop.enable {
     firefox = {

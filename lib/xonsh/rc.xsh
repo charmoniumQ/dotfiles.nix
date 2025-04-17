@@ -74,4 +74,8 @@ def _vterm_printf(msg):
 __xonsh__.env["PROMPT_FIELDS"]["vterm_prompt_end"] = lambda: _vterm_printf("51;A" + $(whoami).strip() + "@" + $(hostname).strip() + ":" + $(pwd).strip())
 __xonsh__.env["PROMPT"] = "{starship_left}{vterm_prompt_end}"
 
+systemctl_user_env = {key: val for key, _, val in [line.partition("=") for line in $(systemctl --user show-environment).splitlines()]}
+for key in ["DISPLAY", "WAYLAND_DISPLAY"]:
+    __xonsh__.env[key] = systemctl_user_env.get(key)
+
 print(f"+{(datetime.datetime.now() - start).total_seconds():.2f} rc.xsh finished")

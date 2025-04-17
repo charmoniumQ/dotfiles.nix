@@ -27,7 +27,7 @@
             # 03-27 13:37:17:082 [ warning nextcloud.sync.propagator ]:	Could not complete propagation of "ta-fa24-cs527/repos/yichen41/.git" by OCC::PropagateIgnoreJob(0x56325b34fb10) with status OCC::SyncFileItem::FileIgnored and error: "File is listed on the ignore list."
             ExecStart =
               let script = builtins.warn "Parameterize this for other users" (pkgs.writeShellScriptBin "script" ''
-                set -ex
+                set -x +e
                 env
                 nextcloudcmd --non-interactive --exclude $HOME/box/.sync-exclude.lst -n $HOME/box/ https://nextcloud.samgrayson.me 2>&1 \
                 | grep -v nextcloud.sync.discovery \

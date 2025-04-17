@@ -1,10 +1,11 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, lib, ... }: {
   dconf = lib.attrsets.optionalAttrs config.desktop.enable {
+    enable = true;
     settings = {
       "org/gnome/desktop/background" = {
         draw-background = true;
         picture-options = "zoom";
-        picture-uri = config.desktop.bgimg;
+        picture-uri = builtins.toString config.desktop.bgimg;
         show-desktop-icons = false;
       };
       "org/gnome/desktop/interface" = {

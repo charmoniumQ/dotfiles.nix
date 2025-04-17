@@ -29,8 +29,15 @@
       ];
     };
     xdg = lib.attrsets.optionalAttrs config.desktop.enable {
+      # env XDG_UTILS_DEBUG_LEVEL=3 xdg-mime query default image/png
       mimeApps = {
         enable = true;
+        associations.added = {
+          "application/pdf" = ["org.gnome.Evince.desktop"];
+        };
+        defaultApplications = {
+          "application/pdf" = ["org.gnome.Evince.desktop"];
+        };
       };
     };
   };

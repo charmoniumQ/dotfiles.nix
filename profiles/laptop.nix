@@ -7,6 +7,7 @@
     ../lib/emacs.nix
     ../lib/firefox.nix
     ../lib/libreoffice.nix
+    ../lib/gnome.nix
     ../lib/home-manager.nix
     ../lib/hyprland.nix
     ../lib/keyring.nix
@@ -46,7 +47,10 @@
       audacity
       gimp
       slack
+      # TODO: Get an alternative Discord client
       ffmpeg
+      publii
+      keepassxc
     ] ++ [  ];
     file = {
       Zotero = {

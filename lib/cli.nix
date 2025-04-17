@@ -31,6 +31,7 @@
         hexyl # hexdump replacement
         hwatch # watch replacement
         sd # sed replacement
+        procs # pstree, ps replacement
 
         # TUI builders
         rich-cli
@@ -124,6 +125,11 @@
       };
     };
     programs = {
+      git = {
+        aliases = {
+          "meld" = "git difftool -t meld --dir-diff";
+        };
+      };
       lsd = {
         enable = true;
       };

@@ -215,8 +215,7 @@
 
 ;; Org mode
 (setq org-directory "~/box/self/")
-(setq org-agenda-files '(
-                         "~/box/self/todo.org"))
+(setq org-agenda-files '("~/box/self/todo.org"))
                          ;"~/box/self/cals/personal-calendar.org" "~/box/self/cals/shared-calendar.org"))
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 0)
@@ -225,34 +224,22 @@
   (org-edna-mode))
 
 ; Shortcut for terminal
-;; (use-package! vterm
-;;   :bind ("C-x C-t" . my-vterm))
+(use-package! vterm
+  :bind ("C-x C-t" . 'my-vterm))
 
-;; (defun print-and-eval (msg x) "Prints X with MSG and evaluates to X." (message msg x) x)
-;; (defun my-vterm ()
-;;   "Opens vterm with proper shell environment."
-;;   (interactive)
-;;   (dolist
-;;    (lambda (line)
-;;      (let* ((line-parts (partition line "="))
-;;             (var (car line-parts))
-;;             (val (cadr line-parts)))
-;;        (if (or (string= var "DISPLAY") (string= var "WAYLAND_DISPLAY"))
-;;            (setenv var val)
-;;          nil)))
-;;    (split-string
-;;     (shell-command-to-string "systemctl --user show-environment")
-;;     "\n"))
-;;   (funcall-interactively 'vterm (format "vterm %s" default-directory)))
+(defun my-vterm ()
+  "Opens vterm with proper shell environment."
+  (interactive)
+  (funcall-interactively 'vterm (format "vterm %s" default-directory)))
 
-;; (defun partition (str delim)
-;;   "Like STR.partition(DELIM) in Python."
-;;   (let ((index (string-search delim str)))
-;;     (if index
-;;         (list (substring str 0 index) (substring str (+ 1 index) nil))
-;;         (list str ""))))
-;; (setq multi-term-program "xonsh")
-;; (setq vterm-shell "xonsh")
+(defun partition (str delim)
+  "Like STR.partition(DELIM) in Python."
+  (let ((index (string-search delim str)))
+    (if index
+        (list (substring str 0 index) (substring str (+ 1 index) nil))
+        (list str ""))))
+(setq multi-term-program "xonsh")
+(setq vterm-shell "xonsh")
 
 (defun copy-realpath ()
   "Copies path of buffer to kill ring."
