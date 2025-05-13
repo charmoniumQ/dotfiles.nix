@@ -27,7 +27,12 @@
   };
   home = {
     username = "sam";
-	  homeDirectory = "/home/sam";
+    homeDirectory = "/home/sam";
+    file = {
+      ".ssh" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/ssh";
+      };
+    };
     packages = with pkgs; [
       zoom-us
       inkscape

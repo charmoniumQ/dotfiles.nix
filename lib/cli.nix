@@ -8,15 +8,8 @@
         gnugrep
         gnused
         gawk
-        # TODO: moreutils parallel conflicts with GNU parallel
-        diffutils
-        unixtools.util-linux
-        unixtools.xxd
-        unixtools.script
-        parallel
+        pv
         lsof
-        watchman # watch a directory for file changes
-        shellcheck
         progress
         pv
         sysctl
@@ -39,13 +32,7 @@
 
         # Monitoring
         htop # CPU/mem
-        btop # everything else
         glances # everything else
-        smartmontools
-        cpufrequtils
-        iotop
-        nethogs
-        lm_sensors
 
         # Netowrking
         unixtools.route
@@ -71,15 +58,10 @@
         pwgen
         xkcdpass
         file
-        pciutils
-        lshw
-        hwloc
         libfaketime
         imagemagick
-        ghostscript_headless
 
         # Sending files
-        rclone
         rsync
         wgetpaste
         magic-wormhole
@@ -118,18 +100,8 @@
         pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";
         passphrase = "xkcdpass --wordfile eff-long --numwords 14";
       };
-      file = {
-        ".ssh" = {
-          source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/ssh";
-        };
-      };
     };
     programs = {
-      git = {
-        aliases = {
-          "meld" = "git difftool -t meld --dir-diff";
-        };
-      };
       lsd = {
         enable = true;
       };

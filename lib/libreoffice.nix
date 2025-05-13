@@ -1,5 +1,5 @@
 { lib, config, pkgs, ... }: {
-  home = lib.attrsets.optionalAttrs config.desktop.enable {
+  home = {
     packages = with pkgs; [
       libreoffice
     ];

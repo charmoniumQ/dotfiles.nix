@@ -53,28 +53,22 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      mkConfig = profile: extraConf: home-manager.lib.homeManagerConfiguration {
+          extraSpecialArgs = inputs // {
+            nproc = 8;
+            system = system;
+          };
+          inherit pkgs;
+          modules = [
+            profile
+            extraConf
+          ];
+        };
     in {
       homeConfigurations = {
-        "sam@laptop" = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = inputs // {
-            nproc = 8;
-            system = system;
-          };
-          inherit pkgs;
-          modules = [
-            ./profiles/laptop.nix
-          ];
-        };
-        remote = home-manager.lib.homeManagerConfiguration {
-          extraSpecialArgs = inputs // {
-            nproc = 8;
-            system = system;
-          };
-          inherit pkgs;
-          modules = [
-            ./profiles/remote.nix
-          ];
-        };
+        "sam@laptop" = mkConfig ./profiles/laptop.nix {};
+        remote = mkConfig ./profiles/remote.nix {};
+        "sagrays@s1087928" = mkConfig ./profiles/other.nix {desktop = { enable = true; }; };
       };
       apps = {
         "${system}" = {

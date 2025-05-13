@@ -130,7 +130,6 @@
         isort
         nose2
       ]
-      ++ (lib.lists.optional config.desktop.enable qtconsole)
       ++ [
         # Xonsh and plugins
         xonsh

@@ -72,6 +72,7 @@ in {
       pkgs.ccls
       pkgs.clang-tools
       pkgs.bear # generate compile_commands.json
+      pkgs.nerd-fonts.fira-code
     ];
     sessionVariables = {
       EDITOR = "emacsclient";

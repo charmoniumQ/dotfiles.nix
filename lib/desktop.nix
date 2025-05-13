@@ -2,23 +2,17 @@
   config = {
     home = lib.attrsets.optionalAttrs config.desktop.enable {
       packages = with pkgs; [
-        # TODO: lshw-gui conflicts with lshw
-        pdftk
         libnotify
         dconf
         evince
         pcmanfm
         xarchiver
         lxterminal
-        usbutils
         vlc
-        gthumb
-        distrobox
+        usbutils
         system-config-printer
-        yt-dlp
         # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
         libsForQt5.qt5.qtwayland
-        sqlitebrowser
 
         # echo alert-me-sound hello | at now+20m
         (pkgs.writeShellScriptBin "alert-me-sound" ''

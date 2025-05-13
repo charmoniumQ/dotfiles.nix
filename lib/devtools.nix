@@ -6,8 +6,6 @@
       htop
       direnv
       trash-cli
-      google-cloud-sdk
-      asciinema
       direnv
       hyperfine
 
@@ -19,38 +17,20 @@
       difftastic
       bat
       meld
-      # TODO: fix diffoscope
 
       # Containers
       bubblewrap
-      #podman # Must be installed by host (NixOS or other)
-      dive
-      diffoci
-      proot
       ctop
 
       # Pictures
       xdot
       plantuml
-      mermaid-cli
-      d2
-      ditaa
       librsvg # needed to put svgs in pandoc
       # svgs are the best (or "based") format for including figures from PlantUML, Graphviz, etc. in documents
       pandoc
 
       # Project tools
       just
-
-      # JS tools
-      nodejs
-      yarn-berry
-
-      # Ruby tools
-      ruby
-      rubocop
-      # I guess bundler is included with Ruby now?
-      # bundler
 
       # Rust tools
       # For long-term projects, you should use Crane in a Flake
@@ -64,24 +44,11 @@
       jq
       yq
       hdf5
-      gephi
-      sqlitebrowser
-      miller
-      pup
-
-      # Java tools
-      jdk
-      maven
-      gradle
 
       # VCS
       git
-      git-machete
-      tig
       gitg
       bfg-repo-cleaner
-      mercurial
-      subversion
 
       # Build systems
       cmake
@@ -98,14 +65,11 @@
       llvm
       lldb
 
-      # VM tools
-      vagrant
-
       # Nix tools
       alejandra
 
-      # Sem Web tools
-      protege-distribution
+      # Shell tools
+      shellcheck
     ];
     shellAliases = {
       ipy = "ipython";
@@ -139,15 +103,9 @@
         init = {
           defaultBranch = true;
         };
-        commit = {
-          gpgsign = true;
-        };
-        gpg = {
-          format = "ssh";
-        };
-        user = {
-          signingkey = "~/.ssh/id_ed25519.pub";
-        };
+      };
+      aliases = {
+        "meld" = "git difftool -t meld --dir-diff";
       };
       lfs = {
         enable = true;
