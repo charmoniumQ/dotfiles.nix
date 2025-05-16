@@ -1,8 +1,11 @@
 { system, config, pkgs, lib, nix-index-database, ... }: {
   imports = [
     ../lib/cli.nix
+    ../lib/cli-extra.nix
     ../lib/desktop.nix
+    ../lib/desktop-extra.nix
     ../lib/devtools.nix
+    ../lib/devtools-extra.nix
     ../lib/disks.nix
     ../lib/emacs.nix
     ../lib/firefox.nix
@@ -84,6 +87,71 @@
       };
       lfs = {
         enable = true;
+      };
+    };
+    firefox = {
+      profiles = {
+        default = {
+          bookmarks = {
+            force = true;
+            settings = [
+              {
+                name = "Nixos options";
+                url = "file:///home/sam/Documents/offline-pages/Appendix%20A.%20Configuration%20Options.html";
+              }
+              {
+                name = "Home-manager options";
+                url = "https://home-manager.dev/manual/unstable/options.xhtml";
+              }
+              {
+                name = "NixOS manual";
+                url = "file:///home/sam/Documents/offline-pages/NixOS%20Manual.html";
+              }
+              {
+                name = "Nix fns";
+                url = "https://teu5us.github.io/nix-lib.html";
+              }
+              {
+                name = "Tuja Vortaro";
+                url = "https://www.tujavortaro.net/?lingvo=en&vorto";
+              }
+              {
+                name = "FRS/GRMS chart";
+                url = "https://wiki.radioreference.com/index.php/FRS/GMRS_combined_channel_chart";
+              }
+            ];
+          };
+          extensions = {
+            packages = with pkgs.nur.repos.rycee.firefox-addons; [
+              vimium
+              bitwarden
+              consent-o-matic
+              ublock-origin
+              refined-github
+              auto-tab-discard
+              return-youtube-dislikes
+              languagetool
+              zotero-connector
+              leechblock-ng
+              semantic-scholar
+              gaoptout
+              floccus
+              clearurls
+              user-agent-string-switcher
+              canvasblocker
+              old-reddit-redirect
+              # reddit-enhancement-suite # https://redditenhancementsuite.com/
+              # reddit-comment-collapser # https://github.com/tom-james-watson/reddit-comment-collapser
+              # https://addons.mozilla.org/en-US/firefox/addon/google-scholar-button/
+              # web-archives
+              # foxytab
+              # wayback-machine
+              # darkreader
+              # tree-style-tab
+            ];
+            force = true;
+          };
+        };
       };
     };
   };

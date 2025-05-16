@@ -52,6 +52,10 @@
       bgimg = lib.mkOption {
         type = lib.types.path;
       };
+      fontsize = lib.mkOption {
+        type = lib.types.ints.positive;
+        default = 12;
+      };
     };
   };
 }

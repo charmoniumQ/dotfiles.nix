@@ -99,13 +99,22 @@
     };
     git = {
       enable = true;
+      aliases = {
+        "meld" = "!git difftool --tool meld --dir-diff";
+        # https://stackoverflow.com/a/60501712/1078199
+        # git for-each-ref refs/heads/ "--format=%(refname:short)" \
+        # | while read branch; do
+        #   mergeBase=$(git merge-base master $branch) \
+        #   && [[ $(git cherry master $(git commit-tree $(git rev-parse $branch\^{tree}) -p $mergeBase -m _)) == "-"* ]] \
+        #   && git branch -D $branch;
+        # done
+        "squash" = "!git reset --soft $(!git merge-base main $(!git rev-parse --abbrev-ref HEAD))";
+      };
       extraConfig = {
+        # "merge.conflictStyle" = "diff3";
         init = {
           defaultBranch = true;
         };
-      };
-      aliases = {
-        "meld" = "git difftool -t meld --dir-diff";
       };
       lfs = {
         enable = true;

@@ -20,6 +20,7 @@
   };
   desktop = {
     enable = true;
+    fontsize = 14;
   };
   programs = {
     git = {

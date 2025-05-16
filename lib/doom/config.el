@@ -11,8 +11,8 @@
 ;(frame-parameter nil 'font-backend)
 ;(font-family-list)
 ;(find-font (font-spec :name "FiraCode Nerd Font"))
-(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 14))
-(setq doom-unicode-font (font-spec :family "FiraCode Nerd Font" :size 14))
+(setq doom-font (font-spec :family "FiraCode Nerd Font" :size @fontsize@))
+(setq doom-unicode-font (font-spec :family "FiraCode Nerd Font" :size @fontsize@))
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
@@ -198,6 +198,11 @@
  '(org-mode)
  "<<" ">>"
  :actions '(insert))
+
+; Make all modes use emojify
+(use-package emojify
+  :init
+  (global-emojify-mode))
 
 ; Systemd mode
 (use-package! systemd)

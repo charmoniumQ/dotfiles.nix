@@ -25,7 +25,8 @@ xontrib load \
     sh \
     vox \
     zoxide \
-    readable-traceback
+    readable-traceback \
+    direnv
 
 # import rich.traceback
 # rich.traceback.install()

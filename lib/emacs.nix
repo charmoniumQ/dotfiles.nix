@@ -83,6 +83,9 @@ in {
       "${config.home.homeDirectory}/.emacs.d/bin"
     ];
     file = {
+      "${config.home.sessionVariables.DOOMDIR}/snippets/" = {
+        source = pkgs.runCommand "empty-dir" { } "mkdir -p $out";
+      };
       "${config.home.sessionVariables.DOOMDIR}/init.el" = {
         source = ./doom/init.el;
       };
@@ -90,7 +93,10 @@ in {
         source = ./doom/packages.el;
       };
       "${config.home.sessionVariables.DOOMDIR}/config.el" = {
-        source = ./doom/config.el;
+        source = pkgs.substituteAll {
+          src = ./doom/config.el;
+          fontsize = builtins.toString config.desktop.fontsize;
+        };
       };
     };
   };

@@ -85,7 +85,7 @@
  :ui
  doom
  doom-dashboard
- ;(emoji +github)
+ (emoji +unicode +github)
  hl-todo
  indent-guides
  ; TODO[use]: Figure out why True/False/str ligatures don't work for me
