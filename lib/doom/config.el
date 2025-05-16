@@ -11,8 +11,8 @@
 ;(frame-parameter nil 'font-backend)
 ;(font-family-list)
 ;(find-font (font-spec :name "FiraCode Nerd Font"))
-(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 12))
-(setq doom-unicode-font (font-spec :family "FiraCode Nerd Font" :size 12))
+(setq doom-font (font-spec :family "FiraCode Nerd Font" :size 14))
+(setq doom-unicode-font (font-spec :family "FiraCode Nerd Font" :size 14))
 
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)

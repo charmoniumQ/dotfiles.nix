@@ -113,6 +113,7 @@ in {
       enable = true;
     };
   };
+  # TODO: Split GUI Emacs from CLI Emacs
   xdg = {
     desktopEntries = {
       emacs = {
