@@ -37,141 +37,203 @@ function sampling_du() {
         | bitmath --from-stdin -f Byte
 }
 
+function p() {
+    "$@" || (echo "Command failed:" "$@" && exit 1)
+}
+
 duf -only local
 
-rich --rule "User buildah"
-buildah containers --all
-buildah images --all
-echo "Potentially freeing $(real_du "$(buildah info | jq '.store.GraphRoot' --raw-output)") +  $(real_du "$(buildah info | jq '.store.RunRoot' --raw-output)")"
-if gum confirm "prune all containers and all images including local?"; then
-    buildah prune --all --force
-    # Assert length is 0
-    buildah images --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah images remain'
-    buildah ps --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah containers remain'
-fi
-
-
-rich --rule "Root buildah"
-sudo buildah containers --all
-sudo buildah images --all
-echo "Potentially freeing $(real_du "$(sudo buildah info | jq '.store.GraphRoot' --raw-output)") +  $(real_du "$(sudo buildah info | jq '.store.RunRoot' --raw-output)")"
-if gum confirm "prune all containers and all images including local?"; then
-    sudo buildah prune --all --force
-    # Assert length is 0
-    sudo buildah images --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah images remain'
-    sudo buildah ps --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah containers remain'
-fi
-
-rich --rule "User podman"
-podman container list --all
-podman image list --all
-podman network list
-echo "Potentially freeing $(real_du "$(podman system info | yq '.store.graphRoot' --raw-output)") + $(real_du "$(podman system info | yq '.store.runRoot' --raw-output)") + $(real_du "$(podman system info | yq '.store.volumePath' --raw-output)")"
-if gum confirm "delete all resources (containers, images, networks)"; then
-    podman container stop --all
-    # Podman system prune does not clean up running containres
-    podman system prune --force
-
-    # Assert done
-    podman image list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman images remain'
-    podman container list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman containers remaine'
-fi
-
-rich --rule "Root podman"
-sudo podman container list --all
-sudo podman image list --all
-sudo podman network list
-echo "Potentially freeing $(real_du "$(sudo podman system info | yq '.store.graphRoot' --raw-output)") + $(real_du "$(sudo podman system info | yq '.store.runRoot' --raw-output)") + $(real_du "$(sudo podman system info | yq '.store.volumePath' --raw-output)")"
-if gum confirm "delete all resources (containers, images, networks)"; then
-    sudo podman container stop --all
-    # Podman system prune does not clean up running containres
-    sudo podman system prune --force || true
-
-    # Assert done
-    sudo podman image list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman images remain'
-    sudo podman container list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman containers remaine'
-fi
-
-rich --rule "Docker"
-docker container list --all
-docker image list --all
-if gum confirm "delete all resources (containers, images, networks)"; then
-    if docker image list --all --format=json | jq --exit-status 'length != 0' > /dev/null; then
-        docker stop "$(docker container list --all --quiet)"
+containers="$(p buildah containers --all)"
+images="$(p buildah images --all)"
+if [ -n "${containers}${images}" ]; then
+    rich --rule "User buildah"
+    echo "$containers"
+    echo "$images"
+    echo "Potentially freeing $(real_du "$(buildah info | jq '.store.GraphRoot' --raw-output)") +  $(real_du "$(buildah info | jq '.store.RunRoot' --raw-output)")"
+    if gum confirm "prune all containers and all images including local?"; then
+        p buildah prune --all --force
+        # Assert length is 0
+        p buildah images --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah images remain'
+        p buildah ps --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah containers remain'
     fi
-    # For whatever reason, docker system prune is not sufficient
-    if docker container list --all --format=json | jq --exit-status 'length == 0' > /dev/null; then
-    docker image rm "$(docker images --all --quiet)"
+fi
+
+
+containers="$(p sudo buildah containers --all)"
+images="$(p sudo buildah images --all)"
+if [ -n "${containers}${images}" ]; then
+    rich --rule "Root buildah"
+    echo "$containers"
+    echo "$images"
+    echo "Potentially freeing $(real_du "$(sudo buildah info | jq '.store.GraphRoot' --raw-output)") +  $(real_du "$(sudo buildah info | jq '.store.RunRoot' --raw-output)")"
+    if gum confirm "prune all containers and all images including local?"; then
+        p sudo buildah prune --all --force
+        # Assert length is 0
+        p sudo buildah images --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah images remain'
+        p sudo buildah ps --all --json | jq --exit-status 'length == 0' > /dev/null || echo 'Some buildah containers remain'
     fi
-    docker system prune --force
-    docker image list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some docker images remain'
-    docker container list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some docker containers remain'
+fi
+
+containers="$(p podman container list --all)"
+images="$(p podman image list --all)"
+networks="$(p podman network list)"
+if [ -n "${containers}${images}${networks}" ]; then
+    rich --rule "User podman"
+    echo "${containers}"
+    echo "${images}"
+    echo "${networks}"
+    echo "Potentially freeing $(real_du "$(podman system info | yq '.store.graphRoot' --raw-output)") + $(real_du "$(podman system info | yq '.store.runRoot' --raw-output)") + $(real_du "$(podman system info | yq '.store.volumePath' --raw-output)")"
+    if gum confirm "delete all resources (containers, images, networks)"; then
+        # Podman system prune does not clean up running containres
+        p podman container stop --all
+
+        # see https://unix.stackexchange.com/a/619702/59973
+        # podman system prune --force || true
+        p podman container rm --all --force
+        p podman image rm --all --force
+
+        # Assert done
+        p podman image list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman images remain'
+        p podman container list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman containers remaine'
+    fi
+fi
+
+containers="$(p sudo podman container list --all)"
+images="$(p sudo podman image list --all)"
+networks="$(p sudo podman network list)"
+if [ -n "${containers}${images}${networks}" ]; then
+    rich --rule "Root podman"
+    echo "${containers}"
+    echo "${images}"
+    echo "${networks}"
+    echo "Potentially freeing $(real_du "$(sudo podman system info | yq '.store.graphRoot' --raw-output)") + $(real_du "$(sudo podman system info | yq '.store.runRoot' --raw-output)") + $(real_du "$(sudo podman system info | yq '.store.volumePath' --raw-output)")"
+    if gum confirm "delete all resources (containers, images, networks)"; then
+        # Podman system prune does not clean up running containers
+        p sudo podman container stop --all
+
+        # see https://unix.stackexchange.com/a/619702/59973
+        # sudo podman system prune --force || true
+        p sudo podman container rm --all --force
+        p sudo podman image rm --all --force
+
+        # Assert done
+        p sudo podman image list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman images remain'
+        p sudo podman container list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some podman containers remaine'
+    fi
+fi
+
+containers="$(p docker container list --all)"
+images="$(p docker image list --all)"
+if [ -n "${containers}${images}${networks}" ]; then
+    rich --rule "Docker"
+    echo "${containers}"
+    echo "${images}"
+    if gum confirm "delete all resources (containers, images, networks)"; then
+        # For whatever reason, docker system prune is not sufficient
+        if docker container list --all --format=json | jq --exit-status 'length == 0' > /dev/null; then
+            p docker stop "$(docker container list --all --quiet)"
+        fi
+
+        if docker image list --all --format=json | jq --exit-status 'length != 0' > /dev/null; then
+            #p docker image rm "$(docker images --all --quiet)"
+            p docker images --all --quiet | xargs --max-args 1 docker image rm
+        fi
+        p docker system prune --force
+        p docker image list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some docker images remain'
+        p docker container list --all --format=json | jq --exit-status 'length == 0' > /dev/null || echo 'Some docker containers remain'
+    fi
 fi
 
 rich --rule "User Journald"
-journalctl --user --flush
-journalctl --user --disk-usage
+p journalctl --user --flush
+p journalctl --user --disk-usage
 if gum confirm "Retain past 100M of Journald"; then
-    journalctl --user --vacuum-size=100M
+    p journalctl --user --vacuum-size=100M
 fi
+
 
 rich --rule "Root Journald"
-sudo journalctl --flush --rotate
-sudo journalctl --disk-usage
+p sudo journalctl --flush --rotate
+p sudo journalctl --disk-usage
 if gum confirm "Retain past 100M of Journald"; then
-    sudo journalctl --vacuum-size=100M
+    p sudo journalctl --vacuum-size=100M
 fi
 
-rich --rule "Downloads"
-echo "Potentailly freeing $(real_du "$HOME/Downloads")"
-if gum confirm "Empty Downloads"; then
-    trash-put "$HOME/Downloads/"*
+downloads="$(lsd "$HOME"/Downloads/)"
+if [ -n "$downloads" ]; then
+    rich --rule "Downloads"
+    echo "$downloads"
+    echo "Potentailly freeing $(real_du "$HOME/Downloads")"
+    if gum confirm "Empty Downloads"; then
+        p trash-put "$HOME/Downloads/"*
+    fi
 fi
 
-rich --rule "XDG_CACHE_DIR"
+
 dir="${XDG_CACHE_HOME:-$HOME/.cache}"
-echo "Potentailly freeing $(real_du "$dir")"
-if gum confirm "Empty Downloads"; then
-    trash-put "$dir"
-    mkdir "$dir"
+caches="$(lsd "$dir")"
+if [ -n "$caches" ]; then
+    rich --rule "XDG_CACHE_DIR"
+    echo "$caches"
+    echo "Potentailly freeing $(real_du "$dir")"
+    if gum confirm "Empty Downloads"; then
+        p trash-put "$dir"
+        mkdir "$dir"
+    fi
 fi
 
-rich --rule "Flatpaks"
-flatpak list --all
-echo "Potentailly freeing $(real_du "/var/lib/flatpak/")"
-flatpak list --all --columns=ref | xargs --max-args=1 flatpak uninstall --assumeyes
-flatpak uninstall --unused --assumeyes
+flatpaks="$(p flatpak list --all)"
+if [ -n "$flatpaks" ]; then
+    p rich --rule "Flatpaks"
+    echo "$flatpaks"
+    echo "Potentailly freeing $(real_du "/var/lib/flatpak/")"
+    if [ -n "$flatpaks" ] && gum confirm "Remove flatpaks"; then
+        p flatpak list --all --columns=ref | xargs --max-args=1 flatpak uninstall --assumeyes
+        p flatpak uninstall --unused --assumeyes
+    fi
+fi
 
 rich --rule "Nix"
 nix_store="$(nix config show --json | jq ".store.value" --raw-output)"
 if [ "$nix_store" = "auto" ]; then
     nix_store=/nix/store
 fi
+
+
+if gum confirm "Nix wipe old generations?"; then
+    p sudo nix profile wipe-history --profile /nix/var/nix/profiles/system
+    p home-manager expire-generations '-1 days'
+    p nix profile wipe-history
+fi
+
+direnvs="$(p find ~ -name '.direnv')"
+delete_direnvs=$(gum filter --no-limit $direnvs)
+if [ -n "$delete_direnvs" ]; then
+     echo $delete_direnvs | xargs --max-args=1 trash-put
+fi
+
 echo "Potentially freeing $(sampling_du 0.01 1 "$nix_store")"
 if gum confirm "Nix GC?"; then
-    if gum confirm "Nix wipe old generations?"; then
-        sudo nix profile wipe-history --profile /nix/var/nix/profiles/system
-        home-manager expire-generations '-1 days'
-        nix profile wipe-history
-    fi
-    if gum confirm "Nix delete direnvs?"; then
-        find ~ -name '.direnv' -print0 | xargs -0 --max-args=1 trash-put
-    fi
-    nix-store --gc --print-roots | rg -v '^/proc/\d+'
-    nix store gc
+    p nix-store --gc --print-roots | rg -v '^/proc/\d+'
+    p nix store gc
 fi
 
 rich --rule "Doom"
 if gum confirm "Doom sync, upgrade, gc?"; then
-    ~/.emacs.d/bin/doom sync
-    ~/.emacs.d/bin/doom upgrade
-    ~/.emacs.d/bin/doom gc
+    p ~/.emacs.d/bin/doom sync
+    p ~/.emacs.d/bin/doom upgrade
+    p ~/.emacs.d/bin/doom gc
 fi
 
-rich --rule "Trash"
-echo "Potentailly freeing $(real_du "${XDG_DATA_HOME:-$HOME/.local}/Trash")"
-if gum confirm "Empty trash"; then
-    trash-empty
+trash_dir="${XDG_DATA_HOME:-$HOME/.local}/Trash"
+trashes="$(lsd "$trash_dir")"
+if [ -n "$trashes" ]; then
+    rich --rule "Trash"
+    echo "$trashes"
+    echo "Potentailly freeing $(real_du )"
+    if gum confirm "Empty trash"; then
+        p trash-empty
+    fi
 fi
 
-duf -only local
+p duf -only local

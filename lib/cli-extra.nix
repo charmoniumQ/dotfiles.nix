@@ -25,6 +25,7 @@
         lshw
         hwloc
         ghostscript_headless
+        libfaketime
 
         # Sending files
         rclone

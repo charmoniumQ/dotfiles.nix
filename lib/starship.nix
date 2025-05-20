@@ -5,7 +5,6 @@
       settings = {
         # Re-arrangement of https://starship.rs/config/#default-prompt-format
         format = lib.concatStrings [
-          "$time"
           "$os"
           "$container"
           "$netns"
@@ -21,9 +20,9 @@
           "$fossil_metrics"
           "$git_branch"
           "$git_commit"
+          "$git_status"
           "$git_state"
           "$git_metrics"
-          "$git_status"
           "$hg_branch"
           "$pijul_channel"
           "$docker_context"
@@ -88,10 +87,11 @@
           "$env_var"
           "$mise"
           "$crystal"
+          "$time"
           "$custom"
-          "$sudo"
           "$cmd_duration"
           "$line_break"
+          "$sudo"
           "$jobs"
           "$battery"
           "$status"
@@ -102,11 +102,37 @@
           success_symbol = "[\\$](bold green)";
           error_symbol = "[\\$](bold red)";
         };
+        cmd_duration = {
+          show_notifications = true;
+        };
         direnv = {
+          disabled = true;
+        };
+        git_branch = {
           disabled = false;
+        };
+        git_commit = {
+          disabled = false;
+        };
+        git_status = {
+          disabled = false;
+          conflicted = "≠";
+          staged = "s"; # usually don't care
+          untracked = ""; # usually don't care
+          deleted = ""; # usually gets shown in git_metrics
+          modified = ""; # usually gets shown in git_metrics
+          stashed = "🗃";
         };
         git_metrics = {
           disabled = false;
+          format = "([+$added]($added_style),[-$deleted]($deleted_style) )";
+        };
+        nix_shell = {
+          format = "([$symbol$state]($style) )";
+          symbol = "❄️";
+          impure_msg = "!";
+          pure_msg = ".";
+          heuristic = true;
         };
         os = {
           disabled = false;
@@ -127,7 +153,7 @@
           disabled = false;
         };
         time = {
-          disabled = false;
+          disabled = true;
         };
       };
     };

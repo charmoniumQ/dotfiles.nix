@@ -43,6 +43,7 @@
       xdot
       jq
       yq
+      yj
       hdf5
 
       # VCS

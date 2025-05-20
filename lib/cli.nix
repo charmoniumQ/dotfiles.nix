@@ -29,6 +29,7 @@
         # TUI builders
         rich-cli
         choose
+        gum
 
         # Monitoring
         htop # CPU/mem
@@ -58,7 +59,6 @@
         pwgen
         xkcdpass
         file
-        libfaketime
         imagemagick
 
         # Sending files
