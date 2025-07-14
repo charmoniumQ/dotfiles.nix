@@ -1,4 +1,4 @@
-{ pkgs, config, flox, ... }: {
+{ pkgs, config, ... }: {
   config = {
     home = {
       packages = with pkgs; [
@@ -11,6 +11,16 @@
         parallel
         watchman # watch a directory for file changes
         progress
+
+        # Scanning
+        gscan2pdf
+
+        # Next gen tools
+        duf # df replacement
+        bat # cat replacement
+        grc # cat replacement
+        hexyl # hexdump replacement
+        hwatch # watch replacement
 
         # Monitoring
         btop # everything else
@@ -30,6 +40,11 @@
         # Sending files
         rclone
       ];
+      shellAliases = {
+        df = "duf";
+        xxd = "hexyl";
+        watch = "hwatch";
+      };
     };
   };
 }

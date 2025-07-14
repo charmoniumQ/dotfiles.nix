@@ -28,6 +28,10 @@
     overlays = [ nur.overlays.default ];
     config = {
       allowUnfree = true;
+      # Home-manager's permittedInsecurePackages doesn't work.
+      # Use NixOS or other config tool to permit insecure packages at a system-level.
+      # https://github.com/nix-community/home-manager/issues/4664
+      # permittedInsecurePackages = [ ... ];
     };
   };
   home = {
@@ -40,6 +44,7 @@
       alejandra
       nurl
       nix-du
+      nix-tree
     ];
     shellAliases = {
       nix-locat = "nix-locate --top-level --regex";

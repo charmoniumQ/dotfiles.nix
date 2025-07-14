@@ -93,8 +93,7 @@ in {
         source = ./doom/packages.el;
       };
       "${config.home.sessionVariables.DOOMDIR}/config.el" = {
-        source = pkgs.substituteAll {
-          src = ./doom/config.el;
+        source = pkgs.replaceVars ./doom/config.el {
           fontsize = builtins.toString config.desktop.fontsize;
         };
       };

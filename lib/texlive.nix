@@ -1,4 +1,4 @@
-{ pkgs, config, flox, ... }: {
+{ pkgs, config, ... }: {
   config = {
     home = {
       packages = with pkgs; [

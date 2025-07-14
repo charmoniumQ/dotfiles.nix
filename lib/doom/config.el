@@ -189,6 +189,10 @@
   :config
   (map! "C-x C-r" #'helm-recentf))
 
+; https://emacs.stackexchange.com/questions/18173/how-to-jump-from-emacs-command-history-to-emacs-commands-in-helm
+; Go from one section to another using normal "down" key (C-n)
+(setq helm-move-to-line-cycle-in-source nil)
+
 ; Parens
 (use-package!
  rainbow-delimiters
@@ -200,7 +204,7 @@
  :actions '(insert))
 
 ; Make all modes use emojify
-(use-package emojify
+(use-package! emojify
   :init
   (global-emojify-mode))
 
@@ -243,8 +247,8 @@
     (if index
         (list (substring str 0 index) (substring str (+ 1 index) nil))
         (list str ""))))
-(setq multi-term-program "xonsh")
-(setq vterm-shell "xonsh")
+(setq multi-term-program "zsh")
+(setq vterm-shell "zsh")
 
 (defun copy-realpath ()
   "Copies path of buffer to kill ring."
@@ -316,6 +320,15 @@ you won't need to do any typing)."
 (setq delete-by-moving-to-trash t)
 (setq magit-delete-by-moving-to-trash t)
 (use-package! trashed)
+
+(use-package! gptel
+ :config
+ (setq gptel-model 'deepseek-reasoner
+       gptel-backend (gptel-make-deepseek
+                       "DeepSeek"
+                       :stream t
+                       :key #'gptel-api-key-from-auth-source)))
+
 
 (provide 'config)
 ;;; config.el ends here

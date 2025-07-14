@@ -25,6 +25,11 @@
     };
     nur = {
       url = github:nix-community/NUR;
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
     };
     nix-index-database = {
       url = github:Mic92/nix-index-database;
@@ -34,14 +39,14 @@
         };
       };
     };
-    flox = {
-      url = github:flox/floxpkgs;
-      inputs = {
-        nixpkgs = {
-          follows = "nixpkgs";
-        };
-      };
-    };
+    # flox = {
+    #   url = github:flox/floxpkgs;
+    #   inputs = {
+    #     nixpkgs = {
+    #       follows = "nixpkgs";
+    #     };
+    #   };
+    # };
   };
 
   outputs = (
@@ -69,6 +74,7 @@
         "sam@laptop" = mkConfig ./profiles/laptop.nix {};
         remote = mkConfig ./profiles/remote.nix {};
         "sagrays@s1087928" = mkConfig ./profiles/other.nix {desktop = { enable = true; }; };
+        "sysadmin@home-server" = mkConfig ./profiles/tv.nix {};
       };
       apps = {
         "${system}" = {

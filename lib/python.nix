@@ -3,7 +3,13 @@
   config,
   ...
 }: let
-  python = pkgs.python312;
+  python = pkgs.python313;
+  disablePytest = pypkg: builtins.trace
+    "Building ${pypkg.name} without tests against my better judgement"
+    pypkg.overridePythonAttrs {
+      pytestCheckPhase = "true";
+    }
+  ;
   pythonPkgs = pypkgs:
     with pypkgs;
       [
@@ -82,11 +88,11 @@
         h5py
         xlrd
         networkx
-        numpyro
-        arviz
+        # numpyro # TODO
+        # arviz # TODO
 
         # NLP
-        spacy
+        spacy # TODO
         levenshtein
         nltk
 
@@ -107,19 +113,12 @@
         # Plotting
         matplotlib
         bokeh
-        holoviews
+        (disablePytest holoviews)
         altair
         vega
         seaborn
         plotext
-        (pypkgs.buildPythonPackage rec {
-          pname = "plotille";
-          version = "5.0.0";
-          src = pkgs.fetchPypi {
-            inherit pname version;
-            sha256 = "99e5ca51a2e4c922ead3a3b0863cc2c6a9a4b3f701944589df10f42ce02ab3dc"; # TODO
-          };
-        })
+        plotille
 
         # Language server
         mypy
@@ -169,11 +168,10 @@ in {
   home = {
     packages = [
       (python.withPackages pythonPkgs)
-      # TODO: Fix
-      # pkgs.pipenv
+      pkgs.pipenv
       pkgs.pyenv
       pkgs.pipx
-      pkgs.hatch
+      (disablePytest pkgs.hatch)
       pkgs.virtualenv
     ];
   };

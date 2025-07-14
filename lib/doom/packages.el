@@ -31,6 +31,9 @@
 (package! org-caldav)
 (package! org-super-agenda)
 
+; Ugh. AI stuff
+(package! gptel :recipe (:nonrecursive t))
+
 (provide 'packages)
 ;;; packages.el ends here
 ;; Local Variables:

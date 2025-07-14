@@ -25,8 +25,6 @@
       # https://www.reddit.com/r/hyprland/comments/10xi2md/hyprland_zoom_screen_share/
       grim
       slurp
-      xdg-desktop-portal-hyprland
-      xdg-desktop-portal
       networkmanagerapplet
       # TODO: cliphist
       # https://nixpk.gs/pr-tracker.html?pr=348887
@@ -107,6 +105,24 @@
           save_dir=$HOME/Pictures
           save_filename_format=swappy-%Y%m%d-%H%M%S.png
         '';
+      };
+    };
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-hyprland
+        xdg-desktop-portal-gtk
+      ];
+      configPackages = [
+        pkgs.hyprland
+      ];
+      config = {
+        hyprland = {
+          default = [
+            "hyprland"
+            "gtk"
+          ];
+        };
       };
     };
   };

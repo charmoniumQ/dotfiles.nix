@@ -21,10 +21,14 @@ in
       #};
       autocd = true;
       dotDir = ".config/zsh";
-      initExtra = builtins.concatStringsSep "\n" [
-        (builtins.readFile ./zsh/initExtra.zsh)
-        (addToFpath [pkgs.zsh-completions pkgs.nix-zsh-completions pkgs.starship])
+      initContent = builtins.concatStringsSep "\n" [
+        (addToFpath [
+          pkgs.zsh-completions
+          pkgs.nix-zsh-completions
+          pkgs.starship
+        ])
         ''eval "$(starship init zsh)"''
+        (builtins.readFile ./zsh/initExtra.zsh)
       ];
       sessionVariables = {
         # This gives us a hook to prepend to PS1 especiallhttps://github.com/direnv/direnv/wiki/PS1 in direnv.

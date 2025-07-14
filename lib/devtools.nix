@@ -5,29 +5,24 @@
       # System tools
       htop
       direnv
-      trash-cli
-      direnv
       hyperfine
 
       # Source code utils
       wgetpaste
       ripgrep
       fd
-      delta
-      difftastic
-      bat
       meld
 
       # Containers
       bubblewrap
-      ctop
+      # ctop
 
       # Pictures
-      xdot
-      plantuml
       librsvg # needed to put svgs in pandoc
       # svgs are the best (or "based") format for including figures from PlantUML, Graphviz, etc. in documents
       pandoc
+      plantuml
+      graphviz
 
       # Project tools
       just
@@ -39,8 +34,6 @@
 
       # Data munging
       sqlite
-      graphviz
-      xdot
       jq
       yq
       yj
@@ -65,9 +58,6 @@
       #TODO: clang conflicts with gcc. How to rename the package?
       llvm
       lldb
-
-      # Nix tools
-      alejandra
 
       # Shell tools
       shellcheck

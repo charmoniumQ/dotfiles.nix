@@ -2,6 +2,11 @@
 {
   home = {
     packages = with pkgs; [
+      # source code utils
+      delta
+      difftastic
+      bat
+
       # System tools
       google-cloud-sdk
       asciinema
@@ -13,7 +18,8 @@
       proot
       # TODO: fix diffoscope
 
-      # Pictures
+      # diagrams
+      xdot
       mermaid-cli
       d2
       ditaa
@@ -36,13 +42,13 @@
       # Data munging
       gephi
       sqlitebrowser
-      miller
-      pup
+      # miller
+      # pup
 
       # Java tools
       jdk
-      maven
-      gradle
+      # maven
+      # gradle
 
       # VCS
       git-machete
@@ -51,13 +57,20 @@
       subversion
 
       # VM tools
-      vagrant
+      # vagrant
 
       # Nix tools
       alejandra
 
       # Sem Web tools
-      protege-distribution
+      # protege-distribution
     ];
+  };
+  programs = {
+    git = {
+      difftastic = {
+        enable = true;
+      };
+    };
   };
 }

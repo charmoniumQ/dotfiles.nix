@@ -1,4 +1,4 @@
-{ pkgs, config, flox, ... }: {
+{ pkgs, config, ... }: {
   config = {
     home = {
       packages = with pkgs; [
@@ -11,24 +11,17 @@
         pv
         lsof
         progress
-        pv
         sysctl
 
         # Next gen tools
         ripgrep # grep replacement
         fd # file replacement
-        duf # df replacement
         gdu # du replacement
-        bat # cat replacement
-        grc # cat replacement
-        hexyl # hexdump replacement
-        hwatch # watch replacement
         sd # sed replacement
         procs # pstree, ps replacement
 
         # TUI builders
         rich-cli
-        choose
         gum
 
         # Monitoring
@@ -90,11 +83,9 @@
         l = "lsd --human-readable --almost-all --long --timesort";
         tree = "lsd --human-readable --long --timesort --tree";
         rs = "rsync  --archive --verbose --progress --partial --human-readable";
-        df = "duf";
-        dig = "echo 'try doggo'";
-        drill = "echo 'try doggo'";
-        watch = "echo 'try hwatch'";
-        pstree = "echo 'try procs --tree'";
+        dig = "doggo";
+        drill = "doggo";
+        pstree = "procs --tree";
 
         # Shortcuts
         pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";
