@@ -11,8 +11,8 @@
     ../lib/texlive.nix
     ../lib/xdg-ninja.nix
     ../lib/xonsh.nix
-    #../lib/zsh.nix
-    nix-index-database.homeModules.nix-index
+    ../lib/zsh.nix
+    nix-index-database.hmModules.nix-index
   ];
   home = {
     username = "sagrays";

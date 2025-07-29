@@ -59,6 +59,14 @@
       llvm
       lldb
 
+      # Nix tools
+      alejandra
+
+      # Python tools
+      uv
+      #mamba-cpp
+      pixi
+
       # Shell tools
       shellcheck
     ];

@@ -335,6 +335,31 @@ you won't need to do any typing)."
                        :stream t
                        :key #'gptel-api-key-from-auth-source)))
 
+; Tramp mode
+(setq tramp-verbose 4)
+
+; https://www.gnu.org/software/emacs/manual/html_node/tramp/Frequently-Asked-Questions.html
+(setq vc-handled-backends '(Git))
+(setq remote-file-name-inhibit-locks t)
+(setq remote-file-name-inhibit-auto-saved t)
+
+(setq tramp-copy-size-limit (* 1024 1024))
+
+; Use direct async remote processes
+; https://www.gnu.org/software/emacs/manual/html_node/tramp/Remote-processes.html#Improving-performance-of-asynchronous-remote-processes-1
+(connection-local-set-profile-variables
+ 'remote-direct-async-process
+ '((tramp-direct-async-process t)))
+(connection-local-set-profiles
+ '(:application tramp :protocol "ssh")
+ 'remote-direct-async-process)
+;(setq tramp-use-connection-share t)
+(find-file "/ssh:hpws0446:dotfiles.nix/flake.nix")
+
+(setq magit-tramp-pipe-stty-settings 'pty)
+
+; https://emacs.stackexchange.com/a/17579
+(setq projectile-mode-line "Projectile")
 
 (provide 'config)
 ;;; config.el ends here
