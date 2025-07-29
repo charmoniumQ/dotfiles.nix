@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ lib, pkgs, config, ... }:
 {
   home = {
     packages = with pkgs; [
@@ -67,11 +67,13 @@
       py = "python";
     };
     # For pipx and friends
-    sessionPath = ["$HOME/.local/bin"];
+    sessionPath = [
+      "$HOME/.local/bin"
+    ];
   };
   services = {
     lorri = {
-      enable = true;
+      enable = lib.mkDefault true;
     };
   };
   programs = {

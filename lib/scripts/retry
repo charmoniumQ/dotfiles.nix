@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+import typer
+import time
+import subprocess
+
+
+@typer.app()
+def main(
+        cmd: list[str],
+        n: int = 3,
+        delay: float = 1.0,
+        ignore_failures: bool = True,
+) -> None:
+    for _ in range(n):
+        proc = subprocess.run(cmd, check=False, capture_output=False)
+        if proc.returncode == 0:
+            break
+        elif not ignore_failures:
+            raise typer.Exit(proc.returncode)
+        time.sleep(delay)
+    raise typer.Exit(proc.returncode)
+
+
+if __name__ == "__main__":
+    main()

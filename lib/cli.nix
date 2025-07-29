@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ lib, pkgs, config, ... }: {
   config = {
     home = {
       packages = with pkgs; [
@@ -98,6 +98,21 @@
       };
       bash = {
         enable = true;
+        bashrcExtra = lib.optionalString config.targets.genericLinux.enable ''
+          profile=$HOME/.local/state/nix/profile
+          if [ -d $profile ]; then
+            source $profile/etc/profile.d/nix.sh
+          fi
+        '';
+      };
+      zsh = {
+        enable = true;
+        initContent = lib.optionalString config.targets.genericLinux.enable ''
+          profile=$HOME/.local/state/nix/profile
+          if [ -d $profile ]; then
+            source $profile/etc/profile.d/nix.sh
+          fi
+        '';
       };
       man = {
         enable = true;

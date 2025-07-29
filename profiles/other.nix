@@ -16,7 +16,7 @@
   ];
   home = {
     username = "sagrays";
-    homeDirectory = "/home/sagrays";
+    homeDirectory = "/home/${username}";
   };
   desktop = {
     enable = true;

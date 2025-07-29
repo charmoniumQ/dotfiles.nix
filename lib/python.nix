@@ -92,7 +92,7 @@
         # arviz # TODO
 
         # NLP
-        spacy # TODO
+        #spacy # TODO
         levenshtein
         nltk
 
@@ -113,7 +113,7 @@
         # Plotting
         matplotlib
         bokeh
-        (disablePytest holoviews)
+        # (disablePytest holoviews)
         altair
         vega
         seaborn
@@ -146,23 +146,23 @@
         pkgs.nur.repos.xonsh-xontribs.xontrib-fish-completer
         # TODO: Straighten out the plugin nonsense
         # pkgs.nur.repos.xonsh-xontribs.xontrib-jedi
-        (pkgs.nur.repos.xonsh-xontribs.xontrib-zoxide.overrideAttrs (old: {
-          postPatch = ''
-            sed -ie "/xonsh.*=/d" pyproject.toml
-          '';
-          src = pkgs.fetchFromGitHub {
-            owner = "dyuri";
-            repo = "xontrib-zoxide";
-            rev = "36d3d0bc5945f2cd7aefdff598c6f7eeccfb1770";
-            hash = "sha256-lYx5dfmVebSYls9rbvAeD8GdzYkwv/qy75xp1m+/mdA=";
-          };
-        }))
+        # (pkgs.nur.repos.xonsh-xontribs.xontrib-zoxide.overrideAttrs (old: {
+        #   postPatch = ''
+        #     sed -ie "/xonsh.*=/d" pyproject.toml
+        #   '';
+        #   src = pkgs.fetchFromGitHub {
+        #     owner = "dyuri";
+        #     repo = "xontrib-zoxide";
+        #     rev = "36d3d0bc5945f2cd7aefdff598c6f7eeccfb1770";
+        #     hash = "sha256-lYx5dfmVebSYls9rbvAeD8GdzYkwv/qy75xp1m+/mdA=";
+        #   };
+        # }))
         # pkgs.nur.repos.xonsh-xontribs.xontrib-pipeliner
         pkgs.nur.repos.xonsh-xontribs.xontrib-sh
         # pkgs.nur.repos.xonsh-xontribs.xontrib-fzf-widgets
 
         # TODO: Use rich.traceback.install instead of readable_traceback
-        pkgs.nur.repos.xonsh-xontribs.xontrib-readable-traceback
+        #pkgs.nur.repos.xonsh-xontribs.xontrib-readable-traceback
       ];
 in {
   home = {
@@ -171,7 +171,7 @@ in {
       pkgs.pipenv
       pkgs.pyenv
       pkgs.pipx
-      (disablePytest pkgs.hatch)
+      # (disablePytest pkgs.hatch)
       pkgs.virtualenv
     ];
   };

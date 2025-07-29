@@ -2,8 +2,8 @@
   nix = {
     package = pkgs.nixVersions.latest;
     settings = {
-      cores = 2;
-      max-jobs = nproc / 2;
+      # cores = 8;
+      # max-jobs = 8;
       use-xdg-base-directories = true;
       warn-dirty = false;
       extra-substituters = [
@@ -45,6 +45,7 @@
       nurl
       nix-du
       nix-tree
+      #nix # get latest version of Nix from nixpkgs
     ];
     shellAliases = {
       nix-locat = "nix-locate --top-level --regex";
