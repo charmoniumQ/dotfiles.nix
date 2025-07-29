@@ -232,6 +232,12 @@
   :config
   (org-edna-mode))
 
+(setq org-agenda-prefix-format
+      '((agenda . " %i %-30(concat (car (org-get-outline-path)) \" > \" (car (last (org-get-outline-path))))% s")
+        (todo . " %i %-12:c")
+        (tags . " %i %-12:c")
+        (search . " %i %-12:c")))
+
 ; Shortcut for terminal
 (use-package! vterm
   :bind ("C-x C-t" . 'my-vterm))
