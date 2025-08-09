@@ -58,10 +58,10 @@
         rsync
         wgetpaste
         magic-wormhole
+        gcr # for gpg-agent pinentry
 
         # Misc
         mosh
-        gnupg
         man-pages
         man-pages-posix
 
@@ -87,6 +87,9 @@
         drill = "doggo";
         pstree = "procs --tree";
 
+        # Default configs
+        mvn = "mvn -gs $XDG_CONFIG_HOME/maven/settings.xml";
+
         # Shortcuts
         pass = "pwgen --capitalize --numerals --symbols --ambiguous 20 1";
         passphrase = "xkcdpass --wordfile eff-long --numwords 14";
@@ -96,6 +99,12 @@
       lsd = {
         enable = true;
       };
+      gpg = {
+        enable = true;
+        homedir = "${config.xdg.dataHome}/gnupg";
+        mutableKeys = true;
+        mutableTrust = true;
+      };
       bash = {
         enable = true;
         bashrcExtra = lib.optionalString config.targets.genericLinux.enable ''
@@ -103,6 +112,7 @@
           if [ -d $profile ]; then
             source $profile/etc/profile.d/nix.sh
           fi
+          export HISTFILE="''${XDG_STATE_HOME:$HOME/.local/state}/bash/history";
         '';
       };
       zsh = {
@@ -112,6 +122,7 @@
           if [ -d $profile ]; then
             source $profile/etc/profile.d/nix.sh
           fi
+          export HISTFILE="''${XDG_STATE_HOME:$HOME/.local/state}/zsh/history";
         '';
       };
       man = {
@@ -139,6 +150,17 @@
           unbind '"'
           unbind %
         '';
+      };
+    };
+    services = {
+      gpg-agent = {
+        enable = true;
+        enableBashIntegration = true;
+        enableZshIntegration = true;
+        enableSshSupport = true;
+        pinentry = {
+           package = pkgs.pinentry-gnome3;
+        };
       };
     };
   };

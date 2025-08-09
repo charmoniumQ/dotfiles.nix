@@ -10,9 +10,9 @@
 #
 # We still need to do
 #
-#     git clone https://github.com/doomemacs/doomemacs ~/.emacs.d
+#     git clone https://github.com/doomemacs/doomemacs ~/.config/emacs
 #
-# I think this can't be done by Home-manager because I think the ~/.emacs.d has
+# I think this can't be done by Home-manager because I think the ~/.config/emacs has
 # to be writable. I could consider linking in only those files which Doom
 # requires? I could also consider switching to [rycee's emacs-init hm-module].
 #
@@ -33,6 +33,8 @@ let
     ${builtins.concatStringsSep "\n" (builtins.map (file: "rm $out/${file}") files)}
   '';
   emacs-overlay-pkgs = pkgs.extend emacs-overlay.overlays.default;
+  emacsdir = "${config.xdg.configHome}/emacs";
+  doomdir = "${config.xdg.configHome}/doom";
 in {
   # my guess is that the overlays you define in `nixpkgs.overlays` are only
   # applied to the nixpkgs that is made available to your user on the NIX_PATH,
@@ -77,22 +79,23 @@ in {
     sessionVariables = {
       EDITOR = "emacsclient";
       PAGER = "emacsclient-pager";
-      DOOMDIR = "${config.xdg.configHome}/doom";
+      EMACSDIR = emacsdir;
+      DOOMDIR = doomdir;
     };
     sessionPath = [
-      "${config.home.homeDirectory}/.emacs.d/bin"
+      "${emacsdir}/bin"
     ];
     file = {
-      "${config.home.sessionVariables.DOOMDIR}/snippets/" = {
+      "${doomdir}/snippets/" = {
         source = pkgs.runCommand "empty-dir" { } "mkdir -p $out";
       };
-      "${config.home.sessionVariables.DOOMDIR}/init.el" = {
+      "${doomdir}/init.el" = {
         source = ./doom/init.el;
       };
-      "${config.home.sessionVariables.DOOMDIR}/packages.el" = {
+      "${doomdir}/packages.el" = {
         source = ./doom/packages.el;
       };
-      "${config.home.sessionVariables.DOOMDIR}/config.el" = {
+      "${doomdir}/config.el" = {
         source = pkgs.replaceVars ./doom/config.el {
           fontsize = builtins.toString config.desktop.fontsize;
         };

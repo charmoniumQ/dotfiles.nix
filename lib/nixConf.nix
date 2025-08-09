@@ -38,6 +38,7 @@
     packages = with pkgs; [
       git # Needed to make Nix flakes work
       nix-output-monitor
+      cachix
       nh
       #flox.packages.${system}.flox
       nix-info
