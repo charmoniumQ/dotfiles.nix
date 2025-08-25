@@ -20,7 +20,7 @@ in
       #  enable = true;
       #};
       autocd = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
       initContent = builtins.concatStringsSep "\n" [
         (addToFpath [
           pkgs.zsh-completions

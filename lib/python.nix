@@ -66,6 +66,29 @@
         aiohttp
         aiodns
         httpx
+        # (pkgs.python3.pkgs.buildPythonPackage {
+        #   pname = "domonic";
+        #   pyproject = true;
+        #   version = "0.9.13";
+        #   src = pkgs.fetchFromGitHub {
+        #     owner = "byteface";
+        #     repo = "domonic";
+        #     tag = "0.9.13";
+        #     hash = "sha256-Z5ewo4WTuAf7+jHjqP5qdCdXrevWI7NY3KFLWhN6fEQ=";
+        #   };
+        #   pythonRuntimeDepsCheckHook = "";
+        #   dependencies = [
+        #     pypkgs.elementpath
+        #     pypkgs.python-dateutil
+        #     pypkgs.requests
+        #     pypkgs.urllib3
+        #     pypkgs.html5lib
+        #     pypkgs.cssselect
+        #   ];
+        #   nativeBuildInputs = [
+        #     pypkgs.setuptools
+        #   ];
+        # })
 
         # Emails
         imap-tools

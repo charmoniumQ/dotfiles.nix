@@ -43,7 +43,8 @@
       musescore
       wireguard-tools
       anki
-      pkgs.cheese
+      qFlipper
+      cheese
       # vmware-horizon-client
       # libv4l
       # pcsclite
@@ -76,10 +77,8 @@
     git = {
       userName = "Samuel Grayson";
       userEmail = "sam@samgrayson.me";
-      extraConfig = {
-        github = {
-          user = "charmoniumQ";
-        };
+      signing = {
+        format = lib.mkForce "openpgp";
       };
     };
   };

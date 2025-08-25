@@ -36,6 +36,8 @@
         nload
         doggo # drill replacement
         inetutils # ping6
+        httpie
+        curl
 
         # Compressions
         zip

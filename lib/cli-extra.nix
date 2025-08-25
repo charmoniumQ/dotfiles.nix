@@ -29,6 +29,8 @@
         iotop
         nethogs
         lm_sensors
+        rbw
+        pinentry-gtk2
 
         # System utils
         pciutils

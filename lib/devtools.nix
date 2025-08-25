@@ -117,6 +117,10 @@
           defaultBranch = true;
         };
       };
+      signing = {
+        format = lib.mkDefault "ssh";
+        signByDefault = true;
+      };
       lfs = {
         enable = true;
       };
