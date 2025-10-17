@@ -32,6 +32,8 @@
         # dateutil.parser.parse still makes me really happy :)
         dateutil
         bitmath
+        psutil
+        marko
 
         # Debugging
         icecream
@@ -42,6 +44,7 @@
         click
         typer
         tqdm
+        types-tqdm
         rich
         textual
 
@@ -52,6 +55,10 @@
         types-pyyaml
         pydantic
         rdflib
+
+        # Machine learning
+        huggingface-hub
+        keras
 
         # Testing
         pytest
@@ -98,29 +105,55 @@
         fsspec
         sshfs
 
-        # Science
+        # Data science
         numpy
+        nptyping
+        beartype
         scipy
         torch
         jax
-
-        # Data science
+        torch
         pandas
         polars
         pyarrow
         h5py
         xlrd
-        networkx
-        # numpyro # TODO
-        # arviz # TODO
-
-        # NLP
-        #spacy # TODO
-        levenshtein
-        nltk
 
         # ML
         scikit-learn
+        umap-learn
+
+        # Networks
+        networkx
+        rustworkx
+
+        # Data analysis
+        # (numpyro.override {
+        #   dm-haiku = pypkgs.dm-haiku.overridePythonAttrs {
+        #     disabled = false;
+        #   };
+        # }) # TODO
+        #arviz # TODO
+
+        # GIS
+        geopandas
+        pyproj
+        gpxpy
+        # opensfm
+
+        # Astro
+        astropy
+
+        # NLP
+        spacy # TODO
+        spacy-models.en_core_web_lg
+        levenshtein
+        nltk
+
+        # Image processing
+        pillow
+        types-pillow
+        opencv4
         scikit-image
 
         # Distributed computation
@@ -128,7 +161,7 @@
         distributed
         fabric
 
-        # Servers
+        # Web servers
         flask
         fastapi
         django
@@ -136,7 +169,7 @@
         # Plotting
         matplotlib
         bokeh
-        # (disablePytest holoviews) # TODO
+        holoviews
         altair
         vega
         seaborn

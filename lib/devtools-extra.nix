@@ -13,6 +13,7 @@
 
       # Containers
       #podman # Must be installed by host (NixOS or other)
+      buildah
       dive
       diffoci
       proot

@@ -100,6 +100,7 @@
                   . \
                   -- \
                   --keep-going \
+                  --show-trace \
                    $@
               '';
             in "${switch-package}/bin/script";

@@ -1,4 +1,4 @@
-{ pkgs, nproc, nur, ... }: {
+{ pkgs, nproc, nur, config, ... }: {
   nix = {
     package = pkgs.nixVersions.latest;
     settings = {
@@ -34,6 +34,13 @@
       # permittedInsecurePackages = [ ... ];
     };
   };
+  # > Note, this option will not apply outside your Home Manager configuration
+  # > like when installing manually through nix-env. If you want to apply it both
+  # > inside and outside Home Manager you can put it in a separate file
+  # https://nix-community.github.io/home-manager/options.xhtml#opt-nixpkgs.config
+  xdg.configFile."nixpkgs/config.nix".text = ''
+    allowUnfree = true;
+  '';
   home = {
     packages = with pkgs; [
       git # Needed to make Nix flakes work

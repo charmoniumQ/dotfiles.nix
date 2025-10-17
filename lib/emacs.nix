@@ -71,7 +71,9 @@ in {
       pkgs.html-tidy
       pkgs.stylelint
       pkgs.nodePackages_latest.js-beautify
-      pkgs.ccls
+      # TODO: fix ccls
+      # broken in https://github.com/NixOS/nixpkgs/issues/449588
+      #pkgs.ccls
       pkgs.clang-tools
       pkgs.bear # generate compile_commands.json
       pkgs.nerd-fonts.fira-code

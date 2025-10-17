@@ -17,7 +17,7 @@
       "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1 &"
     ]);
   bind = (import ./binds.nix) inputs;
-  env = "XCURSOR_SIZE,24";
+  #env = "XCURSOR_SIZE,24";
   input = {
     kb_layout = "us";
     kb_options = "compose:ralt";
@@ -26,7 +26,10 @@
     };
     sensitivity = 0; # -1.0 - 1.0, 0 means no modification.
   };
-  # source = "~/.config/hypr/monitors.conf";
+  source = [
+    "~/.config/hypr/monitors.conf"
+    "~/.config/hypr/workspaces.conf"
+  ];
   general = {
     # See https://wiki.hyprland.org/Configuring/Variables/ for more
     gaps_in = 2;

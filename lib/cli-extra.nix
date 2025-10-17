@@ -1,4 +1,13 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }: let
+  disableTests = pkg: pkg.overrideAttrs (old: {
+    doCheck = false; 
+  });
+in {
+  # TODO: Use rbw as password store
+  # https://github.com/doy/rbw/issues/224
+  # https://www.menardo.net/posts/linux/use-vaultwarden-in-gnome-keyring-and-use/
+  # https://github.com/bilelmoussaoui/oo7
+  # https://github.com/grimsteel/pass-secret-service
   config = {
     home = {
       packages = with pkgs; [
@@ -13,7 +22,8 @@
         progress
 
         # Scanning
-        gscan2pdf
+        # TODO: re-enable
+        (disableTests gscan2pdf)
 
         # Next gen tools
         duf # df replacement

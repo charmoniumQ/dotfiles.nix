@@ -1,7 +1,7 @@
 { config, pkgs, ... }: [
-  "$mainMode, space, exec, ${pkgs.rofi-wayland}/bin/rofi -combi-modi window,drun -show combi -show-icons"
+  "$mainMode, space, exec, ${pkgs.rofi}/bin/rofi -combi-modi window,drun -show combi -show-icons"
   # TODO: cliphist
-  #"$mainMode, V, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi-wayland}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
+  #"$mainMode, V, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
   "$mainMode, L, exec, lock"
 
   "$mainMod, Q, killactive,"
@@ -77,7 +77,7 @@
   ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 1%+"
   "Shift, XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%-"
   "Shift, XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%+"
-  "SUPER, P, exec, ${pkgs.wdisplays}/bin/wdisplays"
+  "SUPER, P, exec, ${pkgs.nwg-displays}/bin/wdisplays"
   # ", XF86RFKill, exec, "
   ", Print, exec, ${pkgs.hyprshot}/bin/hyprshot --raw --mode window | ${pkgs.swappy}/bin/swappy --file -"
   "Shift, Print, exec, ${pkgs.hyprshot}/bin/hyprshot --raw --mode region | ${pkgs.swappy}/bin/swappy --file -"

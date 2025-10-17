@@ -37,8 +37,6 @@
       wdisplays
       nwg-displays
       kanshi
-      bluez
-      blueman
       (pkgs.writeShellScriptBin "mirror" ''
         read -p "Primary monitor: " PRIMARY_MONITOR
         read -p "Secondary monitor: " SECONDARY_MONITOR
@@ -71,7 +69,7 @@
     };
     rofi = {
       enable = true;
-      package = pkgs.rofi-wayland;
+      package = pkgs.rofi;
       location = "center";
     };
   };

@@ -19,6 +19,7 @@
         gdu # du replacement
         sd # sed replacement
         procs # pstree, ps replacement
+        choose # cut replacement
 
         # TUI builders
         rich-cli
@@ -106,6 +107,14 @@
         homedir = "${config.xdg.dataHome}/gnupg";
         mutableKeys = true;
         mutableTrust = true;
+        settings = {
+          keyserver = [
+            "hkps://pgpkeys.eu"
+            "hkps://keys.openpgp.org"
+          ];
+          # auto-key-locate = "local,wkd,dane,keyserver";
+        };
+        # TODO: import trusted pub keys
       };
       bash = {
         enable = true;

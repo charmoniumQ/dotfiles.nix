@@ -6,6 +6,7 @@
       MOZ_DBUS_REMOTE = 1;
     };
   };
+  # TODO: https://www.privacyguides.org/en/desktop-browsers/#firefox
   programs = lib.attrsets.optionalAttrs config.desktop.enable {
     firefox = {
       enable = true;
@@ -58,16 +59,18 @@
               bitwarden
               consent-o-matic
               ublock-origin
+              # TODO:
+              # Add filter: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt
               refined-github
               auto-tab-discard
               return-youtube-dislikes
               languagetool
               zotero-connector
               leechblock-ng
+              # TODO: Package OpenSwitchMaps
               # semantic-scholar
               gaoptout
               floccus
-              clearurls
               old-reddit-redirect
               pushbullet
               # reddit-enhancement-suite # https://redditenhancementsuite.com/

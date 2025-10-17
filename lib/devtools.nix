@@ -64,7 +64,6 @@
 
       # Python tools
       uv
-      #mamba-cpp
       pixi
 
       # Shell tools

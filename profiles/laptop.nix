@@ -9,7 +9,6 @@
     ../lib/disks.nix
     ../lib/emacs.nix
     ../lib/firefox.nix
-    ../lib/libreoffice.nix
     ../lib/gnome.nix
     ../lib/home-manager.nix
     ../lib/hyprland.nix
@@ -50,16 +49,22 @@
       # pcsclite
       # opensc
       # pcsctools
+      libreoffice
       audacity
+      josm
+      qgis
       gimp
+      # TODO: Fix Digikam
+      # Broken in https://github.com/NixOS/nixpkgs/issues/449394
+      #digikam
       # TODO: Get an alternative Discord client
       ffmpeg
       # publii
       keepassxc
       google-chrome
-      # tor-browser
+      tor-browser
       remmina
-    ] ++ [  ];
+    ];
     file = {
       Zotero = {
         source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/box/Zotero";

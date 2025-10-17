@@ -74,6 +74,8 @@ if [ -n "${containers}${images}" ]; then
     fi
 fi
 
+podman system reset
+
 containers="$(p podman container list --all)"
 images="$(p podman image list --all)"
 networks="$(p podman network list)"
@@ -206,7 +208,13 @@ if gum confirm "Nix wipe old generations?"; then
     p nix profile wipe-history
 fi
 
-direnvs="$(p find ~ -name '.direnv')"
+gits="$(find ~ -name '.git' || true)"
+if [ -n "$gits" ]; then
+    echo "Try doing 'git gc --prune $gits' and/or 'git clean -d --force --force --interactive -X' (removing files ignored by git)"
+    gum confirm "Ok, keep going."
+fi
+
+direnvs="$(find ~ -name '.direnv' || true)"
 delete_direnvs=$(gum filter --no-limit $direnvs)
 if [ -n "$delete_direnvs" ]; then
      echo $delete_direnvs | xargs --max-args=1 trash-put
@@ -214,23 +222,33 @@ fi
 
 echo "Potentially freeing $(sampling_du 0.01 1 "$nix_store")"
 if gum confirm "Nix GC?"; then
-    p nix-store --gc --print-roots | rg -v '^/proc/\d+'
+    # Execute once to get rid of "removing stale root" messages
+    nix-store --gc --print-roots > /dev/null
+    while true; do
+          p nix-store --gc --print-roots | rg -v '^/proc/\d+'
+          if gum confirm "Have you deleted all the gcroots that you don't like?"; then
+              break
+          fi
+    done
     p nix store gc
 fi
 
 rich --rule "Doom"
 if gum confirm "Doom sync, upgrade, gc?"; then
-    p ~/.emacs.d/bin/doom sync
-    p ~/.emacs.d/bin/doom upgrade
-    p ~/.emacs.d/bin/doom gc
+    p ~/.config/emacs/bin/doom sync
+    p ~/.config/emacs/bin/doom upgrade
+    p ~/.config/emacs/bin/doom gc
 fi
 
-trash_dir="${XDG_DATA_HOME:-$HOME/.local}/Trash"
+echo "Consider clearing the following:"
+fd --no-ignore --type d target
+
+trash_dir="${XDG_DATA_HOME:-$HOME/.local/share}/Trash"
 trashes="$(lsd "$trash_dir")"
 if [ -n "$trashes" ]; then
     rich --rule "Trash"
     echo "$trashes"
-    echo "Potentailly freeing $(real_du )"
+    echo "Potentailly freeing $(real_du "$trash_dir")"
     if gum confirm "Empty trash"; then
         p trash-empty
     fi
