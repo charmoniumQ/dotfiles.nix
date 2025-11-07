@@ -79,11 +79,6 @@
         vlc
         usbutils
         system-config-printer
-        # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
-        libsForQt5.qt5.qtwayland
-        bluez
-        blueman
-        bluetuith
 
         # echo alert-me-sound hello | at now+20m
         (pkgs.writeShellScriptBin "alert-me-sound" ''

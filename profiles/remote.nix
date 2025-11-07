@@ -2,7 +2,7 @@
   imports = [
     ../lib/cli.nix
     ../lib/emacs.nix
-    #../lib/devtools.nix
+    ../lib/devtools.nix
     ../lib/nixConf.nix
     ../lib/python.nix
     ../lib/home-manager.nix

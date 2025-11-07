@@ -15,6 +15,8 @@
 
 (package! elmacro)
 
+(package! helm-make)
+
 (package! direnv)
 
 (package! string-inflection)

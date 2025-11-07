@@ -123,7 +123,7 @@
           if [ -d $profile ]; then
             source $profile/etc/profile.d/nix.sh
           fi
-          export HISTFILE="''${XDG_STATE_HOME:$HOME/.local/state}/bash/history";
+          export HISTFILE="''${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
         '';
       };
       zsh = {
@@ -133,7 +133,7 @@
           if [ -d $profile ]; then
             source $profile/etc/profile.d/nix.sh
           fi
-          export HISTFILE="''${XDG_STATE_HOME:$HOME/.local/state}/zsh/history";
+          export HISTFILE="''${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
         '';
       };
       man = {

@@ -17,6 +17,9 @@
       # qt5-wayland
       # qt6-wayland
 
+      # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
+      libsForQt5.qt5.qtwayland
+
       # Required for waybar
       font-awesome
 

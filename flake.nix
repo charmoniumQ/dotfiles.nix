@@ -70,10 +70,19 @@
           ];
         };
     in {
-      homeConfigurations = {
+      homeConfigurations = rec {
         "sam@laptop" = mkConfig ./profiles/laptop.nix {};
         remote = mkConfig ./profiles/remote.nix {};
-        "sagrays@s1087928" = mkConfig ./profiles/other.nix {desktop = { enable = true; }; };
+        sagrays = mkConfig ./profiles/other.nix {
+          desktop = {
+            enable = true;
+          };
+          targets = {
+            genericLinux = {
+              enable = true;
+            };
+          };
+        };
         "sysadmin@home-server" = mkConfig ./profiles/tv.nix {};
       };
       apps = {

@@ -12,9 +12,9 @@
     ../lib/xdg-ninja.nix
     ../lib/xonsh.nix
     ../lib/zsh.nix
-    nix-index-database.hmModules.nix-index
+    nix-index-database.homeModules.nix-index
   ];
-  home = {
+  home = rec {
     username = "sagrays";
     homeDirectory = "/home/${username}";
   };

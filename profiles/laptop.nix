@@ -1,5 +1,6 @@
 { system, config, pkgs, lib, nix-index-database, ... }: {
   imports = [
+    ../lib/bluetooth.nix
     ../lib/cli.nix
     ../lib/cli-extra.nix
     ../lib/desktop.nix
