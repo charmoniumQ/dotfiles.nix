@@ -5,6 +5,7 @@
     ../lib/cli-extra.nix
     ../lib/desktop.nix
     ../lib/desktop-extra.nix
+    ../lib/desktop-theme.nix
     ../lib/devtools.nix
     ../lib/devtools-extra.nix
     ../lib/disks.nix
@@ -55,6 +56,7 @@
       josm
       qgis
       gimp
+      geogebra
       # TODO: Fix Digikam
       # Broken in https://github.com/NixOS/nixpkgs/issues/449394
       #digikam

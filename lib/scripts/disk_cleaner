@@ -225,7 +225,7 @@ if gum confirm "Nix GC?"; then
     # Execute once to get rid of "removing stale root" messages
     nix-store --gc --print-roots > /dev/null
     while true; do
-          p nix-store --gc --print-roots | rg -v '^/proc/\d+'
+          p nix-store --gc --print-roots | rg -v '^/proc/\d+' | rg -v '^\{temp:\d+\}'
           if gum confirm "Have you deleted all the gcroots that you don't like?"; then
               break
           fi

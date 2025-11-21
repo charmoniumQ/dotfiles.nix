@@ -39,7 +39,9 @@
   # > inside and outside Home Manager you can put it in a separate file
   # https://nix-community.github.io/home-manager/options.xhtml#opt-nixpkgs.config
   xdg.configFile."nixpkgs/config.nix".text = ''
-    allowUnfree = true;
+    {
+      allowUnfree = true;
+    }
   '';
   home = {
     packages = with pkgs; [

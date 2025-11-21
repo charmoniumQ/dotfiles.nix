@@ -2,7 +2,7 @@
   config = {
     home = lib.attrsets.optionalAttrs config.desktop.enable {
       file = {
-        ".Xcompose".text = ''
+        ".XCompose".text = ''
           # https://wiki.debian.org/XCompose
           include "%L"  # Include default sequences
 

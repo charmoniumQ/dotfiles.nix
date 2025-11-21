@@ -145,7 +145,7 @@
         astropy
 
         # NLP
-        spacy # TODO
+        spacy
         spacy-models.en_core_web_lg
         levenshtein
         nltk

@@ -223,9 +223,16 @@
 (setq kept-new-versions 5)
 
 ;; Org mode
-(setq org-directory "~/box/self/")
-(setq org-agenda-files '("~/box/self/todo.org"))
-                         ;"~/box/self/cals/personal-calendar.org" "~/box/self/cals/shared-calendar.org"))
+(setq org-directory "~/box/org/")
+(setq org-agenda-files '("~/box/org/home.org"
+                         "~/box/org/work.org"
+                         "~/box/org/hobbies.org"
+                         "~/box/org/calendar.org"))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "HOLD(h)")
+        (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
+        (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
+(setq org-enforce-todo-dependencies 't)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 0)
 (use-package! org-edna
@@ -233,7 +240,7 @@
   (org-edna-mode))
 
 (setq org-agenda-prefix-format
-      '((agenda . " %i %-30(concat (car (org-get-outline-path)) \" > \" (car (last (org-get-outline-path))))% s")
+      '((agenda . " %i %-12:c%?-12t% s")
         (todo . " %i %-12:c")
         (tags . " %i %-12:c")
         (search . " %i %-12:c")))
@@ -354,7 +361,6 @@ you won't need to do any typing)."
  '(:application tramp :protocol "ssh")
  'remote-direct-async-process)
 ;(setq tramp-use-connection-share t)
-(find-file "/ssh:hpws0446:dotfiles.nix/flake.nix")
 
 (setq magit-tramp-pipe-stty-settings 'pty)
 
