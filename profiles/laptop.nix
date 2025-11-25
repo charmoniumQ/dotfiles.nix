@@ -46,6 +46,7 @@
       anki
       qFlipper
       cheese
+      qbittorrent
       # vmware-horizon-client
       # libv4l
       # pcsclite
@@ -83,8 +84,16 @@
   };
   programs = {
     git = {
-      userName = "Samuel Grayson";
-      userEmail = "sam@samgrayson.me";
+      includes = [
+        {
+          contents = {
+            user = {
+              name = "Samuel Grayson";
+              email = "sam@samgrayson.me";
+            };
+          };
+        }
+      ];
       signing = {
         format = lib.mkForce "openpgp";
       };

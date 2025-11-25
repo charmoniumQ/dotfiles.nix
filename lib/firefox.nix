@@ -57,7 +57,7 @@
             packages = with pkgs.nur.repos.rycee.firefox-addons; [
               vimium
               bitwarden
-              consent-o-matic
+              # consent-o-matic
               ublock-origin
               # TODO:
               # Add filter: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt
@@ -69,8 +69,8 @@
               leechblock-ng
               # TODO: Package OpenSwitchMaps
               # semantic-scholar
-              gaoptout
-              floccus
+              # gaoptout
+              # floccus
               old-reddit-redirect
               pushbullet
               # reddit-enhancement-suite # https://redditenhancementsuite.com/

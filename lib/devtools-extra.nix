@@ -100,8 +100,8 @@
     ];
   };
   programs = {
-    git = {
-      difftastic = {
+    difftastic = {
+      git = {
         enable = true;
       };
     };

@@ -19,7 +19,6 @@
         jedi
         jupyter
         ptpython
-        ptpython
 
         # Misc
         hy
@@ -30,17 +29,15 @@
         xxhash
         pendulum
         # dateutil.parser.parse still makes me really happy :)
-        dateutil
+        python-dateutil
         bitmath
         psutil
-        marko
 
         # Debugging
         icecream
         ipdb
 
         # CLI/UI
-        cyclopts
         click
         typer
         tqdm
@@ -145,8 +142,8 @@
         astropy
 
         # NLP
-        spacy
-        spacy-models.en_core_web_lg
+        # spacy
+        # spacy-models.en_core_web_lg
         levenshtein
         nltk
 
@@ -224,7 +221,8 @@ in {
   home = {
     packages = [
       (python.withPackages pythonPkgs)
-      pkgs.pipenv
+      # TODO:
+      # pkgs.pipenv
       pkgs.pyenv
       pkgs.pipx
       pkgs.uv
