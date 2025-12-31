@@ -7,6 +7,12 @@
       difftastic
       bat
 
+      # LLMs
+      opencode
+      gpt-cli
+      crush
+      ollama
+
       # System tools
       google-cloud-sdk
       asciinema

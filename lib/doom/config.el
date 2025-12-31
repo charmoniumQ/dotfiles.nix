@@ -229,9 +229,10 @@
                          "~/box/org/hobbies.org"
                          "~/box/org/calendar.org"))
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)" "HOLD(h)")
+      '((sequence "TODO(t)" "|" "DONE(d)" "HOLD(h)")
         (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
         (sequence "|" "OKAY(o)" "YES(y)" "NO(n)")))
+(setq org-startup-folded 'show2levels)
 (setq org-enforce-todo-dependencies 't)
 (setq org-agenda-dim-blocked-tasks t)
 (setq org-deadline-warning-days 0)

@@ -7,66 +7,77 @@
           include "%L"  # Include default sequences
 
           # Greek lower
-          <Multi_key> <g> <a> : "α"
-          <Multi_key> <g> <b> : "β"
-          <Multi_key> <g> <g> : "γ"
-          <Multi_key> <g> <d> : "δ"
-          <Multi_key> <g> <e> : "ε"
-          <Multi_key> <g> <z> : "ζ"
-          <Multi_key> <g> <h> : "θ"
-          <Multi_key> <g> <k> : "κ"
-          <Multi_key> <g> <l> : "λ"
-          <Multi_key> <g> <m> : "μ"
-          <Multi_key> <g> <n> : "ν"
-          <Multi_key> <g> <x> : "ξ"
-          <Multi_key> <g> <o> : "ο"
-          <Multi_key> <g> <p> : "π"
-          <Multi_key> <g> <r> : "ρ"
-          <Multi_key> <g> <s> : "σ"
-          <Multi_key> <g> <t> : "τ"
-          <Multi_key> <g> <y> : "υ"
-          <Multi_key> <g> <t> : "φ"
-          <Multi_key> <g> <c> : "χ"
-          <Multi_key> <g> <j> : "ψ"
-          <Multi_key> <g> <w> : "ω"
+          <Multi_key> <a> <l> : "α" 
+          <Multi_key> <b> <e> : "β" # displaces ĕ
+          <Multi_key> <g> <a> : "γ"
+          <Multi_key> <d> <e> : "δ"
+          <Multi_key> <e> <p> : "ε"
+          <Multi_key> <z> <e> : "ζ"
+          <Multi_key> <e> <t> : "η"
+          <Multi_key> <t> <h> : "θ" # displaces þ
+          <Multi_key> <k> <a> : "κ"
+          <Multi_key> <l> <a> : "λ"
+          <Multi_key> <m> <u> : "μ"
+          <Multi_key> <n> <u> : "ν"
+          <Multi_key> <x> <i> : "ξ"
+          <Multi_key> <o> <m> <i> : "ο"
+          <Multi_key> <p> <i> : "π"
+          <Multi_key> <r> <h> : "ρ"
+          <Multi_key> <s> <i> : "σ"
+          <Multi_key> <t> <a> : "τ"
+          <Multi_key> <u> <p> : "υ"
+          <Multi_key> <p> <s> : "φ"
+          <Multi_key> <c> <h> : "χ" # displaces ȟ; moved to Compose + u + h 
+          <Multi_key> <p> <h> : "ψ"
+          <Multi_key> <o> <m> <e> : "ω"
+
+          <Multi_key> <u> <h> : "ȟ"
+          <Multi_key> <u> <H> : "ȟ"
+          <Multi_key> <U> <H> : "ȟ"
 
           # Greek upper
-          <Multi_key> <g> <A> : "Α"
-          <Multi_key> <g> <B> : "Β"
-          <Multi_key> <g> <G> : "Γ"
-          <Multi_key> <g> <D> : "Δ"
-          <Multi_key> <g> <E> : "Ε"
-          <Multi_key> <g> <Z> : "Ζ"
-          <Multi_key> <g> <H> : "Θ"
-          <Multi_key> <g> <K> : "Κ"
-          <Multi_key> <g> <L> : "Λ"
-          <Multi_key> <g> <M> : "Μ"
-          <Multi_key> <g> <N> : "Ν"
-          <Multi_key> <g> <X> : "Ξ"
-          <Multi_key> <g> <O> : "Ο"
-          <Multi_key> <g> <P> : "Π"
-          <Multi_key> <g> <R> : "Ρ"
-          <Multi_key> <g> <S> : "Σ"
-          <Multi_key> <g> <T> : "Τ"
-          <Multi_key> <g> <Y> : "Υ"
-          <Multi_key> <g> <T> : "Φ"
-          <Multi_key> <g> <C> : "Χ"
-          <Multi_key> <g> <J> : "Ψ"
-          <Multi_key> <g> <W> : "Ω"
+          <Multi_key> <A> <L> : "Α"
+          <Multi_key> <B> <E> : "Β"
+          <Multi_key> <G> <A> : "Γ"
+          <Multi_key> <D> <E> : "Δ"
+          <Multi_key> <E> <P> : "Ε"
+          <Multi_key> <Z> <E> : "Ζ"
+          <Multi_key> <E> <T> : "Η"
+          <Multi_key> <T> <H> : "Θ" # displaces Þ
+          <Multi_key> <K> <A> : "Κ"
+          <Multi_key> <L> <A> : "Λ"
+          <Multi_key> <M> <U> : "Μ"
+          <Multi_key> <N> <U> : "Ν"
+          <Multi_key> <X> <I> : "Ξ"
+          <Multi_key> <O> <M> <I> : "Ο"
+          <Multi_key> <P> <I> : "Π"
+          <Multi_key> <R> <H> : "Ρ"
+          <Multi_key> <S> <I> : "Σ"
+          <Multi_key> <T> <A> : "Τ"
+          <Multi_key> <U> <P> : "Υ"
+          <Multi_key> <P> <S> : "Φ"
+          <Multi_key> <C> <H> : "Χ"
+          <Multi_key> <P> <H> : "Ψ"
+          <Multi_key> <O> <M> <E> : "Ω"
 
           # Logic
           <Multi_key> <A> <A> : "∀" # displaces Å, which can still be gotten by <Multi> <*> <A>
           <Multi_key> <E> <E> : "∃"
           <Multi_key> <i> <n> : "∈"
-          <Multi_key> <n> <n> : "∉"
+          <Multi_key> <n> <i> <n> : "∉"
+          <Multi_key> <n> <o> : "¬"
 
           # Calculus
           <Multi_key> <S> <U> : "∑"
           <Multi_key> <P> <R> : "∏"
-          <Multi_key> <<> <<> : "≪" # displaces «
-          <Multi_key> <>> <>> : "≫" # displaces «
+          # <Multi_key> <<> <<> : "≪" # displaces «
+          # <Multi_key> <>> <>> : "≫" # displaces «
           <Multi_key> <R> <R> : "ℝ"
           <Multi_key> <Z> <Z> : "ℤ"
+
+          # Other
+          <Multi_key> <s> <e> : "§"
+          <Multi_key> <p> <a> : "¶"
         '';
       };
       packages = with pkgs; [

@@ -118,7 +118,11 @@
       };
       bash = {
         enable = true;
-        bashrcExtra = lib.optionalString config.targets.genericLinux.enable ''
+        bashrcExtra = ''
+          if [ -d $XDG_DATA_HOME/spack ]; then
+            alias sspack="source $XDG_DATA_HOME/spack/share/spack/setup-env.sh"
+          fi
+        '' + lib.optionalString config.targets.genericLinux.enable ''
           profile=$HOME/.local/state/nix/profile
           if [ -d $profile ]; then
             source $profile/etc/profile.d/nix.sh
@@ -128,7 +132,11 @@
       };
       zsh = {
         enable = true;
-        initContent = lib.optionalString config.targets.genericLinux.enable ''
+        initContent = ''
+          if [ -d $XDG_DATA_HOME/spack ]; then
+            alias sspack="source $XDG_DATA_HOME/spack/share/spack/setup-env.sh"
+          fi
+        '' + lib.optionalString config.targets.genericLinux.enable ''
           profile=$HOME/.local/state/nix/profile
           if [ -d $profile ]; then
             source $profile/etc/profile.d/nix.sh

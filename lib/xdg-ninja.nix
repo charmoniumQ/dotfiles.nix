@@ -32,8 +32,10 @@
       NODE_REPL_HISTORY = "${config.xdg.dataHome}/node_repl_history";
       NPM_CONFIG_CACHE = "${config.xdg.cacheHome}/npm";
       NPM_CONFIG_INIT_MODULE = "${config.xdg.configHome}/npm/config/npm-init.js";
+      NPM_CONFIG_PREFIX = "${config.xdg.dataHome}/npm";
       # This should likely be xdg runtime dir, but I can't figure that out right now.
       NPM_CONFIG_TMP = "${config.xdg.cacheHome}/npm/tmp";
+      OLLAMA_MODELS = "${config.xdg.dataHome}/ollama/models";
       OPAMROOT = "${config.xdg.dataHome}/opam";
       PARALLEL_HOME = "${config.xdg.configHome}/parallel";
       PSQL_HISTORY = "${config.xdg.dataHome}/psql_history";

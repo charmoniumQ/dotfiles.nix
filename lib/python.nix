@@ -109,6 +109,7 @@
         scipy
         torch
         jax
+        jaxtyping
         torch
         pandas
         polars
