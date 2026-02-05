@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  python = pkgs.python313;
+  python = pkgs.python314;
   disablePytest = pypkg: builtins.trace
     "Building ${pypkg.name} without tests against my better judgement"
     pypkg.overridePythonAttrs {
@@ -18,6 +18,7 @@
         ptpython
         jedi
         jupyter
+        # marimo
         ptpython
 
         # Misc
@@ -32,6 +33,8 @@
         python-dateutil
         bitmath
         psutil
+        pyserial
+        pyserial-asyncio
 
         # Debugging
         icecream
@@ -55,7 +58,7 @@
 
         # Machine learning
         huggingface-hub
-        keras
+        # keras # FIXME
 
         # Testing
         pytest
@@ -142,6 +145,9 @@
         # Astro
         astropy
 
+        # math
+        sympy
+
         # NLP
         # spacy
         # spacy-models.en_core_web_lg
@@ -181,7 +187,8 @@
         python-lsp-black
         python-lsp-ruff
         isort
-        nose2
+        ruff
+        # nose2 # FIXME
       ]
       ++ [
         # Xonsh and plugins
@@ -235,10 +242,6 @@ in {
   programs = {
     poetry = {
       enable = true;
-    };
-    ruff = {
-      enable = true;
-      settings = {};
     };
   };
 }

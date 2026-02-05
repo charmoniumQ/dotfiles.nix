@@ -13,6 +13,7 @@ in {
         gthumb
         distrobox
         yt-dlp
+        android-tools
 
         # Matrix client battle
         # cinny

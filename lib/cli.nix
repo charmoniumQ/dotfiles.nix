@@ -1,6 +1,9 @@
 { lib, pkgs, config, ... }: {
   config = {
     home = {
+      sessionPath = [
+        "${config.xdg.dataHome}/cargo/bin"
+      ]; 
       packages = with pkgs; [
         # Classic utils
         coreutils
@@ -12,6 +15,7 @@
         lsof
         progress
         sysctl
+        dos2unix
 
         # Next gen tools
         ripgrep # grep replacement

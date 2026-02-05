@@ -227,7 +227,8 @@
 (setq org-agenda-files '("~/box/org/home.org"
                          "~/box/org/work.org"
                          "~/box/org/hobbies.org"
-                         "~/box/org/calendar.org"))
+                         "~/box/org/calendar.org"
+                         "~/box/org/sleep.org"))
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)" "HOLD(h)")
         (sequence "[ ](T)" "[-](S)" "[?](W)" "|" "[X](D)")
