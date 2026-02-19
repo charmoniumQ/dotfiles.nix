@@ -4,7 +4,7 @@
 
   - Often, you will want to set the size: ~cat file | pv --size 3K | ./reader~
 
-  - Can spy on existing PIDs with ~pv 
+  - Can spy on existing PIDs with ~pv -Q $PiD~
 
 - [[https://tqdm.github.io/][*~tqdm~*]] like ~pv~, but more Pythonic: ~cat file | tqdm | ./reader~.
 
