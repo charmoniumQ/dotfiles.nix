@@ -1,3 +1,104 @@
+* CLI stuff
+
+- [[https://www.man7.org/linux/man-pages/man1/pv.1.html][*~pv~*]] progress bar for pipes: ~cat file | pv | ./reader~
+
+  - Often, you will want to set the size: ~cat file | pv --size 3K | ./reader~
+
+  - Can spy on existing PIDs with ~pv 
+
+- [[https://tqdm.github.io/][*~tqdm~*]] like ~pv~, but more Pythonic: ~cat file | tqdm | ./reader~.
+
+- [[https://github.com/BurntSushi/ripgrep][*~ripgrep/rg~*]] like ~grep~ but easier syntax, better defaults (gitignore and regular-ole .ignore), colors, faster
+
+  - [[https://github.com/ynqa/sig][*~sig~*]], like ~rg~ but interactive, so you see results as you type. More suitable for searching in just one file, while determining the search term.
+
+  - The main page for ~rg~ compares ~rg~ against other greps (e.g., silver searcher).
+
+- [[https://github.com/sharkdp/fd][*~fd/fdfind~*]] like ~find~ but easier syntax, better defaults (gitignore and .ignore), colors, faster
+
+- [[https://github.com/dundee/gdu][*~gdu~*]] like ~ncdu~ or ~du~, disk space utilization (including directory children). Much faster than ~ncdu~. Can also delete files with 'd'.
+
+  - If using ~gdu~ on ~/~, you will likely want ~sudo~, as much of the stuff in ~/~ may be owned by root.
+
+  - Main page also has comparison with alternatives to ~gdu~.
+
+- [[https://github.com/chmln/sd][*~sd~*]] replace regexp in file or stream. Cleaner syntax, but less flexible than ~sed~. ~sed~ is a whole-ass language, of which ~s/find/replace/g~ is only one part; ~sd~'s only job is to do this: ~sd "FIND_REGEXP" "REPLACE_REGEXP" FILE...~.
+
+  - Prevents "leaning toothpick" syndrome. Try replacing ~/~ with ~//~ in sed. ~sed s/\//\/\//g~ vs ~sd / //~.
+
+- [[https://htop.dev/][*~htop~*]] shows/kills processes, replaces ~top~. There are lots of successors like ~btop~ and ~bashtop~, but I prefer classic ~htop~, as it is faster (needed when Linux is heavily loaded). ~atop~ has a daemon component, so can examine historical data.
+
+- [[https://nicolargo.github.io/glances/][*~glances~*]] like ~htop~ but shows network and disk.
+
+- [[https://github.com/charmbracelet/gum][*~gum~*]] logs of TUI widgets, useful for scripts. Can pick files, show menus, confirm, prompt, spinner, render tables.
+
+  - E.g., Choose from a nice radio-buttons witb: ~drink=$(gum choose coffee tea oj)~. Alternatively, ~gum filter~ gives you type-to-filter select-one menu.
+
+  - Pick files with ~gum file~. Can also use ~fzf~ for this.
+
+  - ~gum writer~ gives you a textarea, but should probably just use ~$tmpfile=$(mktemp); $EDITOR $tmpfile~
+
+  - Also see [[https://bash-tui-toolkit.timo-reymann.de/latest/docs/][~bash-ui-toolkit~]]
+
+- [[https://github.com/Textualize/rich-cli][*~rich~*]] renders rich-text in terminal, using its [[https://rich.readthedocs.io/en/latest/markup.html][own markup language]] ~rich --print '[bold red]alert![/bold red] Something happened'~.
+
+- [[https://crates.io/crates/zoxide][*~zoxide~*]] needs shell integration, replaces ~cd~. Supports fuzzy searching and first-letter search ~/h/s/D~ = ~/home/sam/Documents~.
+
+- [[https://jqlang.org/manual/][*~jq~*]] whole-ass language for processing JSON.
+
+  - [[https://mikefarah.gitbook.io/yq/][*~yq~*]] ~jq~ but for YAML, TOML, INI, XML.
+
+- [[https://github.com/dalance/procs][*~procs~*]] replacement for ~ps~ and ~pgrep~ with more reasonable flag syntax.
+
+  - Can also do ~procs --tree~
+
+  - Can also do ~procs --json~
+
+- [[https://linux.die.net/man/8/mtr][*~mtr~*]] replacement for ~tracereoute~ and ~ping~, much better UI.
+
+- [[https://github.com/mr-karan/doggo][*~doggo~*]] replacement for ~dig~. More understandable output. Compare ~dig example.com~ with ~doggo example.com~. Also has ~--json~.
+
+- [[https://httpie.io/docs/cli][*~httpie~*]] replacement for ~curl~.
+
+  - Compare HTTP verbs  ~curl -X PUT https://httpbin.org/put~ with ~http PUT https://httpbin.org/put~
+
+  - Compare form encoding  ~curl -X POST https://httpbin.org/post -d 'a=b&c=d'~ with ~http --form POST https://httpbin.org/post a=b c=d~
+
+  - Compare sending headers ~curl https://httpbin.org/headers -H 'X-API-Token: 123'~ with ~http https://httpbin.org/headers 'X-API-Token: 123'~
+
+  - Also ~http --download $url~ is a close replacement for ~wget $url~.
+
+  - However, ~curl~ is a bit more integrated into the system. Firefox has "right-click > Copy as cURL". Curl is more used in scripts. I prefer ~httpie~  when doing interactive stuff at the CLI, and ~curl~ for scripts.
+
+- [[https://github.com/dtrx-py/dtrx][*~dtrx~*]] "do the right extraction", wrapper around ~tar~, ~zip~, etc. that puts the right flags. [[https://xkcd.com/1168/][XKCD 1168]]. It also guarantees the stuff it unpacks will be unpacked to a directory with the same name as the archive.
+
+- [[https://github.com/jwfh/xkcdpass][*~xkcdpass~*]] and [[https://github.com/ulif/diceware][*~diceware~*]] generates passphrases according to [[https://xkcd.com/936/][XKCD 936]]
+
+- [[https://magic-wormhole.readthedocs.io/en/latest/welcome.html#motivational-use-cases][*~wormhole~*]] (magic wormhole), sends file to another peer, synchronousy, P2P, and E2EE. Central server only needed for rendezvous.
+
+- [[https://fowl.readthedocs.io/en/latest/][*~fowl~*]] uses wormhole protocol, but for a bidirectional stream instead of a file.
+
+- [[https://github.com/lsd-rs/lsd][*~lsd~*]] and [[https://eza.rocks/][*~eza~*]] replace ~ls~ with icons, ~--tree~, colors.
+
+  - ~lsd~ colors based on most recent use.
+
+- emacs in [[https://magit.vc/][magit mode]] (or [[https://github.com/jesseduffield/lazygit][*~lazygit~*]]) TUI interface to Git.
+
+- [[https://fukuchi.org/en/works/qrencode/][*~qrencode~*]]: ~qrencode -t ANSI "Hello, World"~ to get a QR code in terminal.
+
+- [[https://github.com/piccolomo/plotext][*~plotext~*]] plot graphs in terminal (need to write Python).
+
+- [[http://caca.zoy.org/wiki/toilet][*~toilet~*]] or [[https://www.figlet.org/][*~figlet~*]] for rendering text "big" in scripts. I find ~rich --rule hello~ better for writing headers.
+
+- [[https://github.com/Lifailon/lazyjournal][*~lazyjournal~*]] browses journalctl logs
+
+- [[https://cheat.sh/][*~cheat.sh~*]] examples and overview of common UNIX commands: ~curl cht.sh/btrfs~
+
+- [[https://github.com/andreafrancia/trash-cli][*~trash-cli~*]] moves to trash instead of permanently deleting stuff. Clean out the trash every now-and-then.
+
+- [[https://github.com/sharkdp/hyperfine][*~hyperfine~*]] benchmark commands.
+
+  - I like ~hyperfine --warmup 1 --shell none - $CMD~
 * TODO items
 - https://github.com/ryan4yin/nix-config
 - [ ] Lock on Suspend
@@ -55,3 +156,4 @@
   - https://github.com/radian-software/straight.el/issues/105
   - https://github.com/ckiee/nix-doom-emacs/blob/move-nix-straight-in/src/straight.nix#L29
   - https://github.com/marienz/nix-doom-emacs-unstraightened
+

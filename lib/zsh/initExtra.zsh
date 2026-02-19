@@ -71,3 +71,6 @@ vterm_cmd() {
     done
     vterm_printf "51;E$vterm_elisp"
 }
+
+HISTSIZE=100000
+SAVEHIST=100000

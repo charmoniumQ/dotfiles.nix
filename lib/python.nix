@@ -47,6 +47,36 @@
         types-tqdm
         rich
         textual
+        (pkgs.python3Packages.buildPythonPackage rec {
+          pname = "fowl";
+          version = "25.10.0";
+          src = fetchFromPyPI {
+            repo = "fowl";
+            rev = version;
+            hash = "f4f67f669616bb20ccba67ee7c8207931674f34daefd6c2af91a0392beb0fe8c";
+          };
+          format = "pyproject";
+          build-system = [ hatchling ];
+          propagatedBuildInputs = with python3Packages; [
+            setuptools
+            click
+            attrs
+            six
+            msgpack
+            humanize
+            twisted
+            magic-wormhole
+            rich
+            ipaddress
+          ];
+          pythonImportsCheck = [ "fowl" ];
+          meta = with lib; {
+            description = "Forward TCP streams over Magic Wormhole";
+            homepage = "https://github.com/magic-wormhole/fowl";
+            license = licenses.mit;
+            mainProgram = "fowl";
+          };
+        })
 
         # Data
         sqlalchemy
@@ -188,6 +218,8 @@
         python-lsp-ruff
         isort
         ruff
+        types-protobuf
+        useful-types
         # nose2 # FIXME
       ]
       ++ [

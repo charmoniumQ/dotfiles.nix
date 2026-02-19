@@ -39,7 +39,7 @@
         unixtools.netstat
         mtr
         nload
-        doggo # drill replacement
+        doggo # dig/drill replacement
         inetutils # ping6
         httpie
         curl
@@ -132,6 +132,8 @@
             source $profile/etc/profile.d/nix.sh
           fi
           export HISTFILE="''${XDG_STATE_HOME:-$HOME/.local/state}/bash/history"
+          export HISTSIZE=100000
+          export HISTFILESIZE=100000
         '';
       };
       zsh = {
