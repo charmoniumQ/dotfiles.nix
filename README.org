@@ -98,6 +98,14 @@
 
 - [[https://github.com/sharkdp/hyperfine][*~hyperfine~*]] benchmark commands.
 
+- [[https://facebook.github.io/watchman/][*~watchman~*]] watch directory for changes
+
+- [[https://github.com/sharkdp/bat][*~bat~*]] is ~cat~ with syntax highlighting.
+
+- [[https://github.com/blacknon/hwatch][*~hwatch~*]] is like ~watch~, watches a command until the output changes.
+
+- [[https://rclone.org/][~*rclone~*]] syncs to Dropbox, Google Drive, Box, and others.
+
   - I like ~hyperfine --warmup 1 --shell none - $CMD~
 * TODO items
 - https://github.com/ryan4yin/nix-config

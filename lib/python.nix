@@ -10,6 +10,53 @@
       pytestCheckPhase = "true";
     }
   ;
+  ipaddress = python.pkgs.buildPythonPackage rec {
+    pname = "ipaddress";
+    version = "1.0.23";
+    src = pkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "b7f8e0369580bb4a24d5ba1d7cc29660a4a6987763faf1d8a8046830e020e7e2";
+    };
+    format = "setuptools";
+    nativeBuildInputs = [ python.pkgs.setuptools ];
+  };
+  fowl = python.pkgs.buildPythonPackage rec {
+    pname = "fowl";
+    version = "25.10.0";
+    src = pkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "f4f67f669616bb20ccba67ee7c8207931674f34daefd6c2af91a0392beb0fe8c";
+    };
+    format = "pyproject";
+    build-system = [ python.pkgs.hatchling ];
+    propagatedBuildInputs = with python.pkgs; [
+      setuptools
+      click
+      attrs
+      six
+      msgpack
+      humanize
+      twisted
+      magic-wormhole
+      rich
+      ipaddress
+    ];
+    pythonImportsCheck = [ "fowl" ];
+  };
+  shwim = python.pkgs.buildPythonPackage rec {
+    pname = "shwim";
+    version = "25.9.0";
+    src = pkgs.fetchPypi {
+      inherit pname version;
+      sha256 = "ec1b25590e901ae1b7f0831642071cb862d25f29d915466a6aed05292b8e2adb";
+    };
+    format = "pyproject";
+    build-system = [ python.pkgs.hatchling ];
+    propagatedBuildInputs = with python.pkgs; [
+      magic-wormhole
+      fowl
+    ];
+  };
   pythonPkgs = pypkgs:
     with pypkgs;
       [
@@ -47,36 +94,6 @@
         types-tqdm
         rich
         textual
-        (pkgs.python3Packages.buildPythonPackage rec {
-          pname = "fowl";
-          version = "25.10.0";
-          src = fetchFromPyPI {
-            repo = "fowl";
-            rev = version;
-            hash = "f4f67f669616bb20ccba67ee7c8207931674f34daefd6c2af91a0392beb0fe8c";
-          };
-          format = "pyproject";
-          build-system = [ hatchling ];
-          propagatedBuildInputs = with python3Packages; [
-            setuptools
-            click
-            attrs
-            six
-            msgpack
-            humanize
-            twisted
-            magic-wormhole
-            rich
-            ipaddress
-          ];
-          pythonImportsCheck = [ "fowl" ];
-          meta = with lib; {
-            description = "Forward TCP streams over Magic Wormhole";
-            homepage = "https://github.com/magic-wormhole/fowl";
-            license = licenses.mit;
-            mainProgram = "fowl";
-          };
-        })
 
         # Data
         sqlalchemy
@@ -177,6 +194,12 @@
 
         # math
         sympy
+
+        # Utils
+        rich
+        magic-wormhole
+        fowl
+        shwim
 
         # NLP
         # spacy

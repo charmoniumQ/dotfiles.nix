@@ -14,7 +14,6 @@ in {
         # Classic utils
         diffutils
         unixtools.util-linux
-        unixtools.xxd
         unixtools.script
         # TODO: moreutils parallel conflicts with GNU parallel
         parallel
@@ -24,6 +23,8 @@ in {
         # Scanning
         # TODO: re-enable
         (disableTests gscan2pdf)
+
+        tty-share
 
         # Next gen tools
         duf # df replacement

@@ -64,8 +64,8 @@
         # Sending files
         rsync
         wgetpaste
-        magic-wormhole
         gcr # for gpg-agent pinentry
+        # magic-wormhole and fowl from python
 
         # Misc
         mosh
