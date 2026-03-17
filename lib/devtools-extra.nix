@@ -54,8 +54,8 @@
 
       # Java tools
       jdk
-      # maven
-      # gradle
+      maven
+      gradle
 
       # VCS
       git-machete
@@ -70,7 +70,7 @@
       alejandra
 
       # Sem Web tools
-      # protege-distribution
+      protege-distribution
 
       # TODO:
       # - reveal.js + multiplex

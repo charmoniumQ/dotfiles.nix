@@ -102,6 +102,8 @@
         types-pyyaml
         pydantic
         rdflib
+        # owlrl
+        pydot
 
         # Machine learning
         huggingface-hub
@@ -163,6 +165,7 @@
         torch
         pandas
         polars
+        fastexcel
         pyarrow
         h5py
         xlrd

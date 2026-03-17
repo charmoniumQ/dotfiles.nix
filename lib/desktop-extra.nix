@@ -15,6 +15,8 @@ in {
         yt-dlp
         android-tools
 
+        friture
+
         # Matrix client battle
         # cinny
         # fluffychat
