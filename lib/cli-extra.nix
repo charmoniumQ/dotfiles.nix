@@ -50,6 +50,9 @@ in {
         ghostscript_headless
         libfaketime
 
+        # Editing
+        doxx
+
         # Sending files
         rclone
       ];

@@ -1,11 +1,18 @@
 { pkgs, config, ... }:
 {
   home = {
+    sessionVariables = {
+      PLAYWRIGHT_BROWSERS_PATH = pkgs.playwright-driver.browsers;
+      PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS = "true";
+    };
     packages = with pkgs; [
       # source code utils
       delta
       difftastic
       bat
+
+      # HTML
+      pup
 
       # LLMs
       opencode
@@ -34,6 +41,9 @@
       # JS tools
       nodejs
       yarn-berry
+      playwright
+      # TODO: Just get Firefox
+      playwright-driver.browsers
 
       # Ruby tools
       ruby
@@ -46,11 +56,26 @@
       # For experimentation, it's nice to have a default version installed
       rustup
 
-      # Data munging
-      gephi
+      # Database browser
+      # TODO: decide on one
       sqlitebrowser
-      # miller
-      # pup
+      sqlitestudio
+      dbeaver-bin
+      # TODO: https://github.com/l1xnan/duckling
+      # Still looking for someone who can _edit_ Parquet files
+      #beekeeper-studio # insecure, Electron 32 is EoL
+      # TODO: https://github.com/hfmsio/dbxlite
+      gephi
+
+      # CLI viewer
+      xleak # only XLSX, ODS
+      csvlens # only CSV
+      # still looking for Parquet and editing support
+
+      # Data queries
+      duckdb # CLI can run SQL queries on XLSX, CSV, JSON, Parquet, ...
+      nail-parquet # instead of pqrs
+      # TODO: https://github.com/sanspareilsmyn/parqv
 
       # Java tools
       jdk

@@ -125,4 +125,32 @@
       };
     };
   };
+  home = {
+    file = {
+      "${config.home.sessionVariables.CARGO_HOME}/config" = {
+        text = ''
+          [build]
+          target-dir = ${config.xdg.cacheHome}/cargo-builds/
+        '';
+      };
+    };
+  };
+  xdg = {
+    configFile = {
+      "opencode/opencode.json" = {
+        text = ''
+          {
+              "$schema": "https://opencode.ai/config.json",
+              "autoupdate": true,
+              "lsp": true,
+              "tools": {
+                  "read": {
+                      "~/.local/share/cargo/registry/src/**": "allow"
+                  }
+              }
+          }
+        '';
+      };
+    };
+  };
 }

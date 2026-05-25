@@ -39,6 +39,14 @@
         };
       };
     };
+    charmonium-freeze = {
+      url = github:charmoniumQ/charmonium.freeze;
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
     # flox = {
     #   url = github:flox/floxpkgs;
     #   inputs = {

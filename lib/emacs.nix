@@ -70,7 +70,6 @@ in {
       pkgs.grip
       pkgs.html-tidy
       pkgs.stylelint
-      pkgs.nodePackages_latest.js-beautify
       # TODO: fix ccls
       # broken in https://github.com/NixOS/nixpkgs/issues/449588
       #pkgs.ccls

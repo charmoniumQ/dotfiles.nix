@@ -1,6 +1,8 @@
 {
   pkgs,
   config,
+  charmonium-freeze,
+  system,
   ...
 }: let
   python = pkgs.python314;
@@ -69,6 +71,9 @@
         ptpython
 
         # Misc
+        charmonium-freeze.packages.${system}.py314
+        pymupdf
+        playwright
         hy
         panflute
         # macropy is no longer maintained
@@ -153,6 +158,7 @@
         aiofiles
         fsspec
         sshfs
+        watchfiles
 
         # Data science
         numpy
@@ -165,6 +171,7 @@
         torch
         pandas
         polars
+        xlsxwriter
         fastexcel
         pyarrow
         h5py
@@ -235,6 +242,8 @@
         seaborn
         plotext
         plotille
+        hvplot
+        panel
 
         # Language server
         mypy
@@ -288,9 +297,9 @@ in {
     packages = [
       (python.withPackages pythonPkgs)
       # TODO:
-      # pkgs.pipenv
+      pkgs.pipenv
       pkgs.pyenv
-      pkgs.pipx
+      # pkgs.pipx
       pkgs.uv
       pkgs.pixi
       (disablePytest pkgs.hatch)

@@ -107,7 +107,11 @@
           "application/pdf" = ["org.gnome.Evince.desktop"];
         };
         defaultApplications = {
-          "application/pdf" = ["org.gnome.Evince.desktop"];
+          "application/pdf" = "org.gnome.Evince.desktop";
+          "text/html" = "firefox.desktop";
+          "x-scheme-handler/http" = "firefox.desktop";
+          "x-scheme-handler/https" = "firefox.desktop";
+          "application/zip" = "/home/sam/.local/state/nix/profile/share/applications/xarchiver.desktop";
         };
       };
     };
