@@ -7,6 +7,11 @@
       direnv
       hyperfine
 
+      # Libraries
+      openssl
+      pkg-config
+      zlib
+
       # Source code utils
       wgetpaste
       ripgrep
@@ -127,10 +132,10 @@
   };
   home = {
     file = {
-      "${config.home.sessionVariables.CARGO_HOME}/config" = {
+      "${config.home.sessionVariables.CARGO_HOME}/config.toml" = {
         text = ''
           [build]
-          target-dir = ${config.xdg.cacheHome}/cargo-builds/
+          target-dir = "${config.xdg.cacheHome}/cargo-builds/"
         '';
       };
     };

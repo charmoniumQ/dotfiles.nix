@@ -103,16 +103,73 @@
       # env XDG_UTILS_DEBUG_LEVEL=3 xdg-mime query default image/png
       mimeApps = {
         enable = true;
-        associations.added = {
-          "application/pdf" = ["org.gnome.Evince.desktop"];
-        };
-        defaultApplications = {
-          "application/pdf" = "org.gnome.Evince.desktop";
-          "text/html" = "firefox.desktop";
-          "x-scheme-handler/http" = "firefox.desktop";
-          "x-scheme-handler/https" = "firefox.desktop";
-          "application/zip" = "/home/sam/.local/state/nix/profile/share/applications/xarchiver.desktop";
-        };
+        associations.added = let
+          web-browsers = [ "firefox.desktop" ];
+          pdf-viewers = [ " org.gnome.Evince.desktop" ];
+          image-viewers = [ "org.gnome.gThumb.desktop" ];
+          video-players = [ "vlc.desktop" ];
+          audio-players = [];
+          archivers = [ "xarchiver.desktop" ];
+          archive-types = [
+            "application/zip"
+            "application/x-7z-compressed"
+            "application/x-tar"
+            "application/gzip"
+            "application/x-gzip"
+            "application/x-bzip"
+            "application/x-bzip2"
+          ];
+          html-types = [ "text/html" "x-scheme-handler/http" "x-scheme-handler/https" ];
+          image-types = [
+            "image/jpeg"
+            "image/png"
+            "image/gif"
+            "image/webp"
+            "image/avif"
+            "image/heic"
+            "image/heif"
+            "image/bmp"
+            "image/tiff"
+            "image/svg+xml"
+            "image/x-icon"       # .ico
+            "image/vnd.microsoft.icon"
+          ];
+          audio-types = [
+            "audio/mpeg"
+            "audio/flac"
+            "audio/ogg"
+            "audio/wav"
+            "audio/mp4"
+            "audio/x-wav"
+          ];
+          video-types = [
+            "video/mp4"
+            "video/x-matroska"
+            "video/webm"
+            "video/x-msvideo"
+            "video/quicktime"
+            "video/mpeg"
+            "video/ogg"
+            "video/x-flv"
+          ];
+        in {
+          "application/pdf" = pdf-viewers ++ web-browsers;
+        } // builtins.listToAttrs (map (type: {
+          name = type;
+          value = web-browsers;
+        }) html-types) // builtins.listToAttrs (map (type: {
+          name = type;
+          value = image-viewers;
+        }) image-types) // builtins.listToAttrs (map (type: {
+          name = type;
+          value = video-players;
+        }) video-types) // builtins.listToAttrs (map (type: {
+          name = type;
+          value = audio-players ++ video-players;
+        }) audio-types) // builtins.listToAttrs (map (type: {
+          name = type;
+          value = archive-types;
+        }) archivers);
       };
     };
   };
