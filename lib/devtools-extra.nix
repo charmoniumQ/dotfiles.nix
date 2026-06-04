@@ -137,4 +137,23 @@
       };
     };
   };
+  xdg = {
+    configFile = {
+      # TODO: do this mutably
+      # "opencode/opencode.json" = {
+      #   text = ''
+      #     {
+      #         "$schema": "https://opencode.ai/config.json",
+      #         "autoupdate": true,
+      #         "lsp": true,
+      #         "tools": {
+      #             "read": {
+      #                 "~/.local/share/cargo/registry/src/**": "allow"
+      #             }
+      #         }
+      #     }
+      #   '';
+      # };
+    };
+  };
 }

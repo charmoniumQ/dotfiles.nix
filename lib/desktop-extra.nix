@@ -18,15 +18,15 @@ in {
         friture
 
         # Matrix client battle
-        # cinny
-        fluffychat
+        # cinny-desktop
+        # fluffychat
         # element-desktop
-        # (nheko.override (super: {
-        #   olm = ignoreVulnerabilities super.olm;
-        #   mtxclient = super.mtxclient.override (super: {
-        #     olm = ignoreVulnerabilities super.olm;
-        #   });
-        # }))
+        (nheko.override (super: {
+          olm = ignoreVulnerabilities super.olm;
+          mtxclient = super.mtxclient.override (super: {
+            olm = ignoreVulnerabilities super.olm;
+          });
+        }))
 
         # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
         libsForQt5.qt5.qtwayland
