@@ -35,12 +35,13 @@
 
  :lang
  (cc +lsp)
- ;(clojure +lsp)
+ (clojure +lsp)
  data
  emacs-lisp
  ;ess
+ (haskell +lsp)
  (json +lsp)
- ;(java +lsp)
+ (java +lsp)
  (javascript +lsp)
  (latex +latexmk +cdlatex +fold +lsp)
  (markdown +grip)
@@ -48,7 +49,7 @@
  (org -noter +pretty)
  plantuml
  (python +lsp +poetry -pyenv)
- (racket +lsp)
+ ;(racket +lsp)
  (rust +lsp)
  (rest)
  (sh +lsp)

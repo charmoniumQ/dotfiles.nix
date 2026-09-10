@@ -12,13 +12,13 @@ in {
     home = {
       packages = with pkgs; [
         # Classic utils
-        diffutils
-        unixtools.util-linux
+        uutils-diffutils
+        uutils-util-linux
         unixtools.script
         # TODO: moreutils parallel conflicts with GNU parallel
-        parallel
+        #parallel
         watchman # watch a directory for file changes
-        progress
+        #progress
 
         # Scanning
         # TODO: re-enable
@@ -34,14 +34,15 @@ in {
         hwatch # watch replacement
 
         # Monitoring
-        btop # everything else
-        smartmontools
-        cpufrequtils
+        # btop # everything else
+        # glances
+        # smartmontools
+        # cpufrequtils
+        # nethogs
         iotop
-        nethogs
         lm_sensors
+
         rbw
-        pinentry-gtk2
 
         # System utils
         pciutils
@@ -51,7 +52,7 @@ in {
         libfaketime
 
         # Editing
-        doxx
+        # doxx
 
         # Sending files
         rclone

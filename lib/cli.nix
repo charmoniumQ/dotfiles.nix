@@ -6,10 +6,12 @@
       ]; 
       packages = with pkgs; [
         # Classic utils
-        coreutils
-        findutils
+        bashInteractive
+        uutils-coreutils-noprefix
+        uutils-findutils
+        uutils-procps
+        uutils-sed
         gnugrep
-        gnused
         gawk
         pv
         lsof
@@ -31,7 +33,7 @@
 
         # Monitoring
         htop # CPU/mem
-        glances # everything else
+        #glances # everything else
 
         # Netowrking
         unixtools.route
@@ -47,7 +49,7 @@
         # Compressions
         zip
         unzip
-        gnutar
+        uutils-tar
         bzip2
         xz
         dtrx

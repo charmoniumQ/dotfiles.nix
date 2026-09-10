@@ -74,6 +74,7 @@
         charmonium-freeze.packages.${system}.py314
         pymupdf
         playwright
+        structlog
         hy
         panflute
         # macropy is no longer maintained
@@ -162,7 +163,7 @@
 
         # Data science
         numpy
-        nptyping
+        (disablePytest nptyping) # TODO
         beartype
         scipy
         torch
@@ -172,6 +173,7 @@
         pandas
         polars
         xlsxwriter
+        openpyxl # needed for pandas.read_excel
         fastexcel
         pyarrow
         h5py
@@ -236,21 +238,22 @@
         # Plotting
         matplotlib
         bokeh
-        holoviews
+        (disablePytest holoviews) # TODO
         altair
-        vega
+        (disablePytest vega) # TODO
+        vegafusion
         seaborn
         plotext
         plotille
-        hvplot
+        #hvplot # TODO
         panel
 
         # Language server
         mypy
         python-lsp-server
-        pylsp-mypy
+        (disablePytest pylsp-mypy) # TODO
         python-lsp-black
-        python-lsp-ruff
+        (disablePytest python-lsp-ruff) # TODO
         isort
         ruff
         types-protobuf

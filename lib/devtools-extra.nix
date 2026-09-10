@@ -27,16 +27,17 @@
       # Containers
       #podman # Must be installed by host (NixOS or other)
       buildah
-      dive
-      diffoci
-      proot
+      # dive
+      # diffoci
+      # proot
       # TODO: fix diffoscope
 
       # diagrams
       xdot
       mermaid-cli
-      d2
-      ditaa
+      gephi
+      # d2
+      # ditaa
 
       # JS tools
       nodejs
@@ -46,15 +47,9 @@
       playwright-driver.browsers
 
       # Ruby tools
-      ruby
-      rubocop
+      # ruby
+      # rubocop
       # I guess bundler is included with Ruby now?
-      # bundler
-
-      # Rust tools
-      # For long-term projects, you should use Crane in a Flake
-      # For experimentation, it's nice to have a default version installed
-      rustup
 
       # Database browser
       # TODO: decide on one
@@ -65,7 +60,6 @@
       # Still looking for someone who can _edit_ Parquet files
       #beekeeper-studio # insecure, Electron 32 is EoL
       # TODO: https://github.com/hfmsio/dbxlite
-      gephi
 
       # CLI viewer
       xleak # only XLSX, ODS
@@ -78,15 +72,15 @@
       # TODO: https://github.com/sanspareilsmyn/parqv
 
       # Java tools
-      jdk
-      maven
-      gradle
+      # jdk
+      # maven
+      # gradle
 
       # VCS
       git-machete
       bfg-repo-cleaner
-      mercurial
-      subversion
+      #mercurial
+      #subversion
 
       # VM tools
       # vagrant
@@ -95,7 +89,7 @@
       alejandra
 
       # Sem Web tools
-      protege-distribution
+      # protege-distribution
 
       # TODO:
       # - reveal.js + multiplex

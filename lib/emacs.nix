@@ -63,11 +63,9 @@ in {
         rm "''${file}"
       '')
       pkgs.shellcheck
-      pkgs.rustup
+      # pkgs.rustup
       pkgs.glslang
-      pkgs.racket
       pkgs.nixfmt-rfc-style
-      pkgs.grip
       pkgs.html-tidy
       pkgs.stylelint
       # TODO: fix ccls

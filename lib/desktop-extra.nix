@@ -17,19 +17,21 @@ in {
 
         friture
 
+        qbz
+
         # Matrix client battle
         # cinny-desktop
         # fluffychat
-        # element-desktop
-        (nheko.override (super: {
-          olm = ignoreVulnerabilities super.olm;
-          mtxclient = super.mtxclient.override (super: {
-            olm = ignoreVulnerabilities super.olm;
-          });
-        }))
+        element-desktop
+        # (nheko.override (super: {
+        #   olm = ignoreVulnerabilities super.olm;
+        #   mtxclient = super.mtxclient.override (super: {
+        #     olm = ignoreVulnerabilities super.olm;
+        #   });
+        # }))
 
         # Fixes Warning: qt.qpa.plugin: Could not find the Qt platform plugin "wayland" in ""
-        libsForQt5.qt5.qtwayland
+        qt5.qtwayland
 
         kdePackages.discover # Optional: Install if you use Flatpak or fwupd firmware update sevice
         kdePackages.kcalc # Calculator

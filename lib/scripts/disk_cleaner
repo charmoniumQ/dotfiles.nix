@@ -208,6 +208,8 @@ if gum confirm "Nix wipe old generations?"; then
     p nix profile wipe-history
 fi
 
+# TODO: mypy_cache, .ruff_cache, __pycache__
+
 gits="$(find ~ -name '.git' || true)"
 if [ -n "$gits" ]; then
     echo "Try doing 'git gc --prune $gits' and/or 'git clean -d --force --force --interactive -X' (removing files ignored by git)"
@@ -225,12 +227,13 @@ if gum confirm "Nix GC?"; then
     # Execute once to get rid of "removing stale root" messages
     nix-store --gc --print-roots > /dev/null
     while true; do
-          p nix-store --gc --print-roots | rg -v '^/proc/\d+' | rg -v '^\{temp:\d+\}'
+          p nix-store --gc --print-roots | rg -v '/proc/\d+' | rg -v '\{temp:\d+\}'
           if gum confirm "Have you deleted all the gcroots that you don't like?"; then
               break
           fi
     done
     p nix store gc
+    p nix-store --optimise
 fi
 
 rich --rule "Doom"

@@ -228,6 +228,7 @@
                          "~/box/org/work.org"
                          "~/box/org/hobbies.org"
                          "~/box/org/calendar.org"
+                         "~/box/org/addictions.org"
                          "~/box/org/sleep.org"))
 (setq org-todo-keywords
       '((sequence "TODO(t)" "|" "DONE(d)" "HOLD(h)")

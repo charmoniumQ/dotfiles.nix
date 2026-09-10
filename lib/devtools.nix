@@ -1,6 +1,17 @@
 { lib, pkgs, config, ... }:
 {
   home = {
+    sessionVariables = {
+      PKG_CONFIG_PATH = "${config.home.profileDirectory}/lib/pkgconfig";
+    };
+    file = {
+      "${config.home.sessionVariables.CARGO_HOME}/config.toml" = {
+        text = ''
+          [build]
+          target-dir = "${config.xdg.cacheHome}/cargo-builds/"
+        '';
+      };
+    };
     packages = with pkgs; [
       # System tools
       htop
@@ -9,6 +20,7 @@
 
       # Libraries
       openssl
+      openssl.dev
       pkg-config
       zlib
 
@@ -35,7 +47,8 @@
       # Rust tools
       # For long-term projects, you should use Crane in a Flake
       # For experimentation, it's nice to have a default version installed
-      rustup
+      cargo
+      rustc
 
       # Data munging
       sqlite
@@ -105,6 +118,9 @@
     git = {
       enable = true;
       settings = {
+        push = {
+          autoSetupRemote = true;
+        };
         aliases = {
           "meld" = "!git difftool --tool meld --dir-diff";
           # https://stackoverflow.com/a/60501712/1078199
@@ -127,16 +143,6 @@
       };
       lfs = {
         enable = true;
-      };
-    };
-  };
-  home = {
-    file = {
-      "${config.home.sessionVariables.CARGO_HOME}/config.toml" = {
-        text = ''
-          [build]
-          target-dir = "${config.xdg.cacheHome}/cargo-builds/"
-        '';
       };
     };
   };
