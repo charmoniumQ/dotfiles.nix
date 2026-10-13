@@ -66,7 +66,7 @@
         # Sending files
         rsync
         wgetpaste
-        gcr # for gpg-agent pinentry
+        gcr_4 # for gpg-agent pinentry
         # magic-wormhole and fowl from python
 
         # Misc

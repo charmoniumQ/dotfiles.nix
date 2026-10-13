@@ -163,7 +163,7 @@
 
         # Data science
         numpy
-        (disablePytest nptyping) # TODO
+        #(disablePytest nptyping) # TODO
         beartype
         scipy
         torch
@@ -247,6 +247,8 @@
         plotille
         #hvplot # TODO
         panel
+
+        pyzotero
 
         # Language server
         mypy

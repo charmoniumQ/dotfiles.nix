@@ -49,7 +49,7 @@ in {
 
   home = {
     packages = [
-      (pkgs.aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
+      (pkgs.aspellWithDicts (dicts: with dicts; [ en ]))
       (pkgs.writeShellScriptBin "emacsclient-pager" ''
         set -e
         mkdir --parents /tmp/emacsclient-pager
@@ -74,6 +74,8 @@ in {
       pkgs.clang-tools
       pkgs.bear # generate compile_commands.json
       pkgs.nerd-fonts.fira-code
+      pkgs.tree-sitter
+      pkgs.tree-sitter-grammars.tree-sitter-typst
     ];
     sessionVariables = {
       EDITOR = "emacsclient";

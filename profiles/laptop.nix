@@ -1,4 +1,11 @@
-{ system, config, pkgs, lib, nix-index-database, ... }: {
+{
+  system
+, config
+, pkgs
+, lib
+, nix-index-database
+, catppuccin
+, ... }: {
   imports = [
     ../lib/bluetooth.nix
     ../lib/cli.nix
@@ -24,7 +31,15 @@
     ../lib/xonsh.nix
     ../lib/zsh.nix
     nix-index-database.homeModules.nix-index
+    catppuccin.homeModules.catppuccin
   ];
+  catppuccin = {
+    autoEnable = true;
+    enable = true;
+    waybar = {
+      enable = false;
+    };
+  };
   desktop = {
     enable = true;
   };
@@ -40,7 +55,9 @@
       # zoom-us
       inkscape
       thunderbird
-      zotero
+      #zotero
+      # TODO: re-enable zotero
+      # https://github.com/NixOS/nixpkgs/issues/568692
       musescore
       wireguard-tools
       anki

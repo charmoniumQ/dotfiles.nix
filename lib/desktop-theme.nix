@@ -2,13 +2,10 @@
 {
   qt = {
     enable = true;
-    platformTheme = {
-      # package = pkgs.adwaita-qt;
-      name = "adwaita-dark";
-    };
     style = {
       #package = pkgs.adwaita-qt;
-      name = "adwaita-dark";
+      # Must be kvantum to use cattpuccin
+      name = "kvantum";
     };
   };
   gtk = {
@@ -23,14 +20,6 @@
         "file://${config.home.homeDirectory}/Downloads"
         "file://${config.home.homeDirectory}/Documents"
       ];
-    };
-    iconTheme = {
-      #package = pkgs.adwaita-icon-theme;
-      name = "adwaita-dark";
-    };
-    theme = {
-      #package = pkgs.gnome-themes-extra;
-      name = "adwaita-dark";
     };
   };
 }

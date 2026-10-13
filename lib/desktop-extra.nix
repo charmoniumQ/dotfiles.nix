@@ -17,12 +17,13 @@ in {
 
         friture
 
-        qbz
+        #qbz
 
         # Matrix client battle
         # cinny-desktop
         # fluffychat
         element-desktop
+        signal-desktop
         # (nheko.override (super: {
         #   olm = ignoreVulnerabilities super.olm;
         #   mtxclient = super.mtxclient.override (super: {
@@ -40,7 +41,40 @@ in {
         kdePackages.isoimagewriter # Optional: Program to write hybrid ISO files onto USB disks
         kdePackages.partitionmanager # Optional Manage the disk devices, partitions and file systems on your computer
         hardinfo2 # System information and benchmarks for Linux systems
+
+        # Fonts
+        cantarell-fonts
+        dejavu_fonts
+        eb-garamond
+        fira
+        fira-code
+        fira-code-symbols
+        ibm-plex
+        inconsolata
+        noto-fonts
+        noto-fonts-color-emoji
+        noto-fonts-monochrome-emoji
+        roboto
+        roboto-slab
+        ubuntu-sans
+        ubuntu-sans-mono
+        ubuntu-classic
+
+        nerd-fonts.noto
+        nerd-fonts.fira-code
+        nerd-fonts.im-writing
+        nerd-fonts.inconsolata
+        nerd-fonts.roboto-mono
+        nerd-fonts.ubuntu
+        nerd-fonts.ubuntu-sans
+        nerd-fonts.ubuntu-mono
       ];
+    };
+    fonts = {
+      fontconfig = {
+        enable = true;
+        antialiasing = true;
+      };
     };
   };
 }

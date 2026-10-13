@@ -124,10 +124,6 @@
         type = lib.types.enum [ "qt" "gtk" ];
         default = "gtk";
       };
-      style = lib.mkOption {
-        type = lib.types.enum [ "nord" "gruvbox" ];
-        default = "nord";
-      };
       bgimg = lib.mkOption {
         type = lib.types.path;
       };

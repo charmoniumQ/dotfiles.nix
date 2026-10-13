@@ -47,6 +47,14 @@
         };
       };
     };
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs = {
+        nixpkgs = {
+          follows = "nixpkgs";
+        };
+      };
+    };
     # flox = {
     #   url = github:flox/floxpkgs;
     #   inputs = {
@@ -109,7 +117,7 @@
                 )
                 for file in "''${files[@]}"; do
                   if [ -f "$file" ]; then
-                    mv "$file" "$file.backup"
+                    mv --force "$file" "$file.backup"
                   fi
                 done
                 ${pkgs.nh}/bin/nh home switch \

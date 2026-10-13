@@ -71,7 +71,10 @@
               leechblock-ng
               link-cleaner
               old-reddit-redirect
-              pushbullet
+              bypass-paywalls-clean # rules for news-articles
+              # replace with remove-paywall?
+              # https://addons.mozilla.org/en-US/firefox/addon/remove-paywall/
+              unpaywall # for scholarly works
               refined-github
               return-youtube-dislikes
               semantic-scholar

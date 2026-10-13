@@ -14,6 +14,8 @@
 (setq doom-font (font-spec :family "FiraCode Nerd Font" :size @fontsize@))
 (setq doom-unicode-font (font-spec :family "FiraCode Nerd Font" :size @fontsize@))
 
+(setq doom-theme 'catppuccin)
+
 ; LSP mode
 (setq lsp-enable-suggest-server-download nil)
 (use-package! direnv

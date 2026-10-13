@@ -1,85 +1,98 @@
-{ config, pkgs, ... }: [
-  "$mainMode, space, exec, ${pkgs.rofi}/bin/rofi -combi-modi window,drun -show combi -show-icons"
+{ config, lib, pkgs, ... }:
+let
+  lua = lib.generators.mkLuaInline;
+  bind = keys: dispatch: { _args = [ keys dispatch ]; };
+  exec = cmd: lua ''hl.dsp.exec_raw("${lib.strings.join " " cmd}")'';
+  focus = direction: lua ''hl.dsp.focus({ direction = "${direction}" })'';
+  switchTo = ws: lua ''hl.dsp.focus({ workspace = ${builtins.toJSON ws} })'';
+  moveTo = ws: lua ''hl.dsp.window.move({ workspace = ${builtins.toString  ws} })'';
+  moveToMonitorDir = direction: lua ''hl.dsp.workspace.move({ workspace = "+0"; monitor = "${direction}"; })'';
+  moveToMonitor = ws: lua ''function() hl.dispatch(hl.dsp.workspace.move({ workspace = "+0"; monitor = hl.get_monitor(${builtins.toString ws}); })) end'';
+in [
+  (bind "SUPER + space" (exec ["${pkgs.rofi}/bin/rofi" "-combi-modi" "window,drun" "-show" "combi" "-show-icons"]))
   # TODO: cliphist
-  #"$mainMode, V, exec, ${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"
-  "$mainMode, L, exec, lock"
+  (bind "SUPER + V" (exec ["${pkgs.cliphist}/bin/cliphist list | ${pkgs.rofi}/bin/rofi -dmenu | ${pkgs.cliphist}/bin/cliphist decode | ${pkgs.wl-clipboard}/bin/wl-copy"]))
+  (bind "SUPER + L" (exec ["lock"]))
 
-  "$mainMod, Q, killactive,"
-  "$mainMod SHIFT, Q, exit,"
-  "$mainMod, F, fullscreen,"
-  "$mainMod, G, togglefloating,"
-  #"$mainMod, P, pseudo," # dwindle
-  #"$mainMod, J, togglesplit," # dwindle
+  (bind "SUPER + Q" (lua "hl.dsp.window.kill()"))
+  (bind "SUPER + SHIFT + Q" (lua "hl.dsp.exit()"))
+  (bind "SUPER + F" (lua "hl.dsp.window.fullscreen()"))
+  (bind "SUPER + G" (lua ''hl.dsp.window.float({ action = "toggle" })''))
+  #(bind "SUPER + P" (lua "hl.dsp.window.pseudo()")) # dwindle
+  #(bind "SUPER + J" (lua ''hl.dsp.layout"togglesplit")'')) # dwindle
 
-  # Move focus with mainMod + arrow keys
-  "$mainMod, left, movefocus, l"
-  "$mainMod, right, movefocus, r"
-  "$mainMod, up, movefocus, u"
-  "$mainMod, down, movefocus, d"
+  # Move focus with super + arrow keys
+  (bind "SUPER + left" (focus "left"))
+  (bind "SUPER + right" (focus "right"))
+  (bind "SUPER + up" (focus "up"))
+  (bind "SUPER + down" (focus "down"))
 
-  "$mainMod, J, exec, ${pkgs.hyprnome}/bin/hyprnome --previous"
-  "$mainMod, K, exec, ${pkgs.hyprnome}/bin/hyprnome"
-  "$mainMod SHIFT, J, exec, ${pkgs.hyprnome}/bin/hyprnome --previous --move"
-  "$mainMod SHIFT, K, exec, ${pkgs.hyprnome}/bin/hyprnome --move"
+  (bind "SUPER + SHIFT + left" (moveToMonitorDir "left"))
+  (bind "SUPER + SHIFT + right" (moveToMonitorDir "right"))
+  (bind "SUPER + SHIFT + up" (moveToMonitorDir "up"))
+  (bind "SUPER + SHIFT + down" (moveToMonitorDir "down"))
 
-  # Switch workspaces with mainMod + [0-9]
-  "$mainMod, 1, workspace, 1"
-  "$mainMod, 2, workspace, 2"
-  "$mainMod, 3, workspace, 3"
-  "$mainMod, 4, workspace, 4"
-  "$mainMod, 5, workspace, 5"
-  "$mainMod, 6, workspace, 6"
-  "$mainMod, 7, workspace, 7"
-  "$mainMod, 8, workspace, 8"
-  "$mainMod, 9, workspace, 9"
-  "$mainMod, 0, workspace, 10"
+  # Switch workspaces with super + [0-9]
+  (bind "SUPER + 1" (switchTo 1))
+  (bind "SUPER + 2" (switchTo 2))
+  (bind "SUPER + 3" (switchTo 3))
+  (bind "SUPER + 4" (switchTo 4))
+  (bind "SUPER + 5" (switchTo 5))
+  (bind "SUPER + 6" (switchTo 6))
+  (bind "SUPER + 7" (switchTo 7))
+  (bind "SUPER + 8" (switchTo 8))
+  (bind "SUPER + 9" (switchTo 9))
+  (bind "SUPER + 0" (switchTo 10))
 
-  # Move active window to a workspace with mainMod + SHIFT + [0-9]
-  "$mainMod SHIFT, 1, movetoworkspace, 1"
-  "$mainMod SHIFT, 2, movetoworkspace, 2"
-  "$mainMod SHIFT, 3, movetoworkspace, 3"
-  "$mainMod SHIFT, 4, movetoworkspace, 4"
-  "$mainMod SHIFT, 5, movetoworkspace, 5"
-  "$mainMod SHIFT, 6, movetoworkspace, 6"
-  "$mainMod SHIFT, 7, movetoworkspace, 7"
-  "$mainMod SHIFT, 8, movetoworkspace, 8"
-  "$mainMod SHIFT, 9, movetoworkspace, 9"
-  "$mainMod SHIFT, 0, movetoworkspace, 10"
+  # Move active window to a workspace with super + SHIFT + [0-9]
+  (bind "SUPER + SHIFT + 1" (moveTo 1))
+  (bind "SUPER + SHIFT + 2" (moveTo 2))
+  (bind "SUPER + SHIFT + 3" (moveTo 3))
+  (bind "SUPER + SHIFT + 4" (moveTo 4))
+  (bind "SUPER + SHIFT + 5" (moveTo 5))
+  (bind "SUPER + SHIFT + 6" (moveTo 6))
+  (bind "SUPER + SHIFT + 7" (moveTo 7))
+  (bind "SUPER + SHIFT + 8" (moveTo 8))
+  (bind "SUPER + SHIFT + 9" (moveTo 9))
+  (bind "SUPER + SHIFT + 0" (moveTo 10))
 
-  # Move workspace to current display with mainMod + CTRL + [0-9]
-  "$mainMod CTRL, 1, exec, hyprctl dispatch moveworkspacetomonitor 1 current ; hyprctl dispatch workspace 1"
-  "$mainMod CTRL, 2, exec, hyprctl dispatch moveworkspacetomonitor 2 current ; hyprctl dispatch workspace 2"
-  "$mainMod CTRL, 3, exec, hyprctl dispatch moveworkspacetomonitor 3 current ; hyprctl dispatch workspace 3"
-  "$mainMod CTRL, 4, exec, hyprctl dispatch moveworkspacetomonitor 4 current ; hyprctl dispatch workspace 4"
-  "$mainMod CTRL, 5, exec, hyprctl dispatch moveworkspacetomonitor 5 current ; hyprctl dispatch workspace 5"
-  "$mainMod CTRL, 6, exec, hyprctl dispatch moveworkspacetomonitor 6 current ; hyprctl dispatch workspace 6"
-  "$mainMod CTRL, 7, exec, hyprctl dispatch moveworkspacetomonitor 7 current ; hyprctl dispatch workspace 7"
-  "$mainMod CTRL, 8, exec, hyprctl dispatch moveworkspacetomonitor 8 current ; hyprctl dispatch workspace 8"
-  "$mainMod CTRL, 9, exec, hyprctl dispatch moveworkspacetomonitor 9 current ; hyprctl dispatch workspace 9"
-  "$mainMod CTRL, 0, exec, hyprctl dispatch moveworkspacetomonitor 10 current ; hyprctl dispatch workspace 10"
+  # Move workspace to current display with super + CTRL + [0-9]
+  (bind "SUPER + CTRL + 1" (moveToMonitor 1))
+  (bind "SUPER + CTRL + 2" (moveToMonitor 2))
+  (bind "SUPER + CTRL + 3" (moveToMonitor 3))
+  (bind "SUPER + CTRL + 4" (moveToMonitor 4))
+  (bind "SUPER + CTRL + 5" (moveToMonitor 5))
+  (bind "SUPER + CTRL + 6" (moveToMonitor 6))
+  (bind "SUPER + CTRL + 7" (moveToMonitor 7))
+  (bind "SUPER + CTRL + 8" (moveToMonitor 8))
+  (bind "SUPER + CTRL + 9" (moveToMonitor 9))
+  (bind "SUPER + CTRL + 0" (moveToMonitor 10))
 
-  # Example special workspace (scratchpad)
-  "$mainMod, S, togglespecialworkspace, magic"
-  "$mainMod SHIFT, S, movetoworkspace, special:magic"
+  # Scroll through existing workspaces with super + scroll
+  (bind "SUPER + mouse_down" (switchTo "+1"))
+  (bind "SUPER + mouse_up" (switchTo "-1"))
 
-  # Scroll through existing workspaces with mainMod + scroll
-  "$mainMod, mouse_down, workspace, e+1"
-  "$mainMod, mouse_up, workspace, e-1"
+  (bind "XF86AudioMute" (exec ["${pkgs.pulseaudio}/bin/pactl" "set-sink-mute" "@DEFAULT_SINK@" "toggle"]))
+  (bind "XF86AudioPrev" (exec ["${pkgs.pulseaudio}/bin/pactl" "set-sink-volume" "@DEFAULT_SINK@" "-5%"]))
+  (bind "XF86AudioRaiseVolume" (exec ["${pkgs.pulseaudio}/bin/pactl" "set-sink-volume" "@DEFAULT_SINK@" "+5%"]))
+  (bind "SUPER + XF86AudioMute" (exec ["${pkgs.pavucontrol}/bin/pavucontrol"]))
+  # (bind "XF86AudioPrev" (exec ""))
+  # (bind "XF86AudioPlay" (exec ""))
+  # (bind "XF86AudioNext" (exec ""))
+  (bind "XF86MonBrightnessDown" (exec ["${pkgs.brightnessctl}/bin/brightnessctl" "set" "1%-"]))
+  (bind "XF86MonBrightnessUp" (exec ["${pkgs.brightnessctl}/bin/brightnessctl" "set" "1%+"]))
+  (bind "SHIFT + XF86MonBrightnessDown" (exec ["${pkgs.brightnessctl}/bin/brightnessctl" "set" "10%-"]))
+  (bind "SHIFT + XF86MonBrightnessUp" (exec ["${pkgs.brightnessctl}/bin/brightnessctl" "set" "10%+"]))
+  (bind "SUPER + P" (exec ["${pkgs.nwg-displays}/bin/wdisplays"]))
+  # (bind "XF86RFKill" (exec ""))
+  (bind "Print" (exec ["${pkgs.hyprshot}/bin/hyprshot --raw --mode window | ${pkgs.swappy}/bin/swappy --file -"]))
+  (bind "SHIFT + Print" (exec ["${pkgs.hyprshot}/bin/hyprshot --raw --mode region | ${pkgs.swappy}/bin/swappy --file -"]))
+  # (bind "X86AudioMedia" (exec ""))
 
-  ", XF86AudioMute, exec, ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"
-  ", XF86AudioLowerVolume, exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%"
-  ", XF86AudioRaiseVolume, exec, ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%"
-  "$mainMod, XF86AudioMute, exec, ${pkgs.pavucontrol}/bin/pavucontrol"
-  # ", XF86AudioPrev, exec, "
-  # ", XF86AudioPlay, exec, "
-  # ", XF86AudioNext, exec, "
-  ", XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 1%-"
-  ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 1%+"
-  "Shift, XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%-"
-  "Shift, XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl set 10%+"
-  "SUPER, P, exec, ${pkgs.nwg-displays}/bin/wdisplays"
-  # ", XF86RFKill, exec, "
-  ", Print, exec, ${pkgs.hyprshot}/bin/hyprshot --raw --mode window | ${pkgs.swappy}/bin/swappy --file -"
-  "Shift, Print, exec, ${pkgs.hyprshot}/bin/hyprshot --raw --mode region | ${pkgs.swappy}/bin/swappy --file -"
-  # ", X86AudioMedia, exec, "
+  {
+    _args = ["SUPER + mouse:272" (lua "hl.dsp.window.drag()") { mouse = true; }];
+  }
+  {
+    _args = ["SUPER + CTRL + mouse:272" (lua "hl.dsp.window.resize()") { mouse = true; }];
+  }
 ]

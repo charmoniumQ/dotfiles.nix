@@ -20,9 +20,15 @@
       crush
       ollama
 
+      typst
+
       # System tools
       google-cloud-sdk
       asciinema
+
+      # prose checking
+      codespell
+      vale
 
       # Containers
       #podman # Must be installed by host (NixOS or other)
@@ -31,6 +37,13 @@
       # diffoci
       # proot
       # TODO: fix diffoscope
+
+       (ghc.withPackages (hsPkgs: with hsPkgs; [
+         shake
+         hlint
+       ]))
+      codespell
+      languagetool
 
       # diagrams
       xdot

@@ -17,6 +17,11 @@
 
 (package! helm-make)
 
+(package! typst-ts-mode :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
+
+(package! haskell-mode)
+(package! lsp-haskell)
+
 (package! direnv)
 
 (package! string-inflection)
@@ -35,6 +40,8 @@
 
 ; Ugh. AI stuff
 (package! gptel :recipe (:nonrecursive t))
+
+(package! catppuccin-theme)
 
 (provide 'packages)
 ;;; packages.el ends here
