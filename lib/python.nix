@@ -228,7 +228,7 @@
         # Distributed computation
         dask
         distributed
-        fabric
+        #fabric
 
         # Web servers
         flask
@@ -238,7 +238,7 @@
         # Plotting
         matplotlib
         bokeh
-        (disablePytest holoviews) # TODO
+        #(disablePytest holoviews) # TODO
         altair
         (disablePytest vega) # TODO
         vegafusion
@@ -246,7 +246,7 @@
         plotext
         plotille
         #hvplot # TODO
-        panel
+        #panel # TODO
 
         pyzotero
 

@@ -1,35 +1,4 @@
-{ config, lib, pkgs, ... }@inputs:
-let
-  lua = lib.generators.mkLuaInline;
-  cmds = [
-    ["${config.services.dunst.package}/bin/dunst"]
-    ["${config.programs.waybar.package}/bin/waybar"]
-    ["${pkgs.swaybg}/bin/swaybg" "--mode" "fill" "--image" "${config.desktop.bgimg}"]
-    # ["${pkgs.udiskie}/bin/udiskie"]
-    ["${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "cliphist" "store"]
-    ["${pkgs.networkmanagerapplet}/bin/nm-applet"]
-  ] ++ (lib.lists.optionals (config.desktop.guiFramework == "gtk") [
-    ["${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"]
-  ]) ++ (lib.lists.optionals (config.desktop.guiFramework == "qt") [
-    ["${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"]
-  ]);
-in {
-  on = {
-    _args = [
-      "hyprland.start"
-      (lua ''
-        function()
-        ${
-          lib.concatMapStringsSep
-            "\n"
-            (cmd: "hl.dsp.exec_raw(\"${lib.strings.join " " cmd}\")")
-            cmds
-        }
-        end
-      '')
-    ];
-  };
-
+{ config, lib, pkgs, ... }@inputs: {
   config = {
     general = {
       gaps_in = 2;

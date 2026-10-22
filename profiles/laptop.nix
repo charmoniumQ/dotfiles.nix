@@ -55,10 +55,8 @@
       # zoom-us
       inkscape
       thunderbird
-      #zotero
-      # TODO: re-enable zotero
-      # https://github.com/NixOS/nixpkgs/issues/568692
-      musescore
+      # zotero # TODO
+      #musescore
       wireguard-tools
       anki
       qFlipper
@@ -70,7 +68,8 @@
       # opensc
       # pcsctools
       libreoffice
-      audacity
+      # https://github.com/NixOS/nixpkgs/pull/577022
+      # audacity
       josm
       qgis
       gimp

@@ -1,5 +1,6 @@
 { pkgs, config, lib, ... }@inputs: {
   imports = [
+    ./hyprland/autostarts.nix
     ./hyprland/hyprshade.nix
   ];
   wayland = lib.attrsets.optionalAttrs config.desktop.enable {
